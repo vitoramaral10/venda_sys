@@ -1,5 +1,5 @@
 class UnidadeMedida {
-  final String id;
+  late final String id;
   final String descricao;
   final String sigla;
 

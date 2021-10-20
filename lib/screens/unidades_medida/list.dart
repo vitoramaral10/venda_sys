@@ -112,7 +112,7 @@ class UnidadesMedidaList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<UnidadesMedidaBloc>().delete(unidadeMedida.id);
+                  bool _removed = await BlocProvider.getBloc<UnidadesMedidaBloc>().delete(unidadeMedida.id, context);
                   Navigator.of(context).pop(_removed);
                 },
               ),

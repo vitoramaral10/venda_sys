@@ -2,21 +2,22 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/material.dart';
 import 'package:venda_sys/firestore/unidades_medida.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
 class UnidadesMedidaBloc implements BlocBase {
   final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
       StreamController<List<UnidadeMedida>>.broadcast();
-  Stream get outUnidadesMedida => _unidadesMedidasController.stream;
+  Stream<List<UnidadeMedida>> get outUnidadesMedida => _unidadesMedidasController.stream;
 
   // ignore: non_constant_identifier_names
   UnidadesMedidasBloc() {
     search();
   }
 
-  Future<bool> delete(String id) async {
-    bool _deleted = await UnidadesMedidaFirestore().delete(id);
+  Future<bool> delete(String id, BuildContext context) async {
+    bool _deleted = await UnidadesMedidaFirestore().delete(id, context);
     if (_deleted == true) {
       search();
     }
@@ -49,7 +50,7 @@ class UnidadesMedidaBloc implements BlocBase {
     _unidadesMedidasController.sink.add([]);
 
     List<UnidadeMedida> _unidadesMedidas = await UnidadesMedidaFirestore().loadUnidadesMedida();
-
+    
     _unidadesMedidasController.sink.add(_unidadesMedidas);
   }
 

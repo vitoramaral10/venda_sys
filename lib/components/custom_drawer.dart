@@ -20,43 +20,47 @@ class CustomDrawer extends StatelessWidget {
               backgroundColor: Colors.transparent,
             ),
           ),
-          _menuTile(
-              title: 'Produtos',
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosList()));
-              }),
           ExpansionTile(
               title: Row(
                 children: [
                   Icon(
-                    Icons.settings,
-                    size: 16,
+                    Icons.inbox,
+                    size: 24,
                   ),
                   SizedBox(
                     width: 8,
                   ),
                   Text(
-                    'Configurações',
+                    'Produtos',
                   ),
                 ],
               ),
               children: [
+                _menuTile(
+                    title: 'Produtos',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosList()));
+                    }),
                 _menuTile(
                     title: 'Unidades de Medida',
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaList()));
                     }),
               ]),
+          _menuTile(title: 'Clientes', onTap: () {}, icon: Icons.business_sharp),
+          _menuTile(title: 'Fiscal', onTap: () {}, icon: Icons.receipt_long),
         ],
       ),
     );
   }
 }
 
-Widget _menuTile({required String title, required void Function() onTap}) {
+Widget _menuTile({required String title, required void Function() onTap, IconData? icon}) {
   return InkWell(
     onTap: onTap,
     child: ListTile(
+      leading: icon != null ? Icon(icon) : null,
+      dense: true,
       title: Text(title),
     ),
   );

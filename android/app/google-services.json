@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "324714691840",
+    "project_id": "vendasys-97d45",
+    "storage_bucket": "vendasys-97d45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324714691840:android:c1f1f2135ded6654c907e5",
+        "android_client_info": {
+          "package_name": "br.com.vitormelovenda_sys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324714691840-75mj3ui36mmbmdekladi6bs9sd274rgi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwa4Y9RnL6V_FvSEYP8p2y7Zha2rg7v30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324714691840-75mj3ui36mmbmdekladi6bs9sd274rgi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

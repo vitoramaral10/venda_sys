@@ -4,6 +4,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
+import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
 import 'package:venda_sys/screens/home_screen.dart';
 
 void main() {
@@ -34,6 +35,7 @@ class _VendaSysAppState extends State<VendaSysApp> {
           return BlocProvider(
             blocs: [
               Bloc((i) => ProdutosBloc()),
+              Bloc((i) => UnidadesMedidaBloc()),
             ],
             dependencies: [],
             child: MaterialApp(

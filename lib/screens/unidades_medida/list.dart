@@ -1,34 +1,34 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:venda_sys/bloc/produtos_bloc.dart';
-import 'package:venda_sys/models/produto.dart';
-import 'package:venda_sys/screens/produtos/form.dart';
+import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
+import 'package:venda_sys/models/unidade_medida.dart';
+import 'package:venda_sys/screens/unidades_medida/form.dart';
 
-class ProdutosList extends StatelessWidget {
-  const ProdutosList({Key? key}) : super(key: key);
+class UnidadesMedidaList extends StatelessWidget {
+  const UnidadesMedidaList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<ProdutosBloc>().search();
+    BlocProvider.getBloc<UnidadesMedidaBloc>().search();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Produtos'),
+        title: Text('Unidade de Medida'),
       ),
       body: StreamBuilder(
-        stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
+        stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            List<Produto> produtos = snapshot.data! as List<Produto>;
+            List<UnidadeMedida> unidadesMedida = snapshot.data! as List<UnidadeMedida>;
 
             return ListView.builder(
-              itemCount: produtos.length,
+              itemCount: unidadesMedida.length,
               itemBuilder: (context, index) {
-                return _listTile(index, produtos[index], context);
+                return _listTile(index, unidadesMedida[index], context);
               },
             );
           }
@@ -36,22 +36,22 @@ class ProdutosList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosForm()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
         },
         child: Icon(Icons.add),
       ),
     );
   }
 
-  Widget _listTile(int index, Produto produto, BuildContext context) {
+  Widget _listTile(int index, UnidadeMedida unidadeMedida, BuildContext context) {
     return Card(
       child: InkWell(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProdutosForm(
-                        id: produto.id,
+                  builder: (context) => UnidadesMedidaForm(
+                        id: unidadeMedida.id,
                       )));
         },
         child: Dismissible(
@@ -59,7 +59,7 @@ class ProdutosList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           confirmDismiss: (DismissDirection direction) async {
             if (direction == DismissDirection.startToEnd) {
-              final bool res = await _removePopup(context, produto);
+              final bool res = await _removePopup(context, unidadeMedida);
 
               return res;
             }
@@ -79,36 +79,25 @@ class ProdutosList extends StatelessWidget {
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(produto.codigo),
+                Text(unidadeMedida.sigla),
               ],
             ),
             title: Text(
-              produto.descricao,
+              unidadeMedida.descricao,
               maxLines: 1,
             ),
-            subtitle: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Valor Compra: R\$ ${_corrigeValor(produto.valorCompra)}'),
-                SizedBox(
-                  width: 8,
-                ),
-                Text('Valor Venda: R\$ ${_corrigeValor(produto.valorVenda)}'),
-              ],
-            ),
-            trailing: Text('${_corrigeValor(produto.estoque)}'),
           ),
         ),
       ),
     );
   }
 
-  _removePopup(BuildContext context, Produto produto) async {
+  _removePopup(BuildContext context, UnidadeMedida unidadeMedida) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("Tem certeza que deseja remover esse produto?"),
+            content: Text("Tem certeza que deseja remover essa unidade de medida?"),
             actions: <Widget>[
               TextButton(
                 child: Text(
@@ -123,16 +112,12 @@ class ProdutosList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>().delete(produto.id);
+                  bool _removed = await BlocProvider.getBloc<UnidadesMedidaBloc>().delete(unidadeMedida.id);
                   Navigator.of(context).pop(_removed);
                 },
               ),
             ],
           );
         });
-  }
-
-  String _corrigeValor(dynamic valor) {
-    return (valor != null) ? valor.toString() : '-';
   }
 }

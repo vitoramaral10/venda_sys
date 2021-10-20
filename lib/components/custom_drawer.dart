@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:venda_sys/screens/produtos/list.dart';
+import 'package:venda_sys/screens/unidades_medida/list.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -23,6 +24,11 @@ class CustomDrawer extends StatelessWidget {
               title: 'Produtos',
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosList()));
+              }),
+          _menuTile(
+              title: 'Unidades de Medida',
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaList()));
               }),
         ],
       ),

@@ -1,8 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
+import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/produto.dart';
+import 'package:venda_sys/models/unidade_medida.dart';
 
 // ignore: must_be_immutable
 class ProdutosForm extends StatefulWidget {
@@ -27,7 +29,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
   final TextEditingController _estoqueController = TextEditingController();
   final TextEditingController _descricaoResumidaController = TextEditingController();
   final TextEditingController _ncmController = TextEditingController();
-  final TextEditingController _unController = TextEditingController();
+
+  String unidadeMedida = '';
 
   Produto? produto;
 
@@ -48,7 +51,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
       _valorVendaController.text = (produto!.valorVenda ?? '').toString();
       _estoqueController.text = (produto!.estoque ?? '').toString();
       _ncmController.text = (produto!.ncm ?? '').toString();
-      _unController.text = produto!.un;
+      unidadeMedida = produto!.un;
 
       setState(() {});
     } else if (widget.id.isNotEmpty) {
@@ -62,6 +65,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.getBloc<UnidadesMedidaBloc>().search();
     return Scaffold(
       appBar: AppBar(
         title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Novo') + ' Produto'),
@@ -91,7 +95,10 @@ class _ProdutosFormState extends State<ProdutosForm> {
             _textField(label: 'Valor de Venda', controller: _valorVendaController),
             _textField(label: 'Estoque', controller: _estoqueController),
             _textField(label: 'NCM', controller: _ncmController),
-            _textField(label: 'Unidade', controller: _unController),
+            StreamBuilder<List<UnidadeMedida>>(
+              stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
+              builder: _dropDownUnidadesMedida,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
@@ -102,7 +109,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
                         _codigoController.text,
                         _descricaoController.text,
                         _descricaoResumidaController.text,
-                        _unController.text,
+                        unidadeMedida,
                         valorCompra: double.tryParse(_valorCompraController.text),
                         valorVenda: double.tryParse(_valorVendaController.text),
                         ncm: int.tryParse(_ncmController.text),
@@ -116,6 +123,61 @@ class _ProdutosFormState extends State<ProdutosForm> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _dropDownUnidadesMedida(context, snapshot) {
+    if (snapshot.hasData && snapshot.data!.length > 0) {
+      List<UnidadeMedida> unidadeMedidaList = snapshot.data!;
+
+      unidadeMedidaList.add(UnidadeMedida('', 'Selecione', ''));
+
+      unidadeMedida = _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
+
+      unidadeMedidaList.sort((a, b) => a.sigla.compareTo(b.sigla));
+
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownButtonFormField<String>(
+          isDense: true,
+          decoration: const InputDecoration(border: OutlineInputBorder()),
+          items: unidadeMedidaList
+              .map((e) => DropdownMenuItem(
+                    child: Text(e.descricao),
+                    value: e.id,
+                  ))
+              .toList(),
+          onChanged: (value) {
+            unidadeMedida = value!;
+          },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Campo obrigatório';
+            }
+          },
+          value: unidadeMedida,
+        ),
+      );
+    }
+    return Container();
+  }
+
+  Widget _textField({
+    required String label,
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
+        textCapitalization: TextCapitalization.characters,
+        validator: validator,
       ),
     );
   }
@@ -134,22 +196,6 @@ class _ProdutosFormState extends State<ProdutosForm> {
     });
   }
 
-  Padding _textField(
-      {required String label, required TextEditingController controller, String? Function(String?)? validator}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        textCapitalization: TextCapitalization.characters,
-        validator: validator,
-      ),
-    );
-  }
-
   void _edit(Produto produto) {
     BlocProvider.getBloc<ProdutosBloc>().edit(produto).then((e) {
       if (e == true) {
@@ -162,5 +208,16 @@ class _ProdutosFormState extends State<ProdutosForm> {
         );
       }
     });
+  }
+
+  bool _checkValue(String id, List<UnidadeMedida> unidadeMedidaList) {
+    bool _check = false;
+    unidadeMedidaList.forEach((element) {
+      if (element.id == id) {
+        _check = true;
+      }
+    });
+
+    return _check;
   }
 }

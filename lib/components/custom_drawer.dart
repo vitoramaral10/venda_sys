@@ -25,11 +25,28 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosList()));
               }),
-          _menuTile(
-              title: 'Unidades de Medida',
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaList()));
-              }),
+          ExpansionTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    size: 16,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Configurações',
+                  ),
+                ],
+              ),
+              children: [
+                _menuTile(
+                    title: 'Unidades de Medida',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaList()));
+                    }),
+              ]),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
 class UnidadesMedidaFirestore {
@@ -34,13 +35,22 @@ class UnidadesMedidaFirestore {
     }
   }
 
-  Future<bool> delete(String id) async {
+  Future<bool> delete(String id, BuildContext context) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
-      await firestore.collection(_collection).doc(id).delete();
+      QuerySnapshot<Map<String, dynamic>> docs =
+          await firestore.collection('produtos').where('un', isEqualTo: id).get();
 
-      return true;
+      if (docs.docs.length == 0) {
+        await firestore.collection(_collection).doc(id).delete();
+        return true;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Unidade de Medida está sendo utilizada!"),
+        ));
+        return false;
+      }
     } catch (e) {
       return false;
     }

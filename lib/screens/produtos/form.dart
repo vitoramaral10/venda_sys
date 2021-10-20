@@ -44,10 +44,10 @@ class _ProdutosFormState extends State<ProdutosForm> {
       _codigoController.text = produto!.codigo;
       _descricaoController.text = produto!.descricao;
       _descricaoResumidaController.text = produto!.descricaoResumida;
-      _valorCompraController.text = produto!.valorCompra.toString();
-      _valorVendaController.text = produto!.valorVenda.toString();
-      _estoqueController.text = produto!.estoque.toString();
-      _ncmController.text = produto!.ncm.toString();
+      _valorCompraController.text = (produto!.valorCompra ?? '').toString();
+      _valorVendaController.text = (produto!.valorVenda ?? '').toString();
+      _estoqueController.text = (produto!.estoque ?? '').toString();
+      _ncmController.text = (produto!.ncm ?? '').toString();
       _unController.text = produto!.un;
 
       setState(() {});

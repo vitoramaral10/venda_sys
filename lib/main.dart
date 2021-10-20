@@ -37,6 +37,7 @@ class _VendaSysAppState extends State<VendaSysApp> {
             ],
             dependencies: [],
             child: MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: 'VendaSys',
               home: HomeScreen(),
             ),

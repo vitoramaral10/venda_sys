@@ -65,9 +65,30 @@ class _ProdutosImportState extends State<ProdutosImport> {
                     });
                   });
                 },
-                child: Text('Buscar arquivo')),
-            loading ? Text('Produtos importados:') : Container(),
-            loading ? Text('$countFinal de $countInicial') : Container(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Buscar arquivo'),
+                )),
+            loading
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Produtos importados:'),
+                  )
+                : Container(),
+            loading
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('$countFinal de $countInicial'),
+                  )
+                : Container(),
+            loading
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(
+                      value: (countInicial / 100) * countFinal - 1,
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

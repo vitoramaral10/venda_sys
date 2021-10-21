@@ -2,7 +2,9 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/models/produto.dart';
-import 'package:venda_sys/screens/produtos/form.dart';
+
+import 'form.dart';
+import 'import.dart';
 
 class ProdutosList extends StatelessWidget {
   const ProdutosList({Key? key}) : super(key: key);
@@ -14,6 +16,16 @@ class ProdutosList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Produtos'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosImport()));
+            },
+            icon: Icon(
+              Icons.file_upload_outlined,
+            ),
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,

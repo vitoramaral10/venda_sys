@@ -83,4 +83,20 @@ class UnidadesMedidaFirestore {
       return false;
     }
   }
+
+  Future<UnidadeMedida> searchBy(field, {isEqualTo}) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> docs =
+          await firestore.collection(_collection).where(field, isEqualTo: isEqualTo).get();
+
+      Map<String, dynamic> data = docs.docs[0].data();
+      data['id'] = docs.docs[0].id;
+
+      return UnidadeMedida.fromJson(data);
+    } catch (e) {
+      return UnidadeMedida.empty;
+    }
+  }
 }

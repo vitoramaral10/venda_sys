@@ -31,7 +31,7 @@ class ProdutosBloc implements BlocBase {
     return _edited;
   }
 
-  save(Produto produto) async {
+  Future<bool> save(Produto produto) async {
     bool _saved = await ProdutosFirestore().save(produto);
 
     if (_saved == true) {
@@ -76,5 +76,9 @@ class ProdutosBloc implements BlocBase {
     } else {
       return Produto.empty;
     }
+  }
+
+  Future<List<Produto>> searchBy(String codigo) async {
+    return await ProdutosFirestore().searchBy('codigo', isEqualTo: codigo);
   }
 }

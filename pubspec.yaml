@@ -6,15 +6,18 @@ publish_to: 'none'
 version: 0.0.1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   bloc_pattern: ^3.0.0
   cloud_firestore: ^2.5.3
   cupertino_icons: ^1.0.2
+  excel_to_json: 
+    path: plugins/excel_to_json
   firebase_core: ^1.7.0
   flutter:
     sdk: flutter
+  path_provider: ^2.0.5
 
 dev_dependencies:
   flutter_test:

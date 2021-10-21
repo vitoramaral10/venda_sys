@@ -50,7 +50,7 @@ class UnidadesMedidaBloc implements BlocBase {
     _unidadesMedidasController.sink.add([]);
 
     List<UnidadeMedida> _unidadesMedidas = await UnidadesMedidaFirestore().loadUnidadesMedida();
-    
+
     _unidadesMedidasController.sink.add(_unidadesMedidas);
   }
 
@@ -79,5 +79,9 @@ class UnidadesMedidaBloc implements BlocBase {
     } else {
       return UnidadeMedida.empty;
     }
+  }
+
+  Future<UnidadeMedida> searchBy(String descricao) async {
+    return await UnidadesMedidaFirestore().searchBy('descricao', isEqualTo: descricao);
   }
 }

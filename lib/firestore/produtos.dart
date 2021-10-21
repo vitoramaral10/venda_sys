@@ -71,4 +71,22 @@ class ProdutosFirestore {
       return false;
     }
   }
+
+  Future<List<Produto>> searchBy(field, {isEqualTo}) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> docs =
+          await firestore.collection('produtos').where(field, isEqualTo: isEqualTo).get();
+
+      return docs.docs.map<Produto>((QueryDocumentSnapshot map) {
+        Map<String, dynamic> data = map.data() as Map<String, dynamic>;
+        data['id'] = map.id;
+
+        return Produto.fromJson(data);
+      }).toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }

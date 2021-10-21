@@ -7,7 +7,7 @@ class Produto {
   final double? valorVenda;
   final int? estoque;
   final int? ncm;
-  final String un;
+  String un;
 
   Produto(
     this.id,
@@ -22,14 +22,14 @@ class Produto {
   });
 
   Produto.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : id = json['id'] ?? '',
         codigo = json['codigo'],
         descricao = json['descricao'],
-        descricaoResumida = json['descricaoResumida'],
+        descricaoResumida = json['descricaoResumida'] ?? '',
         valorCompra = json['valorCompra'],
         valorVenda = json['valorVenda'],
-        estoque = json['estoque'],
-        ncm = json['ncm'],
+        estoque = json['estoque'] != null ? int.tryParse(json['estoque']) : 0,
+        ncm = json['ncm'] != null ? int.parse(json['ncm'].toString()) : 0,
         un = json['un'];
 
   static Produto empty = Produto('', '', '', '', '');

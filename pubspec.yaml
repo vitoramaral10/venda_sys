@@ -12,8 +12,7 @@ dependencies:
   bloc_pattern: ^3.0.0
   cloud_firestore: ^2.5.3
   cupertino_icons: ^1.0.2
-  excel_to_json: 
-    path: plugins/excel_to_json
+  excel_to_json: ^0.0.1-dev.1
   firebase_core: ^1.7.0
   flutter:
     sdk: flutter

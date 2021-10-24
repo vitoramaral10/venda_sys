@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
+import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
@@ -32,7 +33,8 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
   }
 
   _loadData() async {
-    unidadeMedida = await BlocProvider.getBloc<UnidadesMedidaBloc>().getUnidadeMedida(widget.id);
+    unidadeMedida = await BlocProvider.getBloc<UnidadesMedidaBloc>()
+        .getUnidadeMedida(widget.id);
 
     if (unidadeMedida!.id.isNotEmpty) {
       _descricaoController.text = unidadeMedida!.descricao;
@@ -44,7 +46,8 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir a unidade de medida',
-          text: 'Não foi possível abrir essa unidade de medida, se persistir entre em contato com o desenvolvedor');
+          text:
+              'Não foi possível abrir essa unidade de medida, se persistir entre em contato com o desenvolvedor');
     }
   }
 
@@ -52,13 +55,14 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Nova') + ' Unidade de Medida'),
+        title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Nova') +
+            ' Unidade de Medida'),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           children: [
-            _textField(
+            CustomTextField(
                 label: 'Descrição',
                 controller: _descricaoController,
                 validator: (value) {
@@ -66,7 +70,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                     return 'Campo obrigatório!';
                   }
                 }),
-            _textField(
+            CustomTextField(
                 label: 'Sigla',
                 controller: _siglaController,
                 validator: (value) {
@@ -85,7 +89,9 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                         _siglaController.text,
                       );
 
-                      (widget.id.isEmpty) ? _save(unidadeMedida) : _edit(unidadeMedida);
+                      (widget.id.isEmpty)
+                          ? _save(unidadeMedida)
+                          : _edit(unidadeMedida);
                     }
                   },
                   child: Text('Salvar')),
@@ -108,22 +114,6 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
         );
       }
     });
-  }
-
-  Padding _textField(
-      {required String label, required TextEditingController controller, String? Function(String?)? validator}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        textCapitalization: TextCapitalization.characters,
-        validator: validator,
-      ),
-    );
   }
 
   void _edit(UnidadeMedida unidadeMedida) {

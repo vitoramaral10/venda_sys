@@ -23,7 +23,8 @@ class UnidadesMedidaList extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            List<UnidadeMedida> unidadesMedida = snapshot.data! as List<UnidadeMedida>;
+            List<UnidadeMedida> unidadesMedida =
+                snapshot.data! as List<UnidadeMedida>;
 
             return ListView.builder(
               itemCount: unidadesMedida.length,
@@ -36,14 +37,16 @@ class UnidadesMedidaList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
         },
         child: Icon(Icons.add),
       ),
     );
   }
 
-  Widget _listTile(int index, UnidadeMedida unidadeMedida, BuildContext context) {
+  Widget _listTile(
+      int index, UnidadeMedida unidadeMedida, BuildContext context) {
     return Card(
       child: InkWell(
         onTap: () {
@@ -97,7 +100,8 @@ class UnidadesMedidaList extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("Tem certeza que deseja remover essa unidade de medida?"),
+            content:
+                Text("Tem certeza que deseja remover essa unidade de medida?"),
             actions: <Widget>[
               TextButton(
                 child: Text(
@@ -112,7 +116,9 @@ class UnidadesMedidaList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<UnidadesMedidaBloc>().delete(unidadeMedida.id, context);
+                  bool _removed =
+                      await BlocProvider.getBloc<UnidadesMedidaBloc>()
+                          .delete(unidadeMedida.id, context);
                   Navigator.of(context).pop(_removed);
                 },
               ),

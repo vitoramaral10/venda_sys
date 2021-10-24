@@ -1,16 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/models/produto.dart';
 
+Box _box = Hive.box(boxName);
+String _empresa = _box.get('empresa');
+
 class ProdutosFirestore {
+  final String _collection = 'produtos';
+
+  DocumentReference _firestore =
+      FirebaseFirestore.instance.collection('empresas').doc(_empresa);
+
   Future<List<Produto>> loadProdutos() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot<Map<String, dynamic>> produtos = await firestore.collection('produtos').get();
+    QuerySnapshot<Map<String, dynamic>> produtos =
+        await _firestore.collection(_collection).get();
 
     return _decode(produtos);
   }
 
   List<Produto> _decode(QuerySnapshot response) {
-    List<Produto> produtos = response.docs.map<Produto>((QueryDocumentSnapshot map) {
+    List<Produto> produtos =
+        response.docs.map<Produto>((QueryDocumentSnapshot map) {
       Map<String, dynamic> data = map.data() as Map<String, dynamic>;
       data['id'] = map.id;
 
@@ -21,10 +32,8 @@ class ProdutosFirestore {
   }
 
   Future<bool> save(Produto produto) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      await firestore.collection('produtos').doc().set(produto.toJson());
+      await _firestore.collection(_collection).doc().set(produto.toJson());
 
       return true;
     } catch (e) {
@@ -33,10 +42,8 @@ class ProdutosFirestore {
   }
 
   Future<bool> delete(String id) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      await firestore.collection('produtos').doc(id).delete();
+      await _firestore.collection(_collection).doc(id).delete();
 
       return true;
     } catch (e) {
@@ -46,9 +53,8 @@ class ProdutosFirestore {
 
   Future<Produto> getProduto(String id) async {
     try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      DocumentSnapshot<Map<String, dynamic>> produto = await firestore.collection('produtos').doc(id).get();
+      DocumentSnapshot<Map<String, dynamic>> produto =
+          await _firestore.collection(_collection).doc(id).get();
 
       Map<String, dynamic> produtoData = produto.data() as Map<String, dynamic>;
 
@@ -60,11 +66,12 @@ class ProdutosFirestore {
     }
   }
 
-  static edit(Produto produto) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  Future<bool> edit(Produto produto) async {
     try {
-      await firestore.collection('produtos').doc(produto.id).set(produto.toJson());
+      await _firestore
+          .collection(_collection)
+          .doc(produto.id)
+          .set(produto.toJson());
 
       return true;
     } catch (e) {
@@ -73,11 +80,11 @@ class ProdutosFirestore {
   }
 
   Future<List<Produto>> searchBy(field, {isEqualTo}) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      QuerySnapshot<Map<String, dynamic>> docs =
-          await firestore.collection('produtos').where(field, isEqualTo: isEqualTo).get();
+      QuerySnapshot<Map<String, dynamic>> docs = await _firestore
+          .collection(_collection)
+          .where(field, isEqualTo: isEqualTo)
+          .get();
 
       return docs.docs.map<Produto>((QueryDocumentSnapshot map) {
         Map<String, dynamic> data = map.data() as Map<String, dynamic>;

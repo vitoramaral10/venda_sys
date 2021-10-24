@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
+import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/produto.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
@@ -27,7 +28,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
   final TextEditingController _valorCompraController = TextEditingController();
   final TextEditingController _valorVendaController = TextEditingController();
   final TextEditingController _estoqueController = TextEditingController();
-  final TextEditingController _descricaoResumidaController = TextEditingController();
+  final TextEditingController _descricaoResumidaController =
+      TextEditingController();
   final TextEditingController _ncmController = TextEditingController();
 
   String unidadeMedida = '';
@@ -59,7 +61,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir o produto',
-          text: 'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
+          text:
+              'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
     }
   }
 
@@ -74,7 +77,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
         key: _formKey,
         child: ListView(
           children: [
-            _textField(
+            CustomTextField(
                 label: 'Código',
                 controller: _codigoController,
                 validator: (value) {
@@ -82,7 +85,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
                     return 'Campo obrigatório!';
                   }
                 }),
-            _textField(
+            CustomTextField(
                 label: 'Descrição',
                 controller: _descricaoController,
                 validator: (value) {
@@ -90,13 +93,18 @@ class _ProdutosFormState extends State<ProdutosForm> {
                     return 'Campo obrigatório!';
                   }
                 }),
-            _textField(label: 'Descrição Resumida', controller: _descricaoResumidaController),
-            _textField(label: 'Valor de Compra', controller: _valorCompraController),
-            _textField(label: 'Valor de Venda', controller: _valorVendaController),
-            _textField(label: 'Estoque', controller: _estoqueController),
-            _textField(label: 'NCM', controller: _ncmController),
+            CustomTextField(
+                label: 'Descrição Resumida',
+                controller: _descricaoResumidaController),
+            CustomTextField(
+                label: 'Valor de Compra', controller: _valorCompraController),
+            CustomTextField(
+                label: 'Valor de Venda', controller: _valorVendaController),
+            CustomTextField(label: 'Estoque', controller: _estoqueController),
+            CustomTextField(label: 'NCM', controller: _ncmController),
             StreamBuilder<List<UnidadeMedida>>(
-              stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
+              stream:
+                  BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
               builder: _dropDownUnidadesMedida,
             ),
             Padding(
@@ -110,7 +118,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
                         _descricaoController.text,
                         _descricaoResumidaController.text,
                         unidadeMedida,
-                        valorCompra: double.tryParse(_valorCompraController.text),
+                        valorCompra:
+                            double.tryParse(_valorCompraController.text),
                         valorVenda: double.tryParse(_valorVendaController.text),
                         ncm: int.tryParse(_ncmController.text),
                         estoque: int.tryParse(_estoqueController.text),
@@ -133,7 +142,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
       unidadeMedidaList.add(UnidadeMedida('', 'Selecione', ''));
 
-      unidadeMedida = _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
+      unidadeMedida =
+          _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
 
       unidadeMedidaList.sort((a, b) => a.sigla.compareTo(b.sigla));
 
@@ -161,25 +171,6 @@ class _ProdutosFormState extends State<ProdutosForm> {
       );
     }
     return Container();
-  }
-
-  Widget _textField({
-    required String label,
-    required TextEditingController controller,
-    String? Function(String?)? validator,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        textCapitalization: TextCapitalization.characters,
-        validator: validator,
-      ),
-    );
   }
 
   void _save(Produto produto) {

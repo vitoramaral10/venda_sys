@@ -1,19 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
+
+Box _box = Hive.box(boxName);
+String _empresa = _box.get('empresa');
 
 class UnidadesMedidaFirestore {
   final String _collection = 'unidades_medidas';
 
+  DocumentReference _firestore =
+      FirebaseFirestore.instance.collection('empresas').doc(_empresa);
+
   Future<List<UnidadeMedida>> loadUnidadesMedida() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot<Map<String, dynamic>> unidadesMedida = await firestore.collection(_collection).get();
+    QuerySnapshot<Map<String, dynamic>> unidadesMedida =
+        await _firestore.collection(_collection).get();
 
     return _decode(unidadesMedida);
   }
 
   List<UnidadeMedida> _decode(QuerySnapshot response) {
-    List<UnidadeMedida> unidadesMedidas = response.docs.map<UnidadeMedida>((QueryDocumentSnapshot map) {
+    List<UnidadeMedida> unidadesMedidas =
+        response.docs.map<UnidadeMedida>((QueryDocumentSnapshot map) {
       Map<String, dynamic> data = map.data() as Map<String, dynamic>;
       data['id'] = map.id;
 
@@ -24,10 +33,11 @@ class UnidadesMedidaFirestore {
   }
 
   Future<bool> save(UnidadeMedida unidadesMedida) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      await firestore.collection(_collection).doc().set(unidadesMedida.toJson());
+      await _firestore
+          .collection(_collection)
+          .doc()
+          .set(unidadesMedida.toJson());
 
       return true;
     } catch (e) {
@@ -36,14 +46,14 @@ class UnidadesMedidaFirestore {
   }
 
   Future<bool> delete(String id, BuildContext context) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      QuerySnapshot<Map<String, dynamic>> docs =
-          await firestore.collection('produtos').where('un', isEqualTo: id).get();
+      QuerySnapshot<Map<String, dynamic>> docs = await _firestore
+          .collection('produtos')
+          .where('un', isEqualTo: id)
+          .get();
 
       if (docs.docs.length == 0) {
-        await firestore.collection(_collection).doc(id).delete();
+        await _firestore.collection(_collection).doc(id).delete();
         return true;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -58,11 +68,11 @@ class UnidadesMedidaFirestore {
 
   Future<UnidadeMedida> getUnidadeMedida(String id) async {
     try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentSnapshot<Map<String, dynamic>> unidadesMedida =
+          await _firestore.collection(_collection).doc(id).get();
 
-      DocumentSnapshot<Map<String, dynamic>> unidadesMedida = await firestore.collection(_collection).doc(id).get();
-
-      Map<String, dynamic> unidadesMedidaData = unidadesMedida.data() as Map<String, dynamic>;
+      Map<String, dynamic> unidadesMedidaData =
+          unidadesMedida.data() as Map<String, dynamic>;
 
       unidadesMedidaData.addAll({'id': id});
 
@@ -73,10 +83,11 @@ class UnidadesMedidaFirestore {
   }
 
   Future<bool> edit(UnidadeMedida unidadesMedida) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      await firestore.collection(_collection).doc(unidadesMedida.id).set(unidadesMedida.toJson());
+      await _firestore
+          .collection(_collection)
+          .doc(unidadesMedida.id)
+          .set(unidadesMedida.toJson());
 
       return true;
     } catch (e) {
@@ -85,11 +96,11 @@ class UnidadesMedidaFirestore {
   }
 
   Future<UnidadeMedida> searchBy(field, {isEqualTo}) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      QuerySnapshot<Map<String, dynamic>> docs =
-          await firestore.collection(_collection).where(field, isEqualTo: isEqualTo).get();
+      QuerySnapshot<Map<String, dynamic>> docs = await _firestore
+          .collection(_collection)
+          .where(field, isEqualTo: isEqualTo)
+          .get();
 
       Map<String, dynamic> data = docs.docs[0].data();
       data['id'] = docs.docs[0].id;

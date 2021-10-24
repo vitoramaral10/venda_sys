@@ -19,7 +19,8 @@ class ProdutosList extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosImport()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProdutosImport()));
             },
             icon: Icon(
               Icons.file_upload_outlined,
@@ -48,7 +49,8 @@ class ProdutosList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosForm()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProdutosForm()));
         },
         child: Icon(Icons.add),
       ),
@@ -135,7 +137,8 @@ class ProdutosList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>().delete(produto.id);
+                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>()
+                      .delete(produto.id);
                   Navigator.of(context).pop(_removed);
                 },
               ),

@@ -1,4 +1,8 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:venda_sys/bloc/login_bloc.dart';
+import 'package:venda_sys/screens/home_screen.dart';
+import 'package:venda_sys/screens/login_screen.dart';
 import 'package:venda_sys/screens/produtos/list.dart';
 import 'package:venda_sys/screens/unidades_medida/list.dart';
 
@@ -20,6 +24,15 @@ class CustomDrawer extends StatelessWidget {
               backgroundColor: Colors.transparent,
             ),
           ),
+          _menuTile(
+              title: 'Início',
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+              },
+              icon: Icons.dashboard_outlined),
           ExpansionTile(
               title: Row(
                 children: [
@@ -39,29 +52,78 @@ class CustomDrawer extends StatelessWidget {
                 _menuTile(
                     title: 'Produtos',
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosList()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProdutosList()));
                     }),
                 _menuTile(
                     title: 'Unidades de Medida',
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UnidadesMedidaList()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UnidadesMedidaList()));
                     }),
               ]),
-          _menuTile(title: 'Clientes', onTap: () {}, icon: Icons.business_sharp),
-          _menuTile(title: 'Fiscal', onTap: () {}, icon: Icons.receipt_long),
+          _menuTile(
+            title: 'Clientes',
+            icon: Icons.business_sharp,
+            trailing: Chip(
+              label: Text(
+                'Em breve',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.redAccent,
+            ),
+          ),
+          _menuTile(
+            title: 'Fiscal',
+            icon: Icons.receipt_long,
+            trailing: Chip(
+              label: Text(
+                'Em breve',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.redAccent,
+            ),
+          ),
+          _menuTile(
+              title: 'Sair',
+              onTap: () async {
+                bool exit = await BlocProvider.getBloc<LoginBloc>().signOut();
+
+                if (exit == true) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (route) => false);
+                }
+              },
+              icon: Icons.exit_to_app),
         ],
       ),
     );
   }
 }
 
-Widget _menuTile({required String title, required void Function() onTap, IconData? icon}) {
+Widget _menuTile(
+    {required String title,
+    void Function()? onTap,
+    IconData? icon,
+    Widget? trailing}) {
   return InkWell(
     onTap: onTap,
     child: ListTile(
-      leading: icon != null ? Icon(icon) : null,
+      leading: icon != null
+          ? Icon(
+              icon,
+              color: Colors.black,
+            )
+          : null,
       dense: true,
       title: Text(title),
+      trailing: trailing,
     ),
   );
 }

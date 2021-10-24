@@ -14,7 +14,11 @@ class UnidadeMedida {
         descricao = json['descricao'],
         sigla = json['sigla'];
 
-  static UnidadeMedida empty = UnidadeMedida('', '', '',);
+  static UnidadeMedida empty = UnidadeMedida(
+    '',
+    '',
+    '',
+  );
 
   Map<String, dynamic> toJson() => {
         'descricao': descricao,

@@ -6,7 +6,8 @@ import 'package:venda_sys/firestore/produtos.dart';
 import 'package:venda_sys/models/produto.dart';
 
 class ProdutosBloc implements BlocBase {
-  final StreamController<List<Produto>> _produtosController = StreamController<List<Produto>>.broadcast();
+  final StreamController<List<Produto>> _produtosController =
+      StreamController<List<Produto>>.broadcast();
   Stream get outProdutos => _produtosController.stream;
 
   ProdutosBloc() {
@@ -23,7 +24,7 @@ class ProdutosBloc implements BlocBase {
   }
 
   edit(Produto produto) async {
-    bool _edited = await ProdutosFirestore.edit(produto);
+    bool _edited = await ProdutosFirestore().edit(produto);
     if (_edited == true) {
       search();
     }

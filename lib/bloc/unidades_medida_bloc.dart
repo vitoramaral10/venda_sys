@@ -9,7 +9,8 @@ import 'package:venda_sys/models/unidade_medida.dart';
 class UnidadesMedidaBloc implements BlocBase {
   final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
       StreamController<List<UnidadeMedida>>.broadcast();
-  Stream<List<UnidadeMedida>> get outUnidadesMedida => _unidadesMedidasController.stream;
+  Stream<List<UnidadeMedida>> get outUnidadesMedida =>
+      _unidadesMedidasController.stream;
 
   // ignore: non_constant_identifier_names
   UnidadesMedidasBloc() {
@@ -49,7 +50,8 @@ class UnidadesMedidaBloc implements BlocBase {
 
     _unidadesMedidasController.sink.add([]);
 
-    List<UnidadeMedida> _unidadesMedidas = await UnidadesMedidaFirestore().loadUnidadesMedida();
+    List<UnidadeMedida> _unidadesMedidas =
+        await UnidadesMedidaFirestore().loadUnidadesMedida();
 
     _unidadesMedidasController.sink.add(_unidadesMedidas);
   }
@@ -73,7 +75,8 @@ class UnidadesMedidaBloc implements BlocBase {
 
   Future<UnidadeMedida> getUnidadeMedida(String id) async {
     if (id.isNotEmpty) {
-      UnidadeMedida unidadesMedida = await UnidadesMedidaFirestore().getUnidadeMedida(id);
+      UnidadeMedida unidadesMedida =
+          await UnidadesMedidaFirestore().getUnidadeMedida(id);
 
       return unidadesMedida;
     } else {
@@ -82,6 +85,7 @@ class UnidadesMedidaBloc implements BlocBase {
   }
 
   Future<UnidadeMedida> searchBy(String descricao) async {
-    return await UnidadesMedidaFirestore().searchBy('descricao', isEqualTo: descricao);
+    return await UnidadesMedidaFirestore()
+        .searchBy('descricao', isEqualTo: descricao);
   }
 }

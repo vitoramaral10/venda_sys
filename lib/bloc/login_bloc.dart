@@ -10,27 +10,28 @@ import 'package:venda_sys/config/config.dart';
 Box box = Hive.box(boxName);
 
 class LoginBloc implements BlocBase {
-  final String _collection = 'notas_fiscais';
+  final String _collection = 'usuarios';
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  Future<bool> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       final userData = await _checkUserData(email: email);
 
       box.put('empresa', userData!['empresas'][0]);
-
-      return true;
-    } catch (e) {
-      return false;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Failed with error code: ${e.code}');
     }
   }
 
   Future<Map<String, dynamic>?> _checkUserData({required String email}) async {
-    final companies = await _firestore.collection(_collection).where('email', isEqualTo: email).get();
-
-    return companies.docs[0].data();
+    try {
+      final companies = await _firestore.collection(_collection).where('email', isEqualTo: email).get();
+      return companies.docs[0].data();
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   bool checkLogged() {
@@ -42,12 +43,11 @@ class LoginBloc implements BlocBase {
     }
   }
 
-  Future<bool> signOut() async {
+  Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
-      return true;
     } catch (e) {
-      return false;
+      throw Exception(e);
     }
   }
 

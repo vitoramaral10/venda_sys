@@ -15,6 +15,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _emailController.text = 'vitor.amaral10@gmail.com';
+    _senhaController.text = 'g2proweb';
     return Scaffold(
       body: Center(
         child: Form(
@@ -54,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(onPressed: _submit(context), child: Text('Entrar')),
+                child: ElevatedButton(onPressed: () => _submit(context), child: Text('Entrar')),
               )
             ],
           ),
@@ -65,12 +67,12 @@ class LoginScreen extends StatelessWidget {
 
   _submit(context) async {
     if (_formKey.currentState!.validate()) {
-      bool _logged = await BlocProvider.getBloc<LoginBloc>().login(_emailController.text, _senhaController.text);
+      try {
+        await BlocProvider.getBloc<LoginBloc>().login(_emailController.text, _senhaController.text);
 
-      if (_logged == true) {
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
-      } else {
-        errorPopup(context: context, title: 'Erro ao logar', text: 'Email ou senha está incorreto!');
+      } catch (e) {
+        errorPopup(context: context, title: 'Erro ao logar', text: 'Email ou senha está incorreto!\n' + e.toString());
       }
     }
   }

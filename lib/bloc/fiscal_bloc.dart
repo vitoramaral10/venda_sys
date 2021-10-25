@@ -97,7 +97,6 @@ class FiscalBloc implements BlocBase {
 
           //Se não existe insere antes de atualizar o histórico
           if (_produtosCadastrados.docs.length == 0) {
-            log(produto.unidadeMedida);
             final _unidadeMedida =
                 await BlocProvider.getBloc<UnidadesMedidaBloc>().searchBy('sigla', produto.unidadeMedida);
             BlocProvider.getBloc<ProdutosBloc>().save(
@@ -143,7 +142,6 @@ class FiscalBloc implements BlocBase {
         return 'duplicated';
       }
     } catch (e) {
-      log(e.toString());
       return 'error';
     }
   }
@@ -154,7 +152,6 @@ class FiscalBloc implements BlocBase {
       final _data = _doc.data() as Map<String, dynamic>;
       _data['id'] = _doc.id;
 
-      print('asdasdas');
       final _nota = NotaFiscal.fromJson(_data);
 
       _nota.produtos.forEach((produto) async {
@@ -180,11 +177,8 @@ class FiscalBloc implements BlocBase {
       _firestore.collection(_collection).doc(id).update({'cancelada': true});
 
       search();
-
-      return true;
     } catch (e) {
-      print(e);
-      return false;
+      throw Exception(e);
     }
   }
 

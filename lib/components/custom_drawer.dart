@@ -81,11 +81,13 @@ class CustomDrawer extends StatelessWidget {
           _menuTile(
               title: 'Sair',
               onTap: () async {
-                bool exit = await BlocProvider.getBloc<LoginBloc>().signOut();
-
-                if (exit == true) {
+                try {
+                  await BlocProvider.getBloc<LoginBloc>().signOut();
+                  
                   Navigator.pushAndRemoveUntil(
                       context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
+                } catch (e) {
+                  throw Exception(e);
                 }
               },
               icon: Icons.exit_to_app),

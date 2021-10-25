@@ -46,18 +46,15 @@ class _ProdutosImportState extends State<ProdutosImport> {
                       Produto produto = Produto.fromJson(produtoExcel);
 
                       List<Produto> produtosEncontrados =
-                          await BlocProvider.getBloc<ProdutosBloc>()
-                              .searchBy(produto.codigo);
+                          await BlocProvider.getBloc<ProdutosBloc>().searchBy(produto.codigo);
 
                       if (produtosEncontrados.length == 0) {
                         UnidadeMedida unidadeMedida =
-                            await BlocProvider.getBloc<UnidadesMedidaBloc>()
-                                .searchBy(produto.un);
+                            await BlocProvider.getBloc<UnidadesMedidaBloc>().searchBy('descricao', produto.un);
 
                         produto.un = unidadeMedida.id;
 
-                        bool _saved = await BlocProvider.getBloc<ProdutosBloc>()
-                            .save(produto);
+                        bool _saved = await BlocProvider.getBloc<ProdutosBloc>().save(produto);
 
                         if (_saved) {
                           setState(() {

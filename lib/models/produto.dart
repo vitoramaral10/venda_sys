@@ -3,10 +3,10 @@ class Produto {
   final String codigo;
   final String descricao;
   final String descricaoResumida;
-  final double? valorCompra;
-  final double? valorVenda;
-  final int? estoque;
-  final int? ncm;
+  final double estoque;
+  final double valorCompra;
+  final double valorVenda;
+  final int ncm;
   String un;
 
   Produto(
@@ -14,25 +14,25 @@ class Produto {
     this.codigo,
     this.descricao,
     this.descricaoResumida,
-    this.un, {
-    this.valorCompra = 0.00,
-    this.valorVenda = 0.00,
-    this.estoque = 0,
-    this.ncm = 0,
-  });
+    this.estoque,
+    this.valorCompra,
+    this.valorVenda,
+    this.ncm,
+    this.un,
+  );
 
   Produto.fromJson(Map<String, dynamic> json)
       : id = json['id'] ?? '',
         codigo = json['codigo'],
         descricao = json['descricao'],
         descricaoResumida = json['descricaoResumida'] ?? '',
-        valorCompra = json['valorCompra'],
-        valorVenda = json['valorVenda'],
-        estoque = json['estoque'] != null ? int.tryParse(json['estoque']) : 0,
-        ncm = json['ncm'] != null ? int.parse(json['ncm'].toString()) : 0,
+        valorCompra = double.tryParse(json['valorCompra'].toString()) ?? 0,
+        valorVenda = double.tryParse(json['valorVenda'].toString()) ?? 0,
+        estoque = double.tryParse(json['estoque'].toString()) ?? 0,
+        ncm = int.tryParse(json['ncm'].toString()) ?? 0,
         un = json['un'];
 
-  static Produto empty = Produto('', '', '', '', '');
+  static Produto empty = Produto('', '', '', '', 0, 0, 0, 0, '');
 
   Map<String, dynamic> toJson() => {
         'codigo': codigo,

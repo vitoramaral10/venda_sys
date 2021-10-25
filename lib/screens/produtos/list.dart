@@ -19,8 +19,7 @@ class ProdutosList extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProdutosImport()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosImport()));
             },
             icon: Icon(
               Icons.file_upload_outlined,
@@ -38,7 +37,10 @@ class ProdutosList extends StatelessWidget {
           } else {
             List<Produto> produtos = snapshot.data! as List<Produto>;
 
+            
+
             return ListView.builder(
+              padding: EdgeInsets.only(bottom: 80),
               itemCount: produtos.length,
               itemBuilder: (context, index) {
                 return _listTile(index, produtos[index], context);
@@ -49,8 +51,7 @@ class ProdutosList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProdutosForm()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosForm()));
         },
         child: Icon(Icons.add),
       ),
@@ -103,14 +104,15 @@ class ProdutosList extends StatelessWidget {
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Valor Compra: R\$ ${_corrigeValor(produto.valorCompra)}'),
+                Text('Valor Compra: R\$ ${_corrigeValor(produto.valorCompra.toStringAsFixed(2))}'),
                 SizedBox(
                   width: 8,
                 ),
-                Text('Valor Venda: R\$ ${_corrigeValor(produto.valorVenda)}'),
+                Text('Valor Venda: R\$ ${_corrigeValor(produto.valorVenda.toStringAsFixed(2))}'),
               ],
             ),
-            trailing: Text('${_corrigeValor(produto.estoque)}'),
+            trailing:
+                Text(_checkInteger(produto.estoque) ? produto.estoque.toInt().toString() : produto.estoque.toString()),
           ),
         ),
       ),
@@ -137,8 +139,7 @@ class ProdutosList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>()
-                      .delete(produto.id);
+                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>().delete(produto.id);
                   Navigator.of(context).pop(_removed);
                 },
               ),
@@ -150,4 +151,6 @@ class ProdutosList extends StatelessWidget {
   String _corrigeValor(dynamic valor) {
     return (valor != null) ? valor.toString() : '-';
   }
+
+  _checkInteger(double value) => (value % 1) == 0;
 }

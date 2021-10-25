@@ -10,11 +10,14 @@ import 'package:venda_sys/config/constants.dart';
 Box box = Hive.box(boxName);
 
 class LoginBloc implements BlocBase {
+  final String _collection = 'notas_fiscais';
+  final _firebaseAuth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+
   Future<bool> login(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      Map<String, dynamic>? userData = await _checkUserData(email: email);
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final userData = await _checkUserData(email: email);
 
       box.put('empresa', userData!['empresas'][0]);
 
@@ -25,16 +28,27 @@ class LoginBloc implements BlocBase {
   }
 
   Future<Map<String, dynamic>?> _checkUserData({required String email}) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final companies = await _firestore.collection(_collection).where('email', isEqualTo: email).get();
 
-    QuerySnapshot<Map<String, dynamic>> companies = await firestore
-        .collection('usuarios')
-        .where('email', isEqualTo: email)
-        .get();
+    return companies.docs[0].data();
+  }
 
-    var companies2 = companies.docs;
+  bool checkLogged() {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-    return companies2[0].data();
+  Future<bool> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
@@ -51,22 +65,4 @@ class LoginBloc implements BlocBase {
 
   @override
   void removeListener(VoidCallback listener) {}
-
-  bool checkLogged() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
 }

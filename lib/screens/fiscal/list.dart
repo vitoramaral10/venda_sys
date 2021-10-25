@@ -85,7 +85,6 @@ class FiscalList extends StatelessWidget {
 
                     final _imported = await BlocProvider.getBloc<FiscalBloc>().importXML(context, nota);
 
-                    log(_imported);
                     if (_imported == 'ok') {
                       Navigator.pop(context);
                     } else {
@@ -202,8 +201,12 @@ class FiscalList extends StatelessWidget {
                   "Sim",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<FiscalBloc>().cancel(nota.id);
-                  Navigator.of(context).pop(_removed);
+                  try {
+                    await BlocProvider.getBloc<FiscalBloc>().cancel(nota.id);
+                    Navigator.pop(context);
+                  } catch (e) {
+                    errorPopup(context: context, title: 'Erro desconhecido', text: e.toString());
+                  }
                 },
               ),
             ],

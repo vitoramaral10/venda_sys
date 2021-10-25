@@ -41,7 +41,6 @@ class _VendaSysAppState extends State<VendaSysApp> {
           future: _initialization,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              log(snapshot.error.toString());
               return Container(
                 color: Colors.red,
               );

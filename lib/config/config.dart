@@ -4,6 +4,8 @@ import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
 
+const String boxName = 'vendasys';
+
 List<Bloc> blocs = [
   Bloc((i) => LoginBloc()),
   Bloc((i) => ProdutosBloc()),

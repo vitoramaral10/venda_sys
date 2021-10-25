@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
-import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
 import 'package:venda_sys/models/produto.dart';
@@ -81,7 +81,7 @@ class FiscalBloc implements BlocBase {
     }
   }
 
-  Future<bool> importXML(BuildContext context, NotaFiscalXML nota) async {
+  Future<String> importXML(BuildContext context, NotaFiscalXML nota) async {
     try {
       //Verifica se a nota já foi importada
       final _doc = await _firestore.collection(_collection).doc(nota.id).get();
@@ -138,13 +138,50 @@ class FiscalBloc implements BlocBase {
 
         search();
 
-        return true;
+        return 'ok';
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Nota já está cadastrada!"),
-        ));
-        return false;
+        return 'duplicated';
       }
+    } catch (e) {
+      log(e.toString());
+      return 'error';
+    }
+  }
+
+  Future cancel(String id) async {
+    try {
+      final _doc = await _firestore.collection(_collection).doc(id).get();
+      final _data = _doc.data() as Map<String, dynamic>;
+      _data['id'] = _doc.id;
+
+      print('asdasdas');
+      final _nota = NotaFiscal.fromJson(_data);
+
+      _nota.produtos.forEach((produto) async {
+        final _produtosCadastrados =
+            await _firestore.collection('produtos').where('codigo', isEqualTo: produto.codigo).get();
+
+        //Atualiza o histórico
+        _produtosCadastrados.docs.forEach((doc) {
+          double _quantidade = double.tryParse(doc.data()['estoque'].toString()) ?? 0;
+
+          final Map<String, dynamic> _update = {};
+
+          if (_nota.identificacao.tipo == 1) {
+            _update.addAll({'estoque': _quantidade + produto.quantidade});
+          } else {
+            _update.addAll({'estoque': _quantidade - produto.quantidade});
+          }
+
+          _firestore.collection('produtos').doc(doc.id).update(_update);
+        });
+      });
+
+      _firestore.collection(_collection).doc(id).update({'cancelada': true});
+
+      search();
+
+      return true;
     } catch (e) {
       print(e);
       return false;

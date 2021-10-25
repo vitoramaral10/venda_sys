@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
-import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/produto.dart';
 
 final Box _box = Hive.box(boxName);

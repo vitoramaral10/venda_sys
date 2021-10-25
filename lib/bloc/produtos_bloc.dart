@@ -2,12 +2,20 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:venda_sys/firestore/produtos.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/models/produto.dart';
 
+final Box _box = Hive.box(boxName);
+final String _empresa = _box.get('empresa');
+
 class ProdutosBloc implements BlocBase {
-  final StreamController<List<Produto>> _produtosController =
-      StreamController<List<Produto>>.broadcast();
+  final String _collection = 'produtos';
+
+  final _firestore = FirebaseFirestore.instance.collection('empresas').doc(_empresa);
+
+  final StreamController<List<Produto>> _produtosController = StreamController<List<Produto>>.broadcast();
   Stream get outProdutos => _produtosController.stream;
 
   ProdutosBloc() {
@@ -15,41 +23,67 @@ class ProdutosBloc implements BlocBase {
   }
 
   Future<bool> delete(String id) async {
-    bool _deleted = await ProdutosFirestore().delete(id);
-    if (_deleted == true) {
+    try {
+      await _firestore.collection(_collection).doc(id).delete();
       search();
-    }
 
-    return _deleted;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  edit(Produto produto) async {
-    bool _edited = await ProdutosFirestore().edit(produto);
-    if (_edited == true) {
+  Future<bool> edit(Produto produto) async {
+    try {
+      await _firestore.collection(_collection).doc(produto.id).set(produto.toJson());
       search();
-    }
 
-    return _edited;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> save(Produto produto) async {
-    bool _saved = await ProdutosFirestore().save(produto);
-
-    if (_saved == true) {
+    try {
+      await _firestore.collection(_collection).doc().set(produto.toJson());
       search();
-    }
 
-    return _saved;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> search() async {
-    // ignore: unnecessary_null_comparison
-
     _produtosController.sink.add([]);
 
-    List<Produto> _produtos = await ProdutosFirestore().loadProdutos();
+    final _data = await _firestore.collection(_collection).orderBy('descricao').get();
 
-    _produtosController.sink.add(_produtos);
+    _produtosController.sink.add(_decode(_data));
+  }
+
+  Future<Produto> getProduto(String id) async {
+    try {
+      final produto = await _firestore.collection(_collection).doc(id).get();
+      final produtoData = produto.data() as Map<String, dynamic>;
+
+      produtoData.addAll({'id': id});
+
+      return Produto.fromJson(produtoData);
+    } catch (e) {
+      return Produto.empty;
+    }
+  }
+
+  Future<List<Produto>> searchBy(String codigo) async {
+    try {
+      final _docs = await _firestore.collection(_collection).where('codigo', isEqualTo: codigo).get();
+
+      return _decode(_docs);
+    } catch (e) {
+      return const [];
+    }
   }
 
   @override
@@ -69,17 +103,14 @@ class ProdutosBloc implements BlocBase {
   @override
   void removeListener(VoidCallback listener) {}
 
-  Future<Produto> getProduto(String id) async {
-    if (id.isNotEmpty) {
-      Produto produto = await ProdutosFirestore().getProduto(id);
+  List<Produto> _decode(QuerySnapshot response) {
+    final produtos = response.docs.map<Produto>((QueryDocumentSnapshot map) {
+      final data = map.data() as Map<String, dynamic>;
+      data['id'] = map.id;
 
-      return produto;
-    } else {
-      return Produto.empty;
-    }
-  }
+      return Produto.fromJson(data);
+    }).toList();
 
-  Future<List<Produto>> searchBy(String codigo) async {
-    return await ProdutosFirestore().searchBy('codigo', isEqualTo: codigo);
+    return produtos;
   }
 }

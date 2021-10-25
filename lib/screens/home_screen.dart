@@ -11,6 +11,17 @@ class HomeScreen extends StatelessWidget {
         title: Text('Início'),
       ),
       drawer: CustomDrawer(),
+      body: GridView(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 3),
+        children: [
+          Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [Icon(Icons.archive), Text('asdas')],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -28,8 +28,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
   final TextEditingController _valorCompraController = TextEditingController();
   final TextEditingController _valorVendaController = TextEditingController();
   final TextEditingController _estoqueController = TextEditingController();
-  final TextEditingController _descricaoResumidaController =
-      TextEditingController();
+  final TextEditingController _descricaoResumidaController = TextEditingController();
   final TextEditingController _ncmController = TextEditingController();
 
   String unidadeMedida = '';
@@ -49,10 +48,10 @@ class _ProdutosFormState extends State<ProdutosForm> {
       _codigoController.text = produto!.codigo;
       _descricaoController.text = produto!.descricao;
       _descricaoResumidaController.text = produto!.descricaoResumida;
-      _valorCompraController.text = (produto!.valorCompra ?? '').toString();
-      _valorVendaController.text = (produto!.valorVenda ?? '').toString();
-      _estoqueController.text = (produto!.estoque ?? '').toString();
-      _ncmController.text = (produto!.ncm ?? '').toString();
+      _valorCompraController.text = produto!.valorCompra.toString();
+      _valorVendaController.text = produto!.valorVenda.toString();
+      _estoqueController.text = produto!.estoque.toString();
+      _ncmController.text = produto!.ncm.toString();
       unidadeMedida = produto!.un;
 
       setState(() {});
@@ -61,8 +60,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir o produto',
-          text:
-              'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
+          text: 'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
     }
   }
 
@@ -93,18 +91,29 @@ class _ProdutosFormState extends State<ProdutosForm> {
                     return 'Campo obrigatório!';
                   }
                 }),
+            CustomTextField(label: 'Descrição Resumida', controller: _descricaoResumidaController),
             CustomTextField(
-                label: 'Descrição Resumida',
-                controller: _descricaoResumidaController),
+              label: 'Valor de Compra',
+              controller: _valorCompraController,
+              keyboardType: TextInputType.number,
+            ),
             CustomTextField(
-                label: 'Valor de Compra', controller: _valorCompraController),
+              label: 'Valor de Venda',
+              controller: _valorVendaController,
+              keyboardType: TextInputType.number,
+            ),
             CustomTextField(
-                label: 'Valor de Venda', controller: _valorVendaController),
-            CustomTextField(label: 'Estoque', controller: _estoqueController),
-            CustomTextField(label: 'NCM', controller: _ncmController),
+              label: 'Estoque',
+              controller: _estoqueController,
+              keyboardType: TextInputType.number,
+            ),
+            CustomTextField(
+              label: 'NCM',
+              controller: _ncmController,
+              keyboardType: TextInputType.number,
+            ),
             StreamBuilder<List<UnidadeMedida>>(
-              stream:
-                  BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
+              stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
               builder: _dropDownUnidadesMedida,
             ),
             Padding(
@@ -117,12 +126,11 @@ class _ProdutosFormState extends State<ProdutosForm> {
                         _codigoController.text,
                         _descricaoController.text,
                         _descricaoResumidaController.text,
+                        double.tryParse(_estoqueController.text) ?? 0,
+                        double.tryParse(_valorCompraController.text) ?? 0,
+                        double.tryParse(_valorVendaController.text) ?? 0,
+                        int.tryParse(_ncmController.text) ?? 0,
                         unidadeMedida,
-                        valorCompra:
-                            double.tryParse(_valorCompraController.text),
-                        valorVenda: double.tryParse(_valorVendaController.text),
-                        ncm: int.tryParse(_ncmController.text),
-                        estoque: int.tryParse(_estoqueController.text),
                       );
 
                       (widget.id.isEmpty) ? _save(produto) : _edit(produto);
@@ -142,8 +150,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
       unidadeMedidaList.add(UnidadeMedida('', 'Selecione', ''));
 
-      unidadeMedida =
-          _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
+      unidadeMedida = _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
 
       unidadeMedidaList.sort((a, b) => a.sigla.compareTo(b.sigla));
 

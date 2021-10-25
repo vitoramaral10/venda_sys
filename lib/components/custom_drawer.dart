@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
+import 'package:venda_sys/screens/fiscal/list.dart';
 import 'package:venda_sys/screens/home_screen.dart';
 import 'package:venda_sys/screens/login_screen.dart';
 import 'package:venda_sys/screens/produtos/list.dart';
@@ -28,9 +29,7 @@ class CustomDrawer extends StatelessWidget {
               title: 'Início',
               onTap: () {
                 Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false);
+                    context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
               },
               icon: Icons.dashboard_outlined),
           ExpansionTile(
@@ -50,20 +49,15 @@ class CustomDrawer extends StatelessWidget {
               ),
               children: [
                 _menuTile(
-                    title: 'Produtos',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProdutosList()));
-                    }),
+                  title: 'Produtos',
+                  onTap: () {
+                    _navigation(context, ProdutosList());
+                  },
+                ),
                 _menuTile(
                     title: 'Unidades de Medida',
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UnidadesMedidaList()));
+                      _navigation(context, UnidadesMedidaList());
                     }),
               ]),
           _menuTile(
@@ -80,13 +74,9 @@ class CustomDrawer extends StatelessWidget {
           _menuTile(
             title: 'Fiscal',
             icon: Icons.receipt_long,
-            trailing: Chip(
-              label: Text(
-                'Em breve',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.redAccent,
-            ),
+            onTap: () {
+              _navigation(context, FiscalList());
+            },
           ),
           _menuTile(
               title: 'Sair',
@@ -95,9 +85,7 @@ class CustomDrawer extends StatelessWidget {
 
                 if (exit == true) {
                   Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (route) => false);
+                      context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
                 }
               },
               icon: Icons.exit_to_app),
@@ -107,11 +95,7 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 
-Widget _menuTile(
-    {required String title,
-    void Function()? onTap,
-    IconData? icon,
-    Widget? trailing}) {
+Widget _menuTile({required String title, void Function()? onTap, IconData? icon, Widget? trailing}) {
   return InkWell(
     onTap: onTap,
     child: ListTile(
@@ -126,4 +110,9 @@ Widget _menuTile(
       trailing: trailing,
     ),
   );
+}
+
+_navigation(BuildContext context, Widget widget) {
+  Navigator.pop(context);
+  Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 }

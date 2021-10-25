@@ -2,15 +2,23 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:venda_sys/firestore/unidades_medida.dart';
+import 'package:hive/hive.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
+Box _box = Hive.box(boxName);
+String _empresa = _box.get('empresa');
+
 class UnidadesMedidaBloc implements BlocBase {
+  final String _collection = 'unidades_medidas';
+
+  final _firestore = FirebaseFirestore.instance.collection('empresas').doc(_empresa);
+
   final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
       StreamController<List<UnidadeMedida>>.broadcast();
-  Stream<List<UnidadeMedida>> get outUnidadesMedida =>
-      _unidadesMedidasController.stream;
+  Stream<List<UnidadeMedida>> get outUnidadesMedida => _unidadesMedidasController.stream;
 
   // ignore: non_constant_identifier_names
   UnidadesMedidasBloc() {
@@ -18,42 +26,80 @@ class UnidadesMedidaBloc implements BlocBase {
   }
 
   Future<bool> delete(String id, BuildContext context) async {
-    bool _deleted = await UnidadesMedidaFirestore().delete(id, context);
-    if (_deleted == true) {
-      search();
-    }
+    try {
+      final docs = await _firestore.collection('produtos').where('un', isEqualTo: id).get();
 
-    return _deleted;
+      if (docs.docs.length == 0) {
+        await _firestore.collection(_collection).doc(id).delete();
+        search();
+
+        return true;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Unidade de Medida está sendo utilizada!"),
+        ));
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> edit(UnidadeMedida unidadesMedida) async {
-    bool _edited = await UnidadesMedidaFirestore().edit(unidadesMedida);
-    if (_edited == true) {
+    try {
+      await _firestore.collection(_collection).doc(unidadesMedida.id).set(unidadesMedida.toJson());
       search();
-    }
 
-    return _edited;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> save(UnidadeMedida unidadesMedida) async {
-    bool _saved = await UnidadesMedidaFirestore().save(unidadesMedida);
-
-    if (_saved == true) {
+    try {
+      await _firestore.collection(_collection).doc().set(unidadesMedida.toJson());
       search();
-    }
 
-    return _saved;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> search() async {
-    // ignore: unnecessary_null_comparison
-
     _unidadesMedidasController.sink.add([]);
 
-    List<UnidadeMedida> _unidadesMedidas =
-        await UnidadesMedidaFirestore().loadUnidadesMedida();
+    final unidadesMedida = await _firestore.collection(_collection).get();
 
-    _unidadesMedidasController.sink.add(_unidadesMedidas);
+    _unidadesMedidasController.sink.add(_decode(unidadesMedida));
+  }
+
+  Future<UnidadeMedida> getUnidadeMedida(String id) async {
+    try {
+      final unidadesMedida = await _firestore.collection(_collection).doc(id).get();
+
+      final unidadesMedidaData = unidadesMedida.data() as Map<String, dynamic>;
+
+      unidadesMedidaData.addAll({'id': id});
+
+      return UnidadeMedida.fromJson(unidadesMedidaData);
+    } catch (e) {
+      return UnidadeMedida.empty;
+    }
+  }
+
+  Future<UnidadeMedida> searchBy(String field,String descricao) async {
+    try {
+      final docs = await _firestore.collection(_collection).where(field, isEqualTo: descricao).get();
+
+      final data = docs.docs[0].data();
+      data['id'] = docs.docs[0].id;
+
+      return UnidadeMedida.fromJson(data);
+    } catch (e) {
+      return UnidadeMedida.empty;
+    }
   }
 
   @override
@@ -73,19 +119,14 @@ class UnidadesMedidaBloc implements BlocBase {
   @override
   void removeListener(VoidCallback listener) {}
 
-  Future<UnidadeMedida> getUnidadeMedida(String id) async {
-    if (id.isNotEmpty) {
-      UnidadeMedida unidadesMedida =
-          await UnidadesMedidaFirestore().getUnidadeMedida(id);
+  List<UnidadeMedida> _decode(QuerySnapshot response) {
+    final unidadesMedidas = response.docs.map<UnidadeMedida>((QueryDocumentSnapshot map) {
+      final data = map.data() as Map<String, dynamic>;
+      data['id'] = map.id;
 
-      return unidadesMedida;
-    } else {
-      return UnidadeMedida.empty;
-    }
-  }
+      return UnidadeMedida.fromJson(data);
+    }).toList();
 
-  Future<UnidadeMedida> searchBy(String descricao) async {
-    return await UnidadesMedidaFirestore()
-        .searchBy('descricao', isEqualTo: descricao);
+    return unidadesMedidas;
   }
 }

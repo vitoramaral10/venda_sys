@@ -33,8 +33,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
   }
 
   _loadData() async {
-    unidadeMedida = await BlocProvider.getBloc<UnidadesMedidaBloc>()
-        .getUnidadeMedida(widget.id);
+    unidadeMedida = await BlocProvider.getBloc<UnidadesMedidaBloc>().getUnidadeMedida(widget.id);
 
     if (unidadeMedida!.id.isNotEmpty) {
       _descricaoController.text = unidadeMedida!.descricao;
@@ -46,8 +45,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir a unidade de medida',
-          text:
-              'Não foi possível abrir essa unidade de medida, se persistir entre em contato com o desenvolvedor');
+          text: 'Não foi possível abrir essa unidade de medida, se persistir entre em contato com o desenvolvedor');
     }
   }
 
@@ -55,8 +53,9 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Nova') +
-            ' Unidade de Medida'),
+        title: Text(
+          ((widget.id.isNotEmpty) ? 'Editar' : 'Nova') + ' Unidade de Medida',
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -89,9 +88,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                         _siglaController.text,
                       );
 
-                      (widget.id.isEmpty)
-                          ? _save(unidadeMedida)
-                          : _edit(unidadeMedida);
+                      (widget.id.isEmpty) ? _save(unidadeMedida) : _edit(unidadeMedida);
                     }
                   },
                   child: Text('Salvar')),

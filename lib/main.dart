@@ -8,8 +8,7 @@ import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/screens/home_screen.dart';
 import 'package:venda_sys/screens/splash_screen.dart';
 
-import 'config/blocs.dart';
-import 'config/constants.dart';
+import 'config/config.dart';
 import 'screens/login_screen.dart';
 
 Future<void> main() async {
@@ -47,9 +46,7 @@ class _VendaSysAppState extends State<VendaSysApp> {
                 color: Colors.red,
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
-              return BlocProvider.getBloc<LoginBloc>().checkLogged()
-                  ? HomeScreen()
-                  : LoginScreen();
+              return BlocProvider.getBloc<LoginBloc>().checkLogged() ? HomeScreen() : LoginScreen();
             } else if (snapshot.connectionState != ConnectionState.done) {
               return SplashScreen();
             } else {

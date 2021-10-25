@@ -11,6 +11,7 @@ class NotaFiscal {
   final NotaFiscalDestinatario destinatario;
   final List<NotaFiscalProduto> produtos;
   final NotaFiscalTotal total;
+  final bool cancelada;
 
   NotaFiscal(
     this.id,
@@ -19,6 +20,7 @@ class NotaFiscal {
     this.destinatario,
     this.produtos,
     this.total,
+    this.cancelada,
   );
 
   NotaFiscal.fromJson(Map<String, dynamic> json)
@@ -27,7 +29,8 @@ class NotaFiscal {
         emitente = NotaFiscalEmitente.fromJson(json['emitente']),
         destinatario = NotaFiscalDestinatario.fromJson(json['destinatario']),
         produtos = NotaFiscalProduto.fromMap(json['produtos']),
-        total = NotaFiscalTotal.fromJson(json['total']);
+        total = NotaFiscalTotal.fromJson(json['total']),
+        cancelada = json['cancelada'] ?? false;
 
   Map<String, dynamic> toJson() => {
         'identificacao': identificacao.toJson(),
@@ -35,7 +38,9 @@ class NotaFiscal {
         'destinatario': destinatario.toJson(),
         'produtos': produtos.map((e) => e.toJson()).toList(),
         'total': total.toJson(),
+        'cancelada': cancelada,
       };
+
   static NotaFiscal empty = NotaFiscal(
     '',
     NotaFiscalIdentificacao.empty,
@@ -43,5 +48,6 @@ class NotaFiscal {
     NotaFiscalDestinatario.empty,
     [],
     NotaFiscalTotal.empty,
+    false,
   );
 }

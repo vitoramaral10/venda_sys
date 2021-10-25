@@ -15,8 +15,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = 'vitor.amaral10@gmail.com';
-    _senhaController.text = 'g2proweb';
     return Scaffold(
       body: Center(
         child: Form(

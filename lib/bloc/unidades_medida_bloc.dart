@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -9,12 +10,10 @@ import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
 Box _box = Hive.box(boxName);
-String _empresa = _box.get('empresa');
 
 class UnidadesMedidaBloc implements BlocBase {
   final String _collection = 'unidades_medidas';
-
-  final _firestore = FirebaseFirestore.instance.collection('empresas').doc(_empresa);
+  final String _empresa = _box.get('empresa');
 
   final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
       StreamController<List<UnidadeMedida>>.broadcast();
@@ -27,10 +26,15 @@ class UnidadesMedidaBloc implements BlocBase {
 
   Future<bool> delete(String id, BuildContext context) async {
     try {
-      final docs = await _firestore.collection('produtos').where('un', isEqualTo: id).get();
+      final docs = await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection('produtos')
+          .where('un', isEqualTo: id)
+          .get();
 
       if (docs.docs.length == 0) {
-        await _firestore.collection(_collection).doc(id).delete();
+        await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).delete();
         search();
 
         return true;
@@ -47,7 +51,12 @@ class UnidadesMedidaBloc implements BlocBase {
 
   Future<bool> edit(UnidadeMedida unidadesMedida) async {
     try {
-      await _firestore.collection(_collection).doc(unidadesMedida.id).set(unidadesMedida.toJson());
+      await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(unidadesMedida.id)
+          .set(unidadesMedida.toJson());
       search();
 
       return true;
@@ -58,7 +67,12 @@ class UnidadesMedidaBloc implements BlocBase {
 
   Future<bool> save(UnidadeMedida unidadesMedida) async {
     try {
-      await _firestore.collection(_collection).doc().set(unidadesMedida.toJson());
+      await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc()
+          .set(unidadesMedida.toJson());
       search();
 
       return true;
@@ -70,14 +84,17 @@ class UnidadesMedidaBloc implements BlocBase {
   Future<void> search() async {
     _unidadesMedidasController.sink.add([]);
 
-    final unidadesMedida = await _firestore.collection(_collection).get();
-
+    final unidadesMedida =
+        await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).get();
+    log(_empresa);
+    log(unidadesMedida.docs.toString());
     _unidadesMedidasController.sink.add(_decode(unidadesMedida));
   }
 
   Future<UnidadeMedida> getUnidadeMedida(String id) async {
     try {
-      final unidadesMedida = await _firestore.collection(_collection).doc(id).get();
+      final unidadesMedida =
+          await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).get();
 
       final unidadesMedidaData = unidadesMedida.data() as Map<String, dynamic>;
 
@@ -89,9 +106,14 @@ class UnidadesMedidaBloc implements BlocBase {
     }
   }
 
-  Future<UnidadeMedida> searchBy(String field,String descricao) async {
+  Future<UnidadeMedida> searchBy(String field, String descricao) async {
     try {
-      final docs = await _firestore.collection(_collection).where(field, isEqualTo: descricao).get();
+      final docs = await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .where(field, isEqualTo: descricao)
+          .get();
 
       final data = docs.docs[0].data();
       data['id'] = docs.docs[0].id;

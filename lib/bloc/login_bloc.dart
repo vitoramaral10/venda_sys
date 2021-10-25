@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -18,8 +19,9 @@ class LoginBloc implements BlocBase {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       final userData = await _checkUserData(email: email);
-
       box.put('empresa', userData!['empresas'][0]);
+
+      log(box.get('empresa'));
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed with error code: ${e.code}');
     }
@@ -46,6 +48,7 @@ class LoginBloc implements BlocBase {
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      box.clear();
     } catch (e) {
       throw Exception(e);
     }

@@ -7,6 +7,7 @@ import 'package:venda_sys/screens/home_screen.dart';
 import 'package:venda_sys/screens/splash_screen.dart';
 
 import 'config/config.dart';
+import 'models/usuario.dart';
 import 'screens/login_screen.dart';
 
 Future<void> main() async {
@@ -39,12 +40,21 @@ class _VendaSysAppState extends State<VendaSysApp> {
           future: _initialization,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              final _usuario = BlocProvider.getBloc<LoginBloc>().checkLogged();
-              if (_usuario.email.isEmpty) {
-                return LoginScreen();
-              } else {
-                return HomeScreen();
-              }
+              return FutureBuilder<Usuario>(
+                future: BlocProvider.getBloc<LoginBloc>().checkLogged(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    final _usuario = snapshot.data;
+                    if (_usuario!.email.isEmpty) {
+                      return LoginScreen();
+                    } else {
+                      return HomeScreen();
+                    }
+                  } else {
+                    return SplashScreen();
+                  }
+                },
+              );
             } else {
               return SplashScreen();
             }

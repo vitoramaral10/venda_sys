@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -7,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 import 'package:venda_sys/config/config.dart';
+import 'package:venda_sys/models/usuario.dart';
 
 Box box = Hive.box(boxName);
 
@@ -20,8 +20,6 @@ class LoginBloc implements BlocBase {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       final userData = await _checkUserData(email: email);
       box.put('empresa', userData!['empresas'][0]);
-
-      log(box.get('empresa'));
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed with error code: ${e.code}');
     }
@@ -36,12 +34,20 @@ class LoginBloc implements BlocBase {
     }
   }
 
-  bool checkLogged() {
+  Usuario checkLogged() {
     final user = _firebaseAuth.currentUser;
+
     if (user != null) {
-      return true;
+      String _nome = (user.displayName != null) ? user.displayName! : 'Usuário desconhecido';
+      String _email = (user.email != null) ? user.email! : 'Email desconhecido';
+      String _imagem = (user.photoURL != null)
+          ? user.photoURL!
+          : 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1';
+
+      final usuario = Usuario(_nome, _email, _imagem);
+      return usuario;
     } else {
-      return false;
+      return Usuario.empty;
     }
   }
 

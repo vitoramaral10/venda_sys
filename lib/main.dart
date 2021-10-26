@@ -38,14 +38,13 @@ class _VendaSysAppState extends State<VendaSysApp> {
         home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Container(
-                color: Colors.red,
-              );
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              return BlocProvider.getBloc<LoginBloc>().checkLogged() ? HomeScreen() : LoginScreen();
-            } else if (snapshot.connectionState != ConnectionState.done) {
-              return SplashScreen();
+            if (snapshot.connectionState == ConnectionState.done) {
+              final _usuario = BlocProvider.getBloc<LoginBloc>().checkLogged();
+              if (_usuario.email.isEmpty) {
+                return LoginScreen();
+              } else {
+                return HomeScreen();
+              }
             } else {
               return SplashScreen();
             }

@@ -13,7 +13,7 @@ Box _box = Hive.box(boxName);
 
 class UnidadesMedidaBloc implements BlocBase {
   final String _collection = 'unidades_medidas';
-  final String _empresa = _box.get('empresa');
+  String _empresa = _box.get('empresa');
 
   final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
       StreamController<List<UnidadeMedida>>.broadcast();
@@ -83,6 +83,7 @@ class UnidadesMedidaBloc implements BlocBase {
 
   Future<void> search() async {
     _unidadesMedidasController.sink.add([]);
+    _empresa = _box.get('empresa');
 
     final unidadesMedida =
         await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).get();

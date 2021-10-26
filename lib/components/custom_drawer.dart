@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
@@ -8,7 +10,9 @@ import 'package:venda_sys/screens/produtos/list.dart';
 import 'package:venda_sys/screens/unidades_medida/list.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  CustomDrawer({Key? key}) : super(key: key);
+
+  final _usuario = BlocProvider.getBloc<LoginBloc>().checkLogged();
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +20,8 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(""),
-            accountEmail: Text(""),
+            accountName: Text(_usuario.nome),
+            accountEmail: Text(_usuario.email),
             currentAccountPicture: CircleAvatar(
               radius: 30.0,
               backgroundImage: NetworkImage(
@@ -83,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
               onTap: () async {
                 try {
                   await BlocProvider.getBloc<LoginBloc>().signOut();
-                  
+
                   Navigator.pushAndRemoveUntil(
                       context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
                 } catch (e) {

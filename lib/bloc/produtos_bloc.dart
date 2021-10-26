@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -74,7 +73,6 @@ class ProdutosBloc implements BlocBase {
         .collection(_collection)
         .orderBy('descricao')
         .get();
-    log(_data.docs.toString());
     _produtosController.sink.add(_decode(_data));
   }
 

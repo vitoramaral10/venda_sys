@@ -1,34 +1,40 @@
-import 'dart:developer';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
+import 'package:venda_sys/models/usuario.dart';
 import 'package:venda_sys/screens/fiscal/list.dart';
 import 'package:venda_sys/screens/home_screen.dart';
 import 'package:venda_sys/screens/login_screen.dart';
 import 'package:venda_sys/screens/produtos/list.dart';
 import 'package:venda_sys/screens/unidades_medida/list.dart';
+import 'package:venda_sys/screens/usuarios/list.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
-
-  final _usuario = BlocProvider.getBloc<LoginBloc>().checkLogged();
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(_usuario.nome),
-            accountEmail: Text(_usuario.email),
-            currentAccountPicture: CircleAvatar(
-              radius: 30.0,
-              backgroundImage: NetworkImage(
-                  'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1'),
-              backgroundColor: Colors.transparent,
-            ),
-          ),
+          FutureBuilder<Usuario>(
+              future: BlocProvider.getBloc<LoginBloc>().checkLogged(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                }
+                Usuario _usuario = snapshot.data!;
+
+                return UserAccountsDrawerHeader(
+                  accountName: Text(_usuario.nome),
+                  accountEmail: Text(_usuario.email),
+                  currentAccountPicture: CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: NetworkImage(_usuario.imagem),
+                    backgroundColor: Colors.transparent,
+                  ),
+                );
+              }),
           _menuTile(
               title: 'Início',
               onTap: () {
@@ -82,6 +88,29 @@ class CustomDrawer extends StatelessWidget {
               _navigation(context, FiscalList());
             },
           ),
+          ExpansionTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Configurações',
+                  ),
+                ],
+              ),
+              children: [
+                _menuTile(
+                  title: 'Usuários',
+                  onTap: () {
+                    _navigation(context, UsuariosList());
+                  },
+                ),
+              ]),
           _menuTile(
               title: 'Sair',
               onTap: () async {

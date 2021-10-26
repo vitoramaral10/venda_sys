@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -87,8 +86,6 @@ class UnidadesMedidaBloc implements BlocBase {
 
     final unidadesMedida =
         await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).get();
-    log(_empresa);
-    log(unidadesMedida.docs.toString());
     _unidadesMedidasController.sink.add(_decode(unidadesMedida));
   }
 

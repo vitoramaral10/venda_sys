@@ -37,8 +37,6 @@ class ProdutosList extends StatelessWidget {
           } else {
             List<Produto> produtos = snapshot.data! as List<Produto>;
 
-            
-
             return ListView.builder(
               padding: EdgeInsets.only(bottom: 80),
               itemCount: produtos.length,
@@ -60,6 +58,7 @@ class ProdutosList extends StatelessWidget {
 
   Widget _listTile(int index, Produto produto, BuildContext context) {
     return Card(
+      color: produto.estoque < 0 ? Colors.redAccent : Colors.white,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -94,25 +93,47 @@ class ProdutosList extends StatelessWidget {
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(produto.codigo),
+                Text(
+                  produto.codigo,
+                  style: TextStyle(
+                    color: produto.estoque < 0 ? Colors.white : Colors.black,
+                  ),
+                ),
               ],
             ),
             title: Text(
               produto.descricao,
               maxLines: 1,
+              style: TextStyle(
+                color: produto.estoque < 0 ? Colors.white : Colors.black,
+              ),
             ),
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Valor Compra: R\$ ${_corrigeValor(produto.valorCompra.toStringAsFixed(2))}'),
+                Text(
+                  'Valor Compra: R\$ ${_corrigeValor(produto.valorCompra.toStringAsFixed(2))}',
+                  style: TextStyle(
+                    color: produto.estoque < 0 ? Colors.white : Colors.black54,
+                  ),
+                ),
                 SizedBox(
                   width: 8,
                 ),
-                Text('Valor Venda: R\$ ${_corrigeValor(produto.valorVenda.toStringAsFixed(2))}'),
+                Text(
+                  'Valor Venda: R\$ ${_corrigeValor(produto.valorVenda.toStringAsFixed(2))}',
+                  style: TextStyle(
+                    color: produto.estoque < 0 ? Colors.white : Colors.black54,
+                  ),
+                ),
               ],
             ),
-            trailing:
-                Text(_checkInteger(produto.estoque) ? produto.estoque.toInt().toString() : produto.estoque.toString()),
+            trailing: Text(
+              _checkInteger(produto.estoque) ? produto.estoque.toInt().toString() : produto.estoque.toString(),
+              style: TextStyle(
+                color: produto.estoque < 0 ? Colors.white : Colors.black,
+              ),
+            ),
           ),
         ),
       ),

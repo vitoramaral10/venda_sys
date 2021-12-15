@@ -19,7 +19,7 @@ class UsuariosForm extends StatefulWidget {
 }
 
 class _UsuariosFormState extends State<UsuariosForm> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nomeController = TextEditingController();
 
@@ -83,7 +83,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
                       (widget.id.isEmpty) ? _save(_usuario) : _edit(_usuario);
                     }
                   },
-                  child: Text('Salvar')),
+                  child: const Text('Salvar')),
             )
           ],
         ),

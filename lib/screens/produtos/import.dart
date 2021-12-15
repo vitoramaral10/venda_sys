@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:excel_to_json/excel_to_json.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
@@ -25,7 +24,7 @@ class _ProdutosImportState extends State<ProdutosImport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Importar produtos'),
+        title: const Text('Importar produtos'),
       ),
       body: Center(
         child: Column(
@@ -36,19 +35,19 @@ class _ProdutosImportState extends State<ProdutosImport> {
                   countInicial = 0;
                   countFinal = 0;
                   loading = true;
-                  ExcelToJson().convert().then((excel) {
+                  ExcelToJson().convert().then((excel) async {
                     List list = jsonDecode(excel!);
                     setState(() {
                       countInicial = list.length;
                     });
 
-                    list.forEach((produtoExcel) async {
+                    for (var produtoExcel in list) {
                       Produto produto = Produto.fromJson(produtoExcel);
 
                       List<Produto> produtosEncontrados =
                           await BlocProvider.getBloc<ProdutosBloc>().searchBy(produto.codigo);
 
-                      if (produtosEncontrados.length == 0) {
+                      if (produtosEncontrados.isEmpty) {
                         UnidadeMedida unidadeMedida =
                             await BlocProvider.getBloc<UnidadesMedidaBloc>().searchBy('descricao', produto.un);
 
@@ -62,16 +61,16 @@ class _ProdutosImportState extends State<ProdutosImport> {
                           });
                         }
                       }
-                    });
+                    }
                   });
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Buscar arquivo'),
                 )),
             loading
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text('Produtos importados:'),
                   )
                 : Container(),

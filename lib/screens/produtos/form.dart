@@ -21,7 +21,7 @@ class ProdutosForm extends StatefulWidget {
 }
 
 class _ProdutosFormState extends State<ProdutosForm> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _codigoController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
@@ -136,7 +136,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
                       (widget.id.isEmpty) ? _save(produto) : _edit(produto);
                     }
                   },
-                  child: Text('Salvar')),
+                  child: const Text('Salvar')),
             )
           ],
         ),
@@ -210,11 +210,11 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
   bool _checkValue(String id, List<UnidadeMedida> unidadeMedidaList) {
     bool _check = false;
-    unidadeMedidaList.forEach((element) {
+    for (var element in unidadeMedidaList) {
       if (element.id == id) {
         _check = true;
       }
-    });
+    }
 
     return _check;
   }

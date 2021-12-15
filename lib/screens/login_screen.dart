@@ -8,10 +8,10 @@ import 'package:venda_sys/screens/home_screen.dart';
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 'VendaSys',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(onPressed: () => _submit(context), child: Text('Entrar')),
+                child: ElevatedButton(onPressed: () => _submit(context), child: const Text('Entrar')),
               )
             ],
           ),
@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
       try {
         await BlocProvider.getBloc<LoginBloc>().login(_emailController.text, _senhaController.text);
 
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
       } catch (e) {
         errorPopup(context: context, title: 'Erro ao logar', text: 'Email ou senha está incorreto!\n' + e.toString());
       }

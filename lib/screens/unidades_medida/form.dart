@@ -19,7 +19,7 @@ class UnidadesMedidaForm extends StatefulWidget {
 }
 
 class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _descricaoController = TextEditingController();
   final TextEditingController _siglaController = TextEditingController();
@@ -91,7 +91,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                       (widget.id.isEmpty) ? _save(unidadeMedida) : _edit(unidadeMedida);
                     }
                   },
-                  child: Text('Salvar')),
+                  child: const Text('Salvar')),
             )
           ],
         ),

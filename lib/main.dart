@@ -17,10 +17,12 @@ Future<void> main() async {
   });
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(VendaSysApp());
+  runApp(const VendaSysApp());
 }
 
 class VendaSysApp extends StatefulWidget {
+  const VendaSysApp({Key? key}) : super(key: key);
+
   @override
   _VendaSysAppState createState() => _VendaSysAppState();
 }
@@ -32,7 +34,7 @@ class _VendaSysAppState extends State<VendaSysApp> {
   Widget build(BuildContext context) {
     return BlocProvider(
       blocs: blocs,
-      dependencies: [],
+      dependencies: const [],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VendaSys',
@@ -48,15 +50,15 @@ class _VendaSysAppState extends State<VendaSysApp> {
                     if (_usuario!.email.isEmpty) {
                       return LoginScreen();
                     } else {
-                      return HomeScreen();
+                      return const HomeScreen();
                     }
                   } else {
-                    return SplashScreen();
+                    return const SplashScreen();
                   }
                 },
               );
             } else {
-              return SplashScreen();
+              return const SplashScreen();
             }
           },
         ),

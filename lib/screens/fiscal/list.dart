@@ -14,7 +14,7 @@ import 'package:xml2json/xml2json.dart';
 class FiscalList extends StatelessWidget {
   FiscalList({Key? key}) : super(key: key);
 
-  final f = new DateFormat('dd/MM/yyy hh:mm');
+  final f = DateFormat('dd/MM/yyy hh:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,13 @@ class FiscalList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fiscal'),
+        title: const Text('Fiscal'),
       ),
       body: StreamBuilder(
         stream: BlocProvider.getBloc<FiscalBloc>().outFiscal,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
@@ -37,7 +37,7 @@ class FiscalList extends StatelessWidget {
             fiscal.sort((a, b) => b.identificacao.dataEmissao.compareTo(a.identificacao.dataEmissao));
 
             return ListView.builder(
-              padding: EdgeInsets.only(bottom: 80),
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: fiscal.length,
               itemBuilder: (context, index) {
                 return _listTile(index, fiscal[index], context);
@@ -50,7 +50,7 @@ class FiscalList extends StatelessWidget {
         onPressed: () {
           _importPopup(context);
         },
-        child: Icon(Icons.file_upload_outlined),
+        child: const Icon(Icons.file_upload_outlined),
       ),
     );
   }
@@ -60,7 +60,7 @@ class FiscalList extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Importar XML'),
+            title: const Text('Importar XML'),
             content: ElevatedButton(
                 onPressed: () async {
                   FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -101,8 +101,8 @@ class FiscalList extends StatelessWidget {
                     // User canceled the picker
                   }
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Buscar arquivo'),
                 )),
             actions: [
@@ -133,7 +133,7 @@ class FiscalList extends StatelessWidget {
           background: Container(
             alignment: AlignmentDirectional.centerStart,
             color: Colors.red,
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.only(left: 16.0),
               child: Icon(
                 Icons.delete,
@@ -155,8 +155,8 @@ class FiscalList extends StatelessWidget {
                   maxLines: 1,
                 ),
                 nota.cancelada
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                    ? const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
                         child: Chip(
                           label: Text(
                             'Cancelada',
@@ -168,7 +168,7 @@ class FiscalList extends StatelessWidget {
                     : Container(),
               ],
             ),
-            subtitle: (nota.identificacao.tipo == 0) ? Text('Nota de entrada') : Text('Nota de saída'),
+            subtitle: (nota.identificacao.tipo == 0) ? const Text('Nota de entrada') : const Text('Nota de saída'),
             trailing: Text('R\$ ${_corrigeValor(nota.total.vNF)}'),
           ),
         ),
@@ -185,10 +185,10 @@ class FiscalList extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("Tem certeza que deseja cancelar essa nota?"),
+            content: const Text("Tem certeza que deseja cancelar essa nota?"),
             actions: <Widget>[
               TextButton(
-                child: Text(
+                child: const Text(
                   "Cancelar",
                 ),
                 onPressed: () {
@@ -196,7 +196,7 @@ class FiscalList extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   "Sim",
                 ),
                 onPressed: () async {

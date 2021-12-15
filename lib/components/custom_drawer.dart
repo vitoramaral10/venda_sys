@@ -10,7 +10,7 @@ import 'package:venda_sys/screens/unidades_medida/list.dart';
 import 'package:venda_sys/screens/usuarios/list.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +39,12 @@ class CustomDrawer extends StatelessWidget {
               title: 'Início',
               onTap: () {
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+                    context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
               },
               icon: Icons.dashboard_outlined),
           ExpansionTile(
               title: Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.inbox,
                     size: 24,
@@ -61,19 +61,19 @@ class CustomDrawer extends StatelessWidget {
                 _menuTile(
                   title: 'Produtos',
                   onTap: () {
-                    _navigation(context, ProdutosList());
+                    _navigation(context, const ProdutosList());
                   },
                 ),
                 _menuTile(
                     title: 'Unidades de Medida',
                     onTap: () {
-                      _navigation(context, UnidadesMedidaList());
+                      _navigation(context, const UnidadesMedidaList());
                     }),
               ]),
           _menuTile(
             title: 'Clientes',
             icon: Icons.business_sharp,
-            trailing: Chip(
+            trailing: const Chip(
               label: Text(
                 'Em breve',
                 style: TextStyle(color: Colors.white),
@@ -90,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ExpansionTile(
               title: Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.settings,
                     size: 24,
@@ -107,7 +107,7 @@ class CustomDrawer extends StatelessWidget {
                 _menuTile(
                   title: 'Usuários',
                   onTap: () {
-                    _navigation(context, UsuariosList());
+                    _navigation(context, const UsuariosList());
                   },
                 ),
               ]),

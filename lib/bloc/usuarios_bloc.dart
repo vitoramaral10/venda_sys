@@ -14,7 +14,8 @@ class UsuariosBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
   final String _empresa = _box.get('empresa');
 
-  final StreamController<List<Usuario>> _usuariosController = StreamController<List<Usuario>>.broadcast();
+  final StreamController<List<Usuario>> _usuariosController =
+      StreamController<List<Usuario>>.broadcast();
   Stream get outUsuarios => _usuariosController.stream;
 
   UsuariosBloc() {
@@ -23,7 +24,10 @@ class UsuariosBloc implements BlocBase {
 
   Future<bool> edit(Usuario usuarios) async {
     try {
-      await FirebaseFirestore.instance.collection('usuarios').doc(usuarios.id.toString()).set(usuarios.toJson());
+      await FirebaseFirestore.instance
+          .collection('usuarios')
+          .doc(usuarios.id.toString())
+          .set(usuarios.toJson());
 
       search();
 
@@ -63,8 +67,12 @@ class UsuariosBloc implements BlocBase {
 
   Future<Usuario> getUsuarios(String id) async {
     try {
-      final _usuarios =
-          await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).get();
+      final _usuarios = await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(id)
+          .get();
 
       final _usuariosData = _usuarios.data() as Map<String, dynamic>;
 
@@ -121,10 +129,10 @@ class UsuariosBloc implements BlocBase {
 
   Future<void> delete(String id) async {
     try {
-      final data = await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
-      final usuarioData = data.data() as Map<String, dynamic>;
+      // final data = await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
+      // final usuarioData = data.data() as Map<String, dynamic>;
 
-      Usuario _usuario = Usuario.fromJson(usuarioData);
+      //Usuario _usuario = Usuario.fromJson(usuarioData);
 
       //_usuario.empresas.remove(_empresa);
 
@@ -136,7 +144,8 @@ class UsuariosBloc implements BlocBase {
 
   Future<Usuario> getUsuario(String id) async {
     try {
-      final usuario = await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
+      final usuario =
+          await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
       final usuarioData = usuario.data() as Map<String, dynamic>;
 
       usuarioData.addAll({'id': id});

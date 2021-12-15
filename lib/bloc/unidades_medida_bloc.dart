@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,13 +31,13 @@ class UnidadesMedidaBloc implements BlocBase {
           .where('un', isEqualTo: id)
           .get();
 
-      if (docs.docs.length == 0) {
+      if (docs.docs.isEmpty) {
         await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).delete();
         search();
 
         return true;
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Unidade de Medida está sendo utilizada!"),
         ));
         return false;

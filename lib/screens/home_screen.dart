@@ -8,16 +8,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Início'),
+        title: const Text('Início'),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: GridView(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 3),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 3),
         children: [
           Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [Icon(Icons.archive), Text('asdas')],
+              children: const [Icon(Icons.archive), Text('asdas')],
             ),
           ),
         ],

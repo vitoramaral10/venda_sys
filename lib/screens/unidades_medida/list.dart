@@ -13,13 +13,13 @@ class UnidadesMedidaList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Unidade de Medida'),
+        title: const Text('Unidade de Medida'),
       ),
       body: StreamBuilder(
         stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
@@ -40,7 +40,7 @@ class UnidadesMedidaList extends StatelessWidget {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -70,7 +70,7 @@ class UnidadesMedidaList extends StatelessWidget {
           background: Container(
             alignment: AlignmentDirectional.centerStart,
             color: Colors.red,
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.only(left: 16.0),
               child: Icon(
                 Icons.delete,
@@ -101,10 +101,10 @@ class UnidadesMedidaList extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             content:
-                Text("Tem certeza que deseja remover essa unidade de medida?"),
+                const Text("Tem certeza que deseja remover essa unidade de medida?"),
             actions: <Widget>[
               TextButton(
-                child: Text(
+                child: const Text(
                   "Cancelar",
                 ),
                 onPressed: () {
@@ -112,7 +112,7 @@ class UnidadesMedidaList extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   "Remover",
                 ),
                 onPressed: () async {

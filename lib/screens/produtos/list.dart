@@ -15,13 +15,13 @@ class ProdutosList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Produtos'),
+        title: const Text('Produtos'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosImport()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ProdutosImport()));
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.file_upload_outlined,
             ),
           ),
@@ -31,14 +31,14 @@ class ProdutosList extends StatelessWidget {
         stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
             List<Produto> produtos = snapshot.data! as List<Produto>;
 
             return ListView.builder(
-              padding: EdgeInsets.only(bottom: 80),
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: produtos.length,
               itemBuilder: (context, index) {
                 return _listTile(index, produtos[index], context);
@@ -51,7 +51,7 @@ class ProdutosList extends StatelessWidget {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosForm()));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -81,7 +81,7 @@ class ProdutosList extends StatelessWidget {
           background: Container(
             alignment: AlignmentDirectional.centerStart,
             color: Colors.red,
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.only(left: 16.0),
               child: Icon(
                 Icons.delete,
@@ -117,7 +117,7 @@ class ProdutosList extends StatelessWidget {
                     color: produto.estoque < 0 ? Colors.white : Colors.black54,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(
@@ -145,10 +145,10 @@ class ProdutosList extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("Tem certeza que deseja remover esse produto?"),
+            content: const Text("Tem certeza que deseja remover esse produto?"),
             actions: <Widget>[
               TextButton(
-                child: Text(
+                child: const Text(
                   "Cancelar",
                 ),
                 onPressed: () {
@@ -156,7 +156,7 @@ class ProdutosList extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   "Remover",
                 ),
                 onPressed: () async {

@@ -7,7 +7,7 @@ import 'package:venda_sys/models/usuario.dart';
 import 'form.dart';
 
 class UsuariosList extends StatelessWidget {
-  UsuariosList({Key? key}) : super(key: key);
+  const UsuariosList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +15,20 @@ class UsuariosList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Usuários'),
+        title: const Text('Usuários'),
       ),
       body: StreamBuilder(
         stream: BlocProvider.getBloc<UsuariosBloc>().outUsuarios,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
             List<Usuario> usuarios = snapshot.data! as List<Usuario>;
 
             return ListView.builder(
-              padding: EdgeInsets.only(bottom: 80),
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: usuarios.length,
               itemBuilder: (context, index) {
                 return _listTile(index, usuarios[index], context);
@@ -39,7 +39,7 @@ class UsuariosList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.file_upload_outlined),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -48,7 +48,10 @@ class UsuariosList extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UsuariosForm(id: usuario.id)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UsuariosForm(id: usuario.id)));
         },
         child: Dismissible(
           key: ValueKey<int>(index),
@@ -59,7 +62,10 @@ class UsuariosList extends StatelessWidget {
                 await _removePopup(context, usuario);
                 return true;
               } catch (e) {
-                errorPopup(context: context, title: 'Erro ao remover o usuário', text: e.toString());
+                errorPopup(
+                    context: context,
+                    title: 'Erro ao remover o usuário',
+                    text: e.toString());
                 return false;
               }
             }
@@ -67,7 +73,7 @@ class UsuariosList extends StatelessWidget {
           background: Container(
             alignment: AlignmentDirectional.centerStart,
             color: Colors.red,
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.only(left: 16.0),
               child: Icon(
                 Icons.delete,
@@ -89,10 +95,10 @@ class UsuariosList extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("Tem certeza que deseja remover esse usuário?"),
+            content: const Text("Tem certeza que deseja remover esse usuário?"),
             actions: <Widget>[
               TextButton(
-                child: Text(
+                child: const Text(
                   "Cancelar",
                 ),
                 onPressed: () {
@@ -100,7 +106,7 @@ class UsuariosList extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   "Remover",
                 ),
                 onPressed: () async {

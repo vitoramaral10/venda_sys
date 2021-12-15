@@ -27,7 +27,7 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         textCapitalization: textCapitalization,
         keyboardType: keyboardType,

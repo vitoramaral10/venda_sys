@@ -39,6 +39,7 @@ class LoginScreen extends StatelessWidget {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 },
               ),
               CustomTextField(
@@ -50,6 +51,7 @@ class LoginScreen extends StatelessWidget {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 },
               ),
               Padding(

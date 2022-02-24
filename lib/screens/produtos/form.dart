@@ -82,6 +82,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 }),
             CustomTextField(
                 label: 'Descrição',
@@ -90,6 +91,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 }),
             CustomTextField(label: 'Descrição Resumida', controller: _descricaoResumidaController),
             CustomTextField(
@@ -172,6 +174,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
             if (value!.isEmpty) {
               return 'Campo obrigatório';
             }
+            return null;
           },
           value: unidadeMedida,
         ),

@@ -66,6 +66,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 }),
             Padding(
               padding: const EdgeInsets.all(8.0),

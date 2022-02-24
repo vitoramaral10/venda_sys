@@ -77,6 +77,7 @@ class ProdutosList extends StatelessWidget {
 
               return res;
             }
+            return null;
           },
           background: Container(
             alignment: AlignmentDirectional.centerStart,

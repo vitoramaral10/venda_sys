@@ -68,6 +68,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 }),
             CustomTextField(
                 label: 'Sigla',
@@ -76,6 +77,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório!';
                   }
+                  return null;
                 }),
             Padding(
               padding: const EdgeInsets.all(8.0),

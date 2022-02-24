@@ -69,6 +69,7 @@ class UsuariosList extends StatelessWidget {
                 return false;
               }
             }
+            return null;
           },
           background: Container(
             alignment: AlignmentDirectional.centerStart,

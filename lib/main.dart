@@ -47,7 +47,8 @@ class _VendaSysAppState extends State<VendaSysApp> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     final _usuario = snapshot.data;
-                    if (_usuario!.email.isEmpty) {
+
+                    if (_usuario == null || _usuario.email.isEmpty) {
                       return LoginScreen();
                     } else {
                       return const HomeScreen();

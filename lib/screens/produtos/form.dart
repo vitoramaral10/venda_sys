@@ -28,7 +28,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
   final TextEditingController _valorCompraController = TextEditingController();
   final TextEditingController _valorVendaController = TextEditingController();
   final TextEditingController _estoqueController = TextEditingController();
-  final TextEditingController _descricaoResumidaController = TextEditingController();
+  final TextEditingController _descricaoResumidaController =
+      TextEditingController();
   final TextEditingController _ncmController = TextEditingController();
 
   String unidadeMedida = '';
@@ -60,13 +61,13 @@ class _ProdutosFormState extends State<ProdutosForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir o produto',
-          text: 'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
+          text:
+              'Não foi possível abrir esse produto, se persistir entre em contato com o desenvolvedor');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<UnidadesMedidaBloc>().search();
     return Scaffold(
       appBar: AppBar(
         title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Novo') + ' Produto'),
@@ -93,7 +94,9 @@ class _ProdutosFormState extends State<ProdutosForm> {
                   }
                   return null;
                 }),
-            CustomTextField(label: 'Descrição Resumida', controller: _descricaoResumidaController),
+            CustomTextField(
+                label: 'Descrição Resumida',
+                controller: _descricaoResumidaController),
             CustomTextField(
               label: 'Valor de Compra',
               controller: _valorCompraController,
@@ -114,8 +117,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
               controller: _ncmController,
               keyboardType: TextInputType.number,
             ),
-            StreamBuilder<List<UnidadeMedida>>(
-              stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
+            FutureBuilder<List<UnidadeMedida>>(
+              future: BlocProvider.getBloc<UnidadesMedidaBloc>().search(),
               builder: _dropDownUnidadesMedida,
             ),
             Padding(
@@ -152,7 +155,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
       unidadeMedidaList.add(UnidadeMedida('', 'Selecione', ''));
 
-      unidadeMedida = _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
+      unidadeMedida =
+          _checkValue(unidadeMedida, unidadeMedidaList) ? unidadeMedida : '';
 
       unidadeMedidaList.sort((a, b) => a.sigla.compareTo(b.sigla));
 

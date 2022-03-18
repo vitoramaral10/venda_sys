@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
+import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 import 'package:venda_sys/screens/unidades_medida/form.dart';
 
@@ -9,14 +10,9 @@ class UnidadesMedidaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<UnidadesMedidaBloc>().search();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Unidade de Medida'),
-      ),
-      body: StreamBuilder(
-        stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
+    return BaseWidget(
+      child: FutureBuilder(
+        future: BlocProvider.getBloc<UnidadesMedidaBloc>().search(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -42,6 +38,7 @@ class UnidadesMedidaList extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
+      currentScreen: '',
     );
   }
 
@@ -101,8 +98,8 @@ class UnidadesMedidaList extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content:
-                const Text("Tem certeza que deseja remover essa unidade de medida?"),
+            content: const Text(
+                "Tem certeza que deseja remover essa unidade de medida?"),
             actions: <Widget>[
               TextButton(
                 child: const Text(

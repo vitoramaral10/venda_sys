@@ -14,22 +14,12 @@ class UsuariosBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
   final String _empresa = _box.get('empresa');
 
-  final StreamController<List<Usuario>> _usuariosController =
-      StreamController<List<Usuario>>.broadcast();
-  Stream get outUsuarios => _usuariosController.stream;
-
-  UsuariosBloc() {
-    search();
-  }
-
   Future<bool> edit(Usuario usuarios) async {
     try {
       await FirebaseFirestore.instance
           .collection('usuarios')
           .doc(usuarios.id.toString())
           .set(usuarios.toJson());
-
-      search();
 
       return true;
     } catch (e) {
@@ -45,7 +35,6 @@ class UsuariosBloc implements BlocBase {
           .collection(_collection)
           .doc()
           .set(usuarios.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -53,16 +42,22 @@ class UsuariosBloc implements BlocBase {
     }
   }
 
-  Future<void> search() async {
-    _usuariosController.sink.add([]);
-
+  Future<List<Usuario>> search() async {
     final _usuarios = await FirebaseFirestore.instance
         .collection('usuarios')
         .where('empresas', arrayContains: _empresa)
         .orderBy('nome')
         .get();
 
-    _usuariosController.sink.add(_decode(_usuarios));
+    final List<Usuario> _listUsuarios = _usuarios.docs.map((doc) {
+      Map<String, dynamic> data = doc.data();
+
+      data['id'] = doc.id;
+
+      return Usuario.fromJson(data);
+    }).toList();
+
+    return _listUsuarios;
   }
 
   Future<Usuario> getUsuarios(String id) async {
@@ -103,9 +98,7 @@ class UsuariosBloc implements BlocBase {
   void addListener(VoidCallback listener) {}
 
   @override
-  void dispose() {
-    _usuariosController.close();
-  }
+  void dispose() {}
 
   @override
   bool get hasListeners => throw UnimplementedError();

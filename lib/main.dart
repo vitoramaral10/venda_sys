@@ -2,13 +2,10 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:venda_sys/bloc/login_bloc.dart';
-import 'package:venda_sys/screens/home_screen.dart';
-import 'package:venda_sys/screens/splash_screen.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import 'config/config.dart';
-import 'models/usuario.dart';
-import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
 
 Future<void> main() async {
   await Hive.initFlutter();
@@ -16,6 +13,8 @@ Future<void> main() async {
     return deletedEntries > 10;
   });
   WidgetsFlutterBinding.ensureInitialized();
+
+  setPathUrlStrategy();
 
   runApp(const VendaSysApp());
 }
@@ -42,25 +41,11 @@ class _VendaSysAppState extends State<VendaSysApp> {
           future: _initialization,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return FutureBuilder<Usuario>(
-                future: BlocProvider.getBloc<LoginBloc>().checkLogged(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    final _usuario = snapshot.data;
-
-                    if (_usuario == null || _usuario.email.isEmpty) {
-                      return LoginScreen();
-                    } else {
-                      return const HomeScreen();
-                    }
-                  } else {
-                    return const SplashScreen();
-                  }
-                },
-              );
-            } else {
               return const SplashScreen();
             }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
       ),

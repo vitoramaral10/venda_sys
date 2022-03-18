@@ -1,34 +1,19 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
+import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/models/produto.dart';
 
 import 'form.dart';
-import 'import.dart';
 
 class ProdutosList extends StatelessWidget {
   const ProdutosList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<ProdutosBloc>().search();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Produtos'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ProdutosImport()));
-            },
-            icon: const Icon(
-              Icons.file_upload_outlined,
-            ),
-          ),
-        ],
-      ),
-      body: StreamBuilder(
-        stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
+    return BaseWidget(
+      child: FutureBuilder(
+        future: BlocProvider.getBloc<ProdutosBloc>().search(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -49,10 +34,12 @@ class ProdutosList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProdutosForm()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProdutosForm()));
         },
         child: const Icon(Icons.add),
       ),
+      currentScreen: '',
     );
   }
 
@@ -130,7 +117,9 @@ class ProdutosList extends StatelessWidget {
               ],
             ),
             trailing: Text(
-              _checkInteger(produto.estoque) ? produto.estoque.toInt().toString() : produto.estoque.toString(),
+              _checkInteger(produto.estoque)
+                  ? produto.estoque.toInt().toString()
+                  : produto.estoque.toString(),
               style: TextStyle(
                 color: produto.estoque < 0 ? Colors.white : Colors.black,
               ),
@@ -161,7 +150,8 @@ class ProdutosList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>().delete(produto.id);
+                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>()
+                      .delete(produto.id);
                   Navigator.of(context).pop(_removed);
                 },
               ),

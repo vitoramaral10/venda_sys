@@ -13,15 +13,6 @@ class UnidadesMedidaBloc implements BlocBase {
   final String _collection = 'unidades_medidas';
   String _empresa = _box.get('empresa');
 
-  final StreamController<List<UnidadeMedida>> _unidadesMedidasController =
-      StreamController<List<UnidadeMedida>>.broadcast();
-  Stream<List<UnidadeMedida>> get outUnidadesMedida => _unidadesMedidasController.stream;
-
-  // ignore: non_constant_identifier_names
-  UnidadesMedidasBloc() {
-    search();
-  }
-
   Future<bool> delete(String id, BuildContext context) async {
     try {
       final docs = await FirebaseFirestore.instance
@@ -32,8 +23,12 @@ class UnidadesMedidaBloc implements BlocBase {
           .get();
 
       if (docs.docs.isEmpty) {
-        await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).delete();
-        search();
+        await FirebaseFirestore.instance
+            .collection('empresas')
+            .doc(_empresa)
+            .collection(_collection)
+            .doc(id)
+            .delete();
 
         return true;
       } else {
@@ -55,7 +50,6 @@ class UnidadesMedidaBloc implements BlocBase {
           .collection(_collection)
           .doc(unidadesMedida.id)
           .set(unidadesMedida.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -71,7 +65,6 @@ class UnidadesMedidaBloc implements BlocBase {
           .collection(_collection)
           .doc()
           .set(unidadesMedida.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -79,19 +72,26 @@ class UnidadesMedidaBloc implements BlocBase {
     }
   }
 
-  Future<void> search() async {
-    _unidadesMedidasController.sink.add([]);
+  Future<List<UnidadeMedida>> search() async {
     _empresa = _box.get('empresa');
 
-    final unidadesMedida =
-        await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).get();
-    _unidadesMedidasController.sink.add(_decode(unidadesMedida));
+    final unidadesMedida = await FirebaseFirestore.instance
+        .collection('empresas')
+        .doc(_empresa)
+        .collection(_collection)
+        .get();
+
+    return _decode(unidadesMedida);
   }
 
   Future<UnidadeMedida> getUnidadeMedida(String id) async {
     try {
-      final unidadesMedida =
-          await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).get();
+      final unidadesMedida = await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(id)
+          .get();
 
       final unidadesMedidaData = unidadesMedida.data() as Map<String, dynamic>;
 
@@ -125,9 +125,7 @@ class UnidadesMedidaBloc implements BlocBase {
   void addListener(VoidCallback listener) {}
 
   @override
-  void dispose() {
-    _unidadesMedidasController.close();
-  }
+  void dispose() {}
 
   @override
   bool get hasListeners => throw UnimplementedError();
@@ -139,7 +137,8 @@ class UnidadesMedidaBloc implements BlocBase {
   void removeListener(VoidCallback listener) {}
 
   List<UnidadeMedida> _decode(QuerySnapshot response) {
-    final unidadesMedidas = response.docs.map<UnidadeMedida>((QueryDocumentSnapshot map) {
+    final unidadesMedidas =
+        response.docs.map<UnidadeMedida>((QueryDocumentSnapshot map) {
       final data = map.data() as Map<String, dynamic>;
       data['id'] = map.id;
 

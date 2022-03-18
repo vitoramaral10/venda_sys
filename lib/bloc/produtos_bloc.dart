@@ -13,17 +13,14 @@ class ProdutosBloc implements BlocBase {
   final String _collection = 'produtos';
   String _empresa = _box.get('empresa');
 
-  final StreamController<List<Produto>> _produtosController = StreamController<List<Produto>>.broadcast();
-  Stream get outProdutos => _produtosController.stream;
-
-  ProdutosBloc() {
-    search();
-  }
-
   Future<bool> delete(String id) async {
     try {
-      await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).delete();
-      search();
+      await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(id)
+          .delete();
 
       return true;
     } catch (e) {
@@ -39,7 +36,6 @@ class ProdutosBloc implements BlocBase {
           .collection(_collection)
           .doc(produto.id)
           .set(produto.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -55,7 +51,6 @@ class ProdutosBloc implements BlocBase {
           .collection(_collection)
           .doc()
           .set(produto.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -63,23 +58,27 @@ class ProdutosBloc implements BlocBase {
     }
   }
 
-  Future<void> search() async {
+  Future<List<Produto>> search() async {
     _empresa = _box.get('empresa');
 
-    _produtosController.sink.add([]);
     final _data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
         .collection(_collection)
         .orderBy('descricao')
         .get();
-    _produtosController.sink.add(_decode(_data));
+
+    return _decode(_data);
   }
 
   Future<Produto> getProduto(String id) async {
     try {
-      final produto =
-          await FirebaseFirestore.instance.collection('empresas').doc(_empresa).collection(_collection).doc(id).get();
+      final produto = await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(id)
+          .get();
       final produtoData = produto.data() as Map<String, dynamic>;
 
       produtoData.addAll({'id': id});
@@ -109,9 +108,7 @@ class ProdutosBloc implements BlocBase {
   void addListener(VoidCallback listener) {}
 
   @override
-  void dispose() {
-    _produtosController.close();
-  }
+  void dispose() {}
 
   @override
   bool get hasListeners => throw UnimplementedError();

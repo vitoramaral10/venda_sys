@@ -17,14 +17,6 @@ class FiscalBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
   final String _empresa = _box.get('empresa');
 
-  final StreamController<List<NotaFiscal>> _fiscalController =
-      StreamController<List<NotaFiscal>>.broadcast();
-  Stream get outFiscal => _fiscalController.stream;
-
-  FiscalBloc() {
-    search();
-  }
-
   Future<bool> edit(NotaFiscal fiscal) async {
     try {
       await FirebaseFirestore.instance
@@ -33,7 +25,6 @@ class FiscalBloc implements BlocBase {
           .collection(_collection)
           .doc(fiscal.id.toString())
           .set(fiscal.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -49,7 +40,6 @@ class FiscalBloc implements BlocBase {
           .collection(_collection)
           .doc()
           .set(fiscal.toJson());
-      search();
 
       return true;
     } catch (e) {
@@ -57,9 +47,7 @@ class FiscalBloc implements BlocBase {
     }
   }
 
-  Future<void> search() async {
-    _fiscalController.sink.add([]);
-
+  Future<List<NotaFiscal>> search() async {
     final _notas = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
@@ -67,7 +55,14 @@ class FiscalBloc implements BlocBase {
         .orderBy('identificacao')
         .get();
 
-    _fiscalController.sink.add(_decode(_notas));
+    final List<NotaFiscal> _fiscais = _notas.docs.map((doc) {
+      var data = doc.data();
+
+      data['id'] = doc.id;
+      return NotaFiscal.fromJson(data);
+    }).toList();
+
+    return _fiscais;
   }
 
   Future<NotaFiscal> getFiscal(String id) async {
@@ -184,8 +179,6 @@ class FiscalBloc implements BlocBase {
           }
         });
 
-        search();
-
         return 'ok';
       } else {
         return 'duplicated';
@@ -245,7 +238,6 @@ class FiscalBloc implements BlocBase {
           .doc(id)
           .update({'cancelada': true});
 
-      search();
     } catch (e) {
       throw Exception(e);
     }
@@ -256,7 +248,6 @@ class FiscalBloc implements BlocBase {
 
   @override
   void dispose() {
-    _fiscalController.close();
   }
 
   @override

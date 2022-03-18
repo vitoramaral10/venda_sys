@@ -14,18 +14,18 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          FutureBuilder<Usuario>(
-              future: BlocProvider.getBloc<LoginBloc>().checkLogged(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-                Usuario _usuario = snapshot.data!;
+    return FutureBuilder<Usuario>(
+        future: BlocProvider.getBloc<LoginBloc>().checkLogged(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+          Usuario _usuario = snapshot.data!;
 
-                return UserAccountsDrawerHeader(
+          return Drawer(
+            child: ListView(
+              children: [
+                UserAccountsDrawerHeader(
                   accountName: Text(_usuario.nome),
                   accountEmail: Text(_usuario.email),
                   currentAccountPicture: CircleAvatar(
@@ -33,104 +33,98 @@ class CustomDrawer extends StatelessWidget {
                     backgroundImage: NetworkImage(_usuario.imagem),
                     backgroundColor: Colors.transparent,
                   ),
-                );
-              }),
-          _menuTile(
-              title: 'Início',
-              onTap: () {
-                Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
-              },
-              icon: Icons.dashboard_outlined),
-          ExpansionTile(
-              title: Row(
-                children: const [
-                  Icon(
-                    Icons.inbox,
-                    size: 24,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'Produtos',
-                  ),
-                ],
-              ),
-              children: [
-                _menuTile(
-                  title: 'Produtos',
-                  onTap: () {
-                    _navigation(context, const ProdutosList());
-                  },
                 ),
                 _menuTile(
-                    title: 'Unidades de Medida',
+                    title: 'Início',
                     onTap: () {
-                      _navigation(context, const UnidadesMedidaList());
-                    }),
-              ]),
-          _menuTile(
-            title: 'Clientes',
-            icon: Icons.business_sharp,
-            trailing: const Chip(
-              label: Text(
-                'Em breve',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.redAccent,
-            ),
-          ),
-          _menuTile(
-            title: 'Fiscal',
-            icon: Icons.receipt_long,
-            onTap: () {
-              _navigation(context, FiscalList());
-            },
-          ),
-          ExpansionTile(
-              title: Row(
-                children: const [
-                  Icon(
-                    Icons.settings,
-                    size: 24,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'Configurações',
-                  ),
-                ],
-              ),
-              children: [
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                          (route) => false);
+                    },
+                    icon: Icons.dashboard_outlined),
+                ExpansionTile(
+                    leading: const Icon(
+                      Icons.inbox,
+                      color: Colors.black,
+                    ),
+                    title:
+                        const Text('Produtos', style: TextStyle(fontSize: 16)),
+                    children: [
+                      _menuTile(
+                        title: 'Produtos',
+                        onTap: () {
+                          _navigation(context, const ProdutosList());
+                        },
+                      ),
+                      _menuTile(
+                          title: 'Unidades de Medida',
+                          onTap: () {
+                            _navigation(context, const UnidadesMedidaList());
+                          }),
+                    ]),
                 _menuTile(
-                  title: 'Usuários',
+                  title: 'Clientes',
+                  icon: Icons.business_sharp,
+                  trailing: const Chip(
+                    label: Text(
+                      'Em breve',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.redAccent,
+                  ),
+                ),
+                _menuTile(
+                  title: 'Fiscal',
+                  icon: Icons.receipt_long,
                   onTap: () {
-                    _navigation(context, const UsuariosList());
+                    _navigation(context, FiscalList());
                   },
                 ),
-              ]),
-          _menuTile(
-              title: 'Sair',
-              onTap: () async {
-                try {
-                  await BlocProvider.getBloc<LoginBloc>().signOut();
+                ExpansionTile(
+                    leading: const Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                    ),
+                    title: const Text('Configurações',
+                        style: TextStyle(fontSize: 16)),
+                    children: [
+                      _menuTile(
+                        title: 'Usuários',
+                        onTap: () {
+                          _navigation(context, const UsuariosList());
+                        },
+                      ),
+                    ]),
+                _menuTile(
+                    title: 'Sair',
+                    onTap: () async {
+                      try {
+                        await BlocProvider.getBloc<LoginBloc>().signOut();
 
-                  Navigator.pushAndRemoveUntil(
-                      context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
-                } catch (e) {
-                  throw Exception(e);
-                }
-              },
-              icon: Icons.exit_to_app),
-        ],
-      ),
-    );
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                            (route) => false);
+                      } catch (e) {
+                        throw Exception(e);
+                      }
+                    },
+                    icon: Icons.exit_to_app),
+              ],
+            ),
+          );
+        });
   }
 }
 
-Widget _menuTile({required String title, void Function()? onTap, IconData? icon, Widget? trailing}) {
+Widget _menuTile(
+    {required String title,
+    void Function()? onTap,
+    IconData? icon,
+    Widget? trailing}) {
   return InkWell(
     onTap: onTap,
     child: ListTile(
@@ -141,7 +135,7 @@ Widget _menuTile({required String title, void Function()? onTap, IconData? icon,
             )
           : null,
       dense: true,
-      title: Text(title),
+      title: Text(title, style: const TextStyle(fontSize: 16)),
       trailing: trailing,
     ),
   );

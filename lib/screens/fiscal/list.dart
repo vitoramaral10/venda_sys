@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
+import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
@@ -18,14 +19,9 @@ class FiscalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<FiscalBloc>().search();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fiscal'),
-      ),
-      body: StreamBuilder(
-        stream: BlocProvider.getBloc<FiscalBloc>().outFiscal,
+    return BaseWidget(
+      child: FutureBuilder(
+        future: BlocProvider.getBloc<FiscalBloc>().search(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -34,7 +30,8 @@ class FiscalList extends StatelessWidget {
           } else {
             List<NotaFiscal> fiscal = snapshot.data! as List<NotaFiscal>;
 
-            fiscal.sort((a, b) => b.identificacao.dataEmissao.compareTo(a.identificacao.dataEmissao));
+            fiscal.sort((a, b) => b.identificacao.dataEmissao
+                .compareTo(a.identificacao.dataEmissao));
 
             return ListView.builder(
               padding: const EdgeInsets.only(bottom: 80),
@@ -52,6 +49,7 @@ class FiscalList extends StatelessWidget {
         },
         child: const Icon(Icons.file_upload_outlined),
       ),
+      currentScreen: '',
     );
   }
 
@@ -63,7 +61,8 @@ class FiscalList extends StatelessWidget {
             title: const Text('Importar XML'),
             content: ElevatedButton(
                 onPressed: () async {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles(
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
                     type: FileType.custom,
                     allowedExtensions: ['xml'],
                   );
@@ -80,9 +79,11 @@ class FiscalList extends StatelessWidget {
                     var json = myTransformer.toParker();
                     Map<String, dynamic> data = jsonDecode(json);
 
-                    NotaFiscalXML nota = NotaFiscalXML.fromJson(data['nfeProc']['NFe']['infNFe']);
+                    NotaFiscalXML nota = NotaFiscalXML.fromJson(
+                        data['nfeProc']['NFe']['infNFe']);
 
-                    final _imported = await BlocProvider.getBloc<FiscalBloc>().importXML(context, nota);
+                    final _imported = await BlocProvider.getBloc<FiscalBloc>()
+                        .importXML(context, nota);
 
                     if (_imported == 'ok') {
                       Navigator.pop(context);
@@ -169,7 +170,9 @@ class FiscalList extends StatelessWidget {
                     : Container(),
               ],
             ),
-            subtitle: (nota.identificacao.tipo == 0) ? const Text('Nota de entrada') : const Text('Nota de saída'),
+            subtitle: (nota.identificacao.tipo == 0)
+                ? const Text('Nota de entrada')
+                : const Text('Nota de saída'),
             trailing: Text('R\$ ${_corrigeValor(nota.total.vNF)}'),
           ),
         ),
@@ -205,7 +208,10 @@ class FiscalList extends StatelessWidget {
                     await BlocProvider.getBloc<FiscalBloc>().cancel(nota.id);
                     Navigator.pop(context);
                   } catch (e) {
-                    errorPopup(context: context, title: 'Erro desconhecido', text: e.toString());
+                    errorPopup(
+                        context: context,
+                        title: 'Erro desconhecido',
+                        text: e.toString());
                   }
                 },
               ),

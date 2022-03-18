@@ -18,7 +18,8 @@ class LoginBloc implements BlocBase {
 
   Future<void> login(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       final userData = await _checkUserData(email: email);
       box.put('empresa', userData!['empresas'][0]);
     } on FirebaseAuthException catch (e) {
@@ -26,9 +27,18 @@ class LoginBloc implements BlocBase {
     }
   }
 
+  bool isLoggedIn() {
+    final user = _firebaseAuth.currentUser;
+
+    return user != null;
+  }
+
   Future<Map<String, dynamic>?> _checkUserData({required String email}) async {
     try {
-      final companies = await _firestore.collection(_collection).where('email', isEqualTo: email).get();
+      final companies = await _firestore
+          .collection(_collection)
+          .where('email', isEqualTo: email)
+          .get();
       return companies.docs[0].data();
     } catch (e) {
       throw Exception(e);
@@ -39,8 +49,8 @@ class LoginBloc implements BlocBase {
     final user = _firebaseAuth.currentUser;
 
     if (user != null) {
-
-      final usuario = await BlocProvider.getBloc<UsuariosBloc>().getUsuario(user.uid);
+      final usuario =
+          await BlocProvider.getBloc<UsuariosBloc>().getUsuario(user.uid);
 
       return usuario;
     } else {

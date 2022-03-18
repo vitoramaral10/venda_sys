@@ -5,6 +5,9 @@ import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/usuario.dart';
 
+import '../../libraries/util.dart';
+import 'list.dart';
+
 // ignore: must_be_immutable
 class UsuariosForm extends StatefulWidget {
   String id;
@@ -43,7 +46,8 @@ class _UsuariosFormState extends State<UsuariosForm> {
       errorPopup(
           context: context,
           title: 'Erro ao abrir o cadastro do usuário',
-          text: 'Não foi possível abrir esse, se persistir entre em contato com o desenvolvedor');
+          text:
+              'Não foi possível abrir esse, se persistir entre em contato com o desenvolvedor');
     }
   }
 
@@ -109,7 +113,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
   void _edit(Usuario usuario) {
     BlocProvider.getBloc<UsuariosBloc>().edit(usuario).then((e) {
       if (e == true) {
-        Navigator.pop(context);
+        Util.navigation(context, const UsuariosList());
       } else {
         errorPopup(
           context: context,

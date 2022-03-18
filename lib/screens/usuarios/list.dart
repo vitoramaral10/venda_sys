@@ -1,9 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:venda_sys/bloc/usuarios_bloc.dart';
-import 'package:venda_sys/components/error_popup.dart';
-import 'package:venda_sys/models/usuario.dart';
 
+import '../../bloc/usuarios_bloc.dart';
+import '../../components/base_widget.dart';
+import '../../components/error_popup.dart';
+import '../../models/usuario.dart';
 import 'form.dart';
 
 class UsuariosList extends StatelessWidget {
@@ -11,14 +12,9 @@ class UsuariosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<UsuariosBloc>().search();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Usuários'),
-      ),
-      body: StreamBuilder(
-        stream: BlocProvider.getBloc<UsuariosBloc>().outUsuarios,
+    return BaseWidget(
+      child: FutureBuilder(
+        future: BlocProvider.getBloc<UsuariosBloc>().search(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -41,6 +37,7 @@ class UsuariosList extends StatelessWidget {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
+      currentScreen: '',
     );
   }
 
@@ -93,30 +90,31 @@ class UsuariosList extends StatelessWidget {
 
   _removePopup(BuildContext context, Usuario usuario) async {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: const Text("Tem certeza que deseja remover esse usuário?"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text(
-                  "Cancelar",
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text("Tem certeza que deseja remover esse usuário?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Cancelar",
               ),
-              ElevatedButton(
-                child: const Text(
-                  "Remover",
-                ),
-                onPressed: () async {
-                  await BlocProvider.getBloc<UsuariosBloc>().delete(usuario.id);
-                  Navigator.pop(context);
-                },
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            ElevatedButton(
+              child: const Text(
+                "Remover",
               ),
-            ],
-          );
-        });
+              onPressed: () async {
+                await BlocProvider.getBloc<UsuariosBloc>().delete(usuario.id);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

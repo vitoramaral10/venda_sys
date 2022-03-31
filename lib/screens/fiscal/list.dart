@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:file_picker/file_picker.dart';
@@ -68,9 +69,9 @@ class FiscalList extends StatelessWidget {
                   );
 
                   if (result != null) {
-                    File file = File(result.files.single.path!);
+                    Uint8List? uploadfile = result.files.single.bytes;
 
-                    String xml = await file.readAsString();
+                    String xml = String.fromCharCodes(uploadfile!);
 
                     final myTransformer = Xml2Json();
 
@@ -97,7 +98,6 @@ class FiscalList extends StatelessWidget {
                         text: _text,
                       );
                     }
-                    file.delete();
                   } else {
                     // User canceled the picker
                   }

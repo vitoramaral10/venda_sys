@@ -1,4 +1,4 @@
-[![Contributors][https://img.shields.io/badge/Flutter-2.10.5-blue]][contributors-url]
+[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -137,7 +137,7 @@ Link do projeto: [https://github.com/vitoramaral10/venda_sys](https://github.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/vitoramaral10/venda_sys.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/badge/Flutter-2.10.5-blue
 [contributors-url]: https://github.com/vitoramaral10/venda_sys/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/vitoramaral10/Venda_sys.svg?style=for-the-badge
 [forks-url]: https://github.com/vitoramaral10/venda_sys/network/members

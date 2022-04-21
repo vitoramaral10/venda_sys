@@ -123,17 +123,17 @@ Link do projeto: [https://github.com/vitoramaral10/venda_sys](https://github.com
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Reconhecimentos
-* [bloc_pattern](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [cloud_firestore](https://shields.io)
-* [cloud_firestore_platform_interface](https://choosealicense.com)
-* [excel_to_json](https://pages.github.com)
-* [file_picker](https://daneden.github.io/animate.css)
-* [firebase_auth](https://connoratherton.com/loaders)
-* [firebase_core](https://kenwheeler.github.io/slick)
-* [hive](https://github.com/cferdinandi/smooth-scroll)
-* [hive_flutter](http://leafo.net/sticky-kit)
-* [url_strategy](http://jvectormap.com)
-* [xml2json](https://fontawesome.com)
+* [bloc_pattern](https://pub.dev/packages/bloc_pattern)
+* [cloud_firestore](https://pub.dev/packages/cloud_firestore)
+* [cloud_firestore_platform_interface](https://pub.dev/packages/cloud_firestore_platform_interface)
+* [excel_to_json](https://pub.dev/packages/excel_to_json)
+* [file_picker](https://pub.dev/packages/file_picker)
+* [firebase_auth](https://pub.dev/packages/firebase_auth)
+* [firebase_core](https://pub.dev/packages/firebase_core)
+* [hive](https://pub.dev/packages/hive)
+* [hive_flutter](https://pub.dev/packages/hive_flutter)
+* [url_strategy](https://pub.dev/packages/url_strategy)
+* [xml2json](https://pub.dev/packages/xml2json)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

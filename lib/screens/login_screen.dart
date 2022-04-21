@@ -4,7 +4,6 @@ import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/libraries/responsive.dart';
-import 'package:venda_sys/screens/home_screen.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {

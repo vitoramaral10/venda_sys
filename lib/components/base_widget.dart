@@ -4,7 +4,6 @@ import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/libraries/responsive.dart';
 import 'package:venda_sys/screens/login_screen.dart';
 
-import 'custom_app_bar.dart';
 import 'custom_drawer.dart';
 
 // ignore: must_be_immutable
@@ -35,8 +34,10 @@ class _BaseWidgetState extends State<BaseWidget> {
         ? SafeArea(
             top: true,
             child: Scaffold(
+              appBar: AppBar(),
               key: _key,
-              drawer: const CustomDrawer(),
+              drawer:
+                  !Responsive.isDesktop(context) ? const CustomDrawer() : null,
               body: Row(
                 children: [
                   if (Responsive.isDesktop(context))
@@ -44,19 +45,6 @@ class _BaseWidgetState extends State<BaseWidget> {
                   Expanded(
                     child: Column(
                       children: [
-                        CustomAppBar(
-                          drawerButtonTap: () {
-                            if (Responsive.isDesktop(context)) {
-                              setState(() {
-                                showDrawer = !showDrawer;
-                              });
-                            } else {
-                              _key.currentState!.isDrawerOpen
-                                  ? _key.currentState!.openEndDrawer()
-                                  : _key.currentState!.openDrawer();
-                            }
-                          },
-                        ),
                         Expanded(
                           child: Padding(
                               padding: const EdgeInsets.all(8),

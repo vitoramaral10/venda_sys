@@ -145,5 +145,5 @@ Widget _menuTile(
 }
 
 _navigation(BuildContext context, Widget widget, String route) {
-  Navigator.pushNamed(context, route);
+  Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
 }

@@ -1,64 +1,52 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:venda_sys/bloc/login_bloc.dart';
-import 'package:venda_sys/libraries/responsive.dart';
-import 'package:venda_sys/screens/login_screen.dart';
 
-import 'custom_drawer.dart';
+import '../libraries/constants.dart';
+import '../libraries/responsive.dart';
+import 'header.dart';
+import 'side_menu.dart';
 
 // ignore: must_be_immutable
-class BaseWidget extends StatefulWidget {
-  final Widget child;
-  String currentScreen;
+class BaseWidget extends StatelessWidget {
+  Widget child;
+  String title;
   FloatingActionButton? floatingActionButton;
 
-  BaseWidget(
-      {Key? key,
-      required this.child,
-      required this.currentScreen,
-      this.floatingActionButton})
-      : super(key: key);
-
-  @override
-  State<BaseWidget> createState() => _BaseWidgetState();
-}
-
-class _BaseWidgetState extends State<BaseWidget> {
-  bool showDrawer = true;
-
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  BaseWidget({
+    Key? key,
+    required this.child,
+    required this.title,
+    this.floatingActionButton,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.getBloc<LoginBloc>().isLoggedIn()
-        ? SafeArea(
-            top: true,
-            child: Scaffold(
-              key: _key,
-              drawer:
-                  !Responsive.isDesktop(context) ? const CustomDrawer() : null,
-              body: Row(
-                children: [
-                  if (Responsive.isDesktop(context))
-                    if (showDrawer) const CustomDrawer(),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: widget.child),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+    return Scaffold(
+      drawer: const SideMenu(),
+      floatingActionButton: floatingActionButton,
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: SideMenu(),
               ),
-              floatingActionButton: widget.floatingActionButton,
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.defaultPadding),
+                child: ListView(
+                  children: [
+                    Header(title: title),
+                    const SizedBox(height: Constants.defaultPadding),
+                    Container(child: child),
+                  ],
+                ),
+              ),
             ),
-          )
-        : LoginScreen();
+          ],
+        ),
+      ),
+    );
   }
 }
-
-// ignore: must_be_immutable

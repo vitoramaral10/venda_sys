@@ -36,6 +36,7 @@ class FiscalList extends StatelessWidget {
                 .compareTo(a.identificacao.dataEmissao));
 
             return ListView.builder(
+              shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: 80),
               itemCount: fiscal.length,
               itemBuilder: (context, index) {
@@ -51,7 +52,7 @@ class FiscalList extends StatelessWidget {
         },
         child: const Icon(Icons.file_upload_outlined),
       ),
-      currentScreen: '',
+      title: 'Fiscal',
     );
   }
 

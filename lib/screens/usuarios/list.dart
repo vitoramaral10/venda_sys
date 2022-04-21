@@ -24,6 +24,7 @@ class UsuariosList extends StatelessWidget {
             List<Usuario> usuarios = snapshot.data! as List<Usuario>;
 
             return ListView.builder(
+              shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: 80),
               itemCount: usuarios.length,
               itemBuilder: (context, index) {
@@ -37,7 +38,7 @@ class UsuariosList extends StatelessWidget {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      currentScreen: '',
+      title: 'Usuários',
     );
   }
 

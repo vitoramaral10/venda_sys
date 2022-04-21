@@ -25,6 +25,7 @@ class ProdutosList extends StatelessWidget {
             List<Produto> produtos = snapshot.data! as List<Produto>;
 
             return ListView.builder(
+              shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: 80),
               itemCount: produtos.length,
               itemBuilder: (context, index) {
@@ -35,14 +36,13 @@ class ProdutosList extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        
         onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProdutosForm()));
         },
         child: const Icon(Icons.add),
       ),
-      currentScreen: '',
+      title: 'Produtos',
     );
   }
 

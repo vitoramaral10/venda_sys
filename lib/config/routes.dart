@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:venda_sys/screens/fiscal/list.dart';
+import 'package:venda_sys/screens/usuarios/list.dart';
 
 import '../screens/home_screen.dart';
 import '../screens/produtos/list.dart';
@@ -11,5 +12,6 @@ class Routes {
     '/produtos': (context) => const ProdutosList(),
     '/unidades_medida': (context) => const UnidadesMedidaList(),
     '/fiscal': (context) => FiscalList(),
+    '/usuarios': (context) => const UsuariosList(),
   };
 }

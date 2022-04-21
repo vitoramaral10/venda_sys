@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/components/drawe_list_tile.dart';
 import 'package:venda_sys/models/usuario.dart';
-import 'package:venda_sys/screens/login_screen.dart';
 
 import '../libraries/constants.dart';
 import '../libraries/responsive.dart';
 
-class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+class SideMenu extends StatelessWidget {
+  const SideMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +33,17 @@ class CustomDrawer extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                         ),
                       )
-                    : Padding(
+                    : const Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: Constants.defaultPadding,
                           vertical: Constants.defaultPadding * 2,
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'VendaSys',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 40,
+                              fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
@@ -119,11 +118,8 @@ class CustomDrawer extends StatelessWidget {
                     try {
                       await BlocProvider.getBloc<LoginBloc>().signOut();
 
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                          (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/login', (route) => false);
                     } catch (e) {
                       throw Exception(e);
                     }
@@ -134,35 +130,4 @@ class CustomDrawer extends StatelessWidget {
           );
         });
   }
-}
-
-Widget _menuTile(
-    {required String title,
-    void Function()? onTap,
-    IconData? icon,
-    Widget? trailing}) {
-  return InkWell(
-    onTap: onTap,
-    child: ListTile(
-      leading: icon != null
-          ? Icon(
-              icon,
-              color: Colors.white,
-            )
-          : null,
-      dense: true,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-        ),
-      ),
-      trailing: trailing,
-    ),
-  );
-}
-
-_navigation(BuildContext context, Widget widget, String route) {
-  Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
 }

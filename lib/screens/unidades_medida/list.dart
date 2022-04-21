@@ -25,6 +25,7 @@ class UnidadesMedidaList extends StatelessWidget {
                 snapshot.data! as List<UnidadeMedida>;
 
             return ListView.builder(
+              shrinkWrap: true,
               itemCount: unidadesMedida.length,
               itemBuilder: (context, index) {
                 return _listTile(index, unidadesMedida[index], context);
@@ -40,7 +41,7 @@ class UnidadesMedidaList extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      currentScreen: '',
+      title: 'Unidades de Medida',
     );
   }
 

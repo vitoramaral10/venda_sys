@@ -19,9 +19,11 @@ class FiscalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.getBloc<FiscalBloc>().search();
+
     return BaseWidget(
-      child: FutureBuilder(
-        future: BlocProvider.getBloc<FiscalBloc>().search(),
+      child: StreamBuilder(
+        stream: BlocProvider.getBloc<FiscalBloc>().outNotaFiscal,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

@@ -17,6 +17,10 @@ class FiscalBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
   final String _empresa = _box.get('empresa');
 
+  final StreamController<List<NotaFiscal>> _notaFiscalController =
+      StreamController<List<NotaFiscal>>.broadcast();
+  Stream<List<NotaFiscal>> get outNotaFiscal => _notaFiscalController.stream;
+
   Future<bool> edit(NotaFiscal fiscal) async {
     try {
       await FirebaseFirestore.instance
@@ -25,6 +29,8 @@ class FiscalBloc implements BlocBase {
           .collection(_collection)
           .doc(fiscal.id.toString())
           .set(fiscal.toJson());
+
+      search();
 
       return true;
     } catch (e) {
@@ -41,13 +47,15 @@ class FiscalBloc implements BlocBase {
           .doc()
           .set(fiscal.toJson());
 
+      search();
+
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<List<NotaFiscal>> search() async {
+  Future<void> search() async {
     final _notas = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
@@ -62,7 +70,7 @@ class FiscalBloc implements BlocBase {
       return NotaFiscal.fromJson(data);
     }).toList();
 
-    return _fiscais;
+    _notaFiscalController.sink.add(_fiscais);
   }
 
   Future<NotaFiscal> getFiscal(String id) async {
@@ -179,6 +187,8 @@ class FiscalBloc implements BlocBase {
           }
         });
 
+        search();
+
         return 'ok';
       } else {
         return 'duplicated';
@@ -238,6 +248,7 @@ class FiscalBloc implements BlocBase {
           .doc(id)
           .update({'cancelada': true});
 
+      search();
     } catch (e) {
       throw Exception(e);
     }
@@ -247,8 +258,7 @@ class FiscalBloc implements BlocBase {
   void addListener(VoidCallback listener) {}
 
   @override
-  void dispose() {
-  }
+  void dispose() {}
 
   @override
   bool get hasListeners => throw UnimplementedError();

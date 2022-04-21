@@ -1,9 +1,4 @@
 [![Contributors][flutter-shield]][flutter-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -138,15 +133,4 @@ Link do projeto: [https://github.com/vitoramaral10/venda_sys](https://github.com
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [flutter-shield]: https://img.shields.io/badge/Flutter-2.10.5-blue
-[flutter-url]: https://github.com/vitoramaral10/venda_sys/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/vitoramaral10/Venda_sys.svg?style=for-the-badge
-[forks-url]: https://github.com/vitoramaral10/venda_sys/network/members
-[stars-shield]: https://img.shields.io/github/stars/vitoramaral10/Venda_sys.svg?style=for-the-badge
-[stars-url]: https://github.com/vitoramaral10/venda_sys/stargazers
-[issues-shield]: https://img.shields.io/github/issues/vitoramaral10/Venda_sys.svg?style=for-the-badge
-[issues-url]: https://github.com/vitoramaral10/venda_sys/issues
-[license-shield]: https://img.shields.io/github/license/vitoramaral10/Venda_sys.svg?style=for-the-badge
-[license-url]: https://github.com/vitoramaral10/venda_sys/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/vitoramaral10
-[product-screenshot]: images/screenshot.png
+[flutter-url]: https://flutter.dev/

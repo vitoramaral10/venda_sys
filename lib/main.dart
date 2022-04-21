@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'config/config.dart';
+import 'config/routes.dart';
 import 'screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -37,6 +38,7 @@ class _VendaSysAppState extends State<VendaSysApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VendaSys',
+        routes: Routes.list,
         home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {

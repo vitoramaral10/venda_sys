@@ -55,13 +55,15 @@ class CustomDrawer extends StatelessWidget {
                       _menuTile(
                         title: 'Produtos',
                         onTap: () {
-                          _navigation(context, const ProdutosList());
+                          _navigation(
+                              context, const ProdutosList(), '/produtos');
                         },
                       ),
                       _menuTile(
                           title: 'Unidades de Medida',
                           onTap: () {
-                            _navigation(context, const UnidadesMedidaList());
+                            _navigation(context, const UnidadesMedidaList(),
+                                '/unidades_medida');
                           }),
                     ]),
                 _menuTile(
@@ -79,7 +81,7 @@ class CustomDrawer extends StatelessWidget {
                   title: 'Fiscal',
                   icon: Icons.receipt_long,
                   onTap: () {
-                    _navigation(context, FiscalList());
+                    _navigation(context, FiscalList(), '/fiscal');
                   },
                 ),
                 ExpansionTile(
@@ -93,7 +95,8 @@ class CustomDrawer extends StatelessWidget {
                       _menuTile(
                         title: 'Usuários',
                         onTap: () {
-                          _navigation(context, const UsuariosList());
+                          _navigation(
+                              context, const UsuariosList(), '/usuarios');
                         },
                       ),
                     ]),
@@ -141,7 +144,6 @@ Widget _menuTile(
   );
 }
 
-_navigation(BuildContext context, Widget widget) {
-  Navigator.pop(context);
-  Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+_navigation(BuildContext context, Widget widget, String route) {
+  Navigator.pushNamed(context, route);
 }

@@ -73,33 +73,33 @@ Para ele ter o controle do que tem em estoque fez esse pedido para que desenvolv
 * [Firebase](https://firebase.google.com)
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Começando
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Este projeto roda tanto em Android como na web.
 
-### Prerequisites
+### Pré-requisitos
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* Flutter 2.10.5
+* Acesso a conta firebase.
 
-### Installation
+### Instalação
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Obtenha os arquivos de conexão do firebase (web e android).
+2. Clone o repositório
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/vitoramaral10/venda_sys.git
    ```
-3. Install NPM packages
+3. Salve os arquivos nas pastas respectivas
+    ```JSON
+   android/app/google-services.json
+   ```
+3. Obtenha os pacotes
    ```sh
-   npm install
+   flutter pub get
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
+4. rode o projeto
+   ```sh
+   flutter run
    ```
 
 

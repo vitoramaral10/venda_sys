@@ -34,7 +34,6 @@ class _BaseWidgetState extends State<BaseWidget> {
         ? SafeArea(
             top: true,
             child: Scaffold(
-              appBar: AppBar(),
               key: _key,
               drawer:
                   !Responsive.isDesktop(context) ? const CustomDrawer() : null,

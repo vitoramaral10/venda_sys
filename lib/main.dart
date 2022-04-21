@@ -6,6 +6,7 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'config/config.dart';
 import 'config/routes.dart';
+import 'libraries/constants.dart';
 import 'screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -39,6 +40,13 @@ class _VendaSysAppState extends State<VendaSysApp> {
         debugShowCheckedModeBanner: false,
         title: 'VendaSys',
         routes: Routes.list,
+        theme: ThemeData.light().copyWith(
+          scaffoldBackgroundColor: Constants.background,
+          canvasColor: Constants.secondary,
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Constants.primary,
+          ),
+        ),
         home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {

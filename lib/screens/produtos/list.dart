@@ -11,9 +11,11 @@ class ProdutosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.getBloc<ProdutosBloc>().search();
+
     return BaseWidget(
-      child: FutureBuilder(
-        future: BlocProvider.getBloc<ProdutosBloc>().search(),
+      child: StreamBuilder(
+        stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

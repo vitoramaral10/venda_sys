@@ -13,6 +13,10 @@ class ProdutosBloc implements BlocBase {
   final String _collection = 'produtos';
   String _empresa = _box.get('empresa');
 
+  final StreamController<List<Produto>> _produtosController =
+      StreamController<List<Produto>>.broadcast();
+  Stream get outProdutos => _produtosController.stream;
+
   Future<bool> delete(String id) async {
     try {
       await FirebaseFirestore.instance
@@ -21,6 +25,8 @@ class ProdutosBloc implements BlocBase {
           .collection(_collection)
           .doc(id)
           .delete();
+
+      search();
 
       return true;
     } catch (e) {
@@ -37,6 +43,8 @@ class ProdutosBloc implements BlocBase {
           .doc(produto.id)
           .set(produto.toJson());
 
+      search();
+
       return true;
     } catch (e) {
       return false;
@@ -52,13 +60,15 @@ class ProdutosBloc implements BlocBase {
           .doc()
           .set(produto.toJson());
 
+      search();
+
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<List<Produto>> search() async {
+  Future<void> search() async {
     _empresa = _box.get('empresa');
 
     final _data = await FirebaseFirestore.instance
@@ -68,7 +78,7 @@ class ProdutosBloc implements BlocBase {
         .orderBy('descricao')
         .get();
 
-    return _decode(_data);
+    _produtosController.sink.add(_decode(_data));
   }
 
   Future<Produto> getProduto(String id) async {

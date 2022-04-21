@@ -13,6 +13,11 @@ class UnidadesMedidaBloc implements BlocBase {
   final String _collection = 'unidades_medidas';
   String _empresa = _box.get('empresa');
 
+  final StreamController<List<UnidadeMedida>> _unidadesMedidaController =
+      StreamController<List<UnidadeMedida>>.broadcast();
+  Stream<List<UnidadeMedida>> get outUnidadesMedida =>
+      _unidadesMedidaController.stream;
+
   Future<bool> delete(String id, BuildContext context) async {
     try {
       final docs = await FirebaseFirestore.instance
@@ -29,6 +34,8 @@ class UnidadesMedidaBloc implements BlocBase {
             .collection(_collection)
             .doc(id)
             .delete();
+
+        search();
 
         return true;
       } else {
@@ -51,6 +58,8 @@ class UnidadesMedidaBloc implements BlocBase {
           .doc(unidadesMedida.id)
           .set(unidadesMedida.toJson());
 
+      search();
+
       return true;
     } catch (e) {
       return false;
@@ -66,13 +75,15 @@ class UnidadesMedidaBloc implements BlocBase {
           .doc()
           .set(unidadesMedida.toJson());
 
+      search();
+
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<List<UnidadeMedida>> search() async {
+  Future<void> search() async {
     _empresa = _box.get('empresa');
 
     final unidadesMedida = await FirebaseFirestore.instance
@@ -81,7 +92,7 @@ class UnidadesMedidaBloc implements BlocBase {
         .collection(_collection)
         .get();
 
-    return _decode(unidadesMedida);
+    _unidadesMedidaController.sink.add(_decode(unidadesMedida));
   }
 
   Future<UnidadeMedida> getUnidadeMedida(String id) async {

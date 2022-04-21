@@ -117,8 +117,9 @@ class _ProdutosFormState extends State<ProdutosForm> {
               controller: _ncmController,
               keyboardType: TextInputType.number,
             ),
-            FutureBuilder<List<UnidadeMedida>>(
-              future: BlocProvider.getBloc<UnidadesMedidaBloc>().search(),
+            StreamBuilder<List<UnidadeMedida>>(
+              stream:
+                  BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
               builder: _dropDownUnidadesMedida,
             ),
             Padding(

@@ -10,9 +10,11 @@ class UnidadesMedidaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.getBloc<UnidadesMedidaBloc>().search();
+
     return BaseWidget(
-      child: FutureBuilder(
-        future: BlocProvider.getBloc<UnidadesMedidaBloc>().search(),
+      child: StreamBuilder(
+        stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

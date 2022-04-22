@@ -42,6 +42,7 @@
       <ul>
         <li><a href="#prerequisites">Pré-requisitos</a></li>
         <li><a href="#installation">Instalação</a></li>
+        <li><a href="#upload_to_web">Upload para web</a></li>
       </ul>
     </li>
     <li><a href="#contributing">Contribuindo</a></li>
@@ -98,6 +99,17 @@ Este projeto roda tanto em Android como na web.
    flutter run
    ```
 
+### Upload para web
+
+1. Compile o projeto para web
+    ```sh
+   flutter build web
+   ```
+
+2. Faça o upload para o firebase
+    ```sh
+    firebase deploy --only hosting
+    ```
 <!-- CONTRIBUTING -->
 ## Contributing
 

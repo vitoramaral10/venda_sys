@@ -35,12 +35,12 @@ jobs:
       with:
           channel: 'stable'
     - run: flutter pub get
-    - run: flutter build appbundle
-    - name: Upload appbundle
+    - run: flutter build apk
+    - name: Upload apk
       uses: actions/upload-artifact@main
       with:
-        name: appbundle
-        path: build/app/outputs/bundle/release
+        name: apk
+        path: build/app/outputs/flutter-apk
   deploy_web:
     name: Deploy Web to Firebase Hosting
     needs: build_web
@@ -51,18 +51,18 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@main
         with:
-          name: web-build
-          path: web-build
+          name: web
+          path: web
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting --public web-build
+          args: deploy --only hosting --public web
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: default
-  beta_appbundle:
+  beta_apk:
     name: Upload Android Beta to Firebase App Distribution
-    needs: [build_appbundle]
+    needs: [build_apk]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -73,12 +73,12 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@main
       with:
-        name: appbundle
-    - name: Upload appbundle
+        name: apk
+    - name: Upload apk
       uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
       with:
         appId: ${{secrets.FIREBASE_ANDROID_APPID}}
         token: ${{secrets.FIREBASE_TOKEN}}
         group: testers
-        file: app-release.aab
+        file: app-release.apk
     

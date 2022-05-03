@@ -23,7 +23,7 @@ jobs:
       with:
         name: web
         path: build/web
-  build_appbundle:
+  build_apk:
     name: Build Flutter (Android)
     runs-on: ubuntu-latest
     steps:

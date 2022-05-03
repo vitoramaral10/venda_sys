@@ -46,6 +46,11 @@ class _VendaSysAppState extends State<VendaSysApp> {
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: Constants.primary,
           ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Constants.defaultPadding),
+            ),
+          )
         ),
         home: FutureBuilder(
           future: _initialization,

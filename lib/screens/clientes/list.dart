@@ -37,8 +37,7 @@ class ClientesList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ClientesForm()));
+          Navigator.pushNamed(context, '/clientes/novo');
         },
         child: const Icon(Icons.add),
       ),
@@ -51,11 +50,7 @@ class ClientesList extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ClientesForm(
-                        id: cliente.id,
-                      )));
+              context, MaterialPageRoute(builder: (context) => const ClientesForm()));
         },
         child: Dismissible(
           key: ValueKey<int>(index),

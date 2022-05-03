@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:venda_sys/screens/clientes/form.dart';
 import 'package:venda_sys/screens/clientes/list.dart';
 import 'package:venda_sys/screens/fiscal/list.dart';
 import 'package:venda_sys/screens/usuarios/list.dart';
@@ -15,5 +16,6 @@ class Routes {
     '/fiscal': (context) => FiscalList(),
     '/usuarios': (context) => const UsuariosList(),
     '/clientes': (context) => const ClientesList(),
+    '/clientes/novo': (context) => const ClientesForm(),
   };
 }

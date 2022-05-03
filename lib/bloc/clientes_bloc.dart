@@ -17,7 +17,7 @@ class ClientesBloc implements BlocBase {
 
   final StreamController<List<Cliente>> _clientesController =
       StreamController<List<Cliente>>.broadcast();
-  Stream get outClientes => _clientesController.stream;
+  Stream<List<Cliente>> get outClientes => _clientesController.stream;
 
   Future<bool> delete(String id) async {
     try {
@@ -32,6 +32,7 @@ class ClientesBloc implements BlocBase {
 
       return true;
     } catch (e) {
+      log(e.toString());
       return false;
     }
   }
@@ -81,7 +82,15 @@ class ClientesBloc implements BlocBase {
         .orderBy('razaoSocial')
         .get();
 
-    _clientesController.sink.add(_decode(_data));
+    List<Cliente> _clientes = _data.docs.map((doc) {
+      Cliente _cliente = Cliente.fromJson(doc.data());
+
+      _cliente.id = doc.id;
+
+      return _cliente;
+    }).toList();
+
+    _clientesController.sink.add(_clientes);
   }
 
   Future<Cliente> getCliente(String id) async {

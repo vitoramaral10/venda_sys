@@ -1,12 +1,18 @@
+import 'package:venda_sys/models/cliente/telefone.dart';
+
+import 'email.dart';
 import 'endereco.dart';
 
 class Cliente {
-  final String id;
+  String id;
   final int cnpj;
+  final int ie;
   final String razaoSocial;
   final String nomeFantasia;
-  final int ie;
-  final ClienteEndereco endereco;
+  final List<ClienteEndereco> enderecos;
+  final String tipoPessoa;
+  final List<ClienteEmail> emails;
+  final List<ClienteTelefone> telefones;
 
   Cliente(
     this.id,
@@ -14,7 +20,10 @@ class Cliente {
     this.razaoSocial,
     this.nomeFantasia,
     this.ie,
-    this.endereco,
+    this.enderecos,
+    this.tipoPessoa,
+    this.emails,
+    this.telefones,
   );
 
   Cliente.fromJson(Map<String, dynamic> json)
@@ -23,16 +32,21 @@ class Cliente {
         razaoSocial = json['razaoSocial'],
         nomeFantasia = json['nomeFantasia'],
         ie = json['ie'] ?? 0,
-        endereco = ClienteEndereco.fromJson(json['endereco']);
+        enderecos = ClienteEndereco.fromJsonList(json['enderecos']),
+        tipoPessoa = json['tipoPessoa'],
+        emails = ClienteEmail.fromJsonList(json['emails']),
+        telefones = ClienteTelefone.fromJsonList(json['telefones']);
 
-  static Cliente empty = Cliente('', 0, '', '', 0, ClienteEndereco.empty);
+  static Cliente empty = Cliente('', 0, '', '', 0, [], '', [], []);
 
   Map<String, dynamic> toJson() => {
-        'id': id,
         'cnpj': cnpj,
         'razaoSocial': razaoSocial,
         'nomeFantasia': nomeFantasia,
         'ie': ie,
-        'endereco': endereco.toJson(),
+        'enderecos': enderecos.map((e) => e.toJson()).toList(),
+        'tipoPessoa': tipoPessoa,
+        'emails': emails.map((e) => e.toJson()).toList(),
+        'telefones': telefones.map((e) => e.toJson()).toList(),
       };
 }

@@ -15,7 +15,8 @@ class ProdutosBloc implements BlocBase {
 
   final StreamController<List<Produto>> _produtosController =
       StreamController<List<Produto>>.broadcast();
-  Stream get outProdutos => _produtosController.stream;
+      
+  Stream<List<Produto>>  get outProdutos => _produtosController.stream;
 
   Future<bool> delete(String id) async {
     try {
@@ -78,7 +79,12 @@ class ProdutosBloc implements BlocBase {
         .orderBy('descricao')
         .get();
 
-    _produtosController.sink.add(_decode(_data));
+    final List<Produto> produtos = _data.docs
+        .map((e) => Produto.fromJson(e.data()))
+        .toList();
+
+
+    _produtosController.sink.add(produtos);
   }
 
   Future<Produto> getProduto(String id) async {

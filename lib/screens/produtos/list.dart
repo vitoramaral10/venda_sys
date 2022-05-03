@@ -14,7 +14,7 @@ class ProdutosList extends StatelessWidget {
     BlocProvider.getBloc<ProdutosBloc>().search();
 
     return BaseWidget(
-      child: StreamBuilder(
+      child: StreamBuilder<List<Produto>>(
         stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -22,7 +22,7 @@ class ProdutosList extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            List<Produto> produtos = snapshot.data! as List<Produto>;
+            List<Produto> produtos = snapshot.data!;
 
             return ListView.builder(
               shrinkWrap: true,

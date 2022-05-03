@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/clientes_bloc.dart';
 import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
+import 'package:venda_sys/models/cliente/email.dart';
 import 'package:venda_sys/models/cliente/endereco.dart';
+import 'package:venda_sys/models/cliente/telefone.dart';
 
 import '../../models/cliente/cliente.dart';
 
@@ -98,13 +100,33 @@ class _ClientesFormState extends State<ClientesForm> {
               child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      List<ClienteEndereco> enderecos = [];
+                      List<ClienteEmail> emails = [];
+                      List<ClienteTelefone> telefones = [];
+
                       Cliente cliente = Cliente(
-                          widget.id,
-                          int.tryParse(_cnpjController.text) ?? 0,
-                          _razaoSocialController.text,
-                          _nomeFantasiaController.text,
-                          int.tryParse(_ieController.text) ?? 0,
-                          ClienteEndereco.empty);
+                        widget.id,
+                        int.tryParse(_cnpjController.text) ?? 0,
+                        _razaoSocialController.text,
+                        _nomeFantasiaController.text,
+                        int.tryParse(_ieController.text) ?? 0,
+                        enderecos,
+                        '',
+                        emails,
+                        telefones,
+                      );
+
+                      cliente = Cliente(
+                        '',
+                        84803303000132,
+                        'VIDAL COMERCIO E REPRESENTACAO LTDA',
+                        'VIDAL COMERCIO E REPRESENTACAO LTDA',
+                        int.tryParse(_ieController.text) ?? 0,
+                        [ClienteEndereco('RUA PROFESSORA EDITH GORDAN', '756', 'CENTRO', 4127106, 'TELEMACO BORBA', 'PR', '84261632', 1058, 'BRASIL')],
+                        'J',
+                        [ClienteEmail('email', true)],
+                        [ClienteTelefone(4232732754, '', '')],
+                      );
 
                       (widget.id.isEmpty) ? _save(cliente) : _edit(cliente);
                     }

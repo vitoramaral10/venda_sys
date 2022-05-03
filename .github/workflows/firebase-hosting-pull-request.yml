@@ -60,7 +60,7 @@ jobs:
         with:
           args: deploy --only hosting --public web-build
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_VENDASYS_97D45 }}
           PROJECT_ID: default
   beta_apk:
     name: Upload Android Beta to Firebase App Distribution

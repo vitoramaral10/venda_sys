@@ -21,9 +21,9 @@ jobs:
     - name: Archive Production Artifact
       uses: actions/upload-artifact@main
       with:
-        name: web-build
+        name: web
         path: build/web
-  build_apk:
+  build_appbundle:
     name: Build Flutter (Android)
     runs-on: ubuntu-latest
     steps:
@@ -35,14 +35,12 @@ jobs:
       with:
           channel: 'stable'
     - run: flutter pub get
-#     - run: flutter build apk --target-platform android-arm,android-arm64 --split-per-abi
-#     - run: flutter build appbundle --target-platform android-arm,android-arm64
     - run: flutter build appbundle
-    - name: Upload APK
+    - name: Upload appbundle
       uses: actions/upload-artifact@main
       with:
-        name: apk-build
-        path: build/app/outputs/apk/release
+        name: appbundle
+        path: build/app/outputs/bundle/release
   deploy_web:
     name: Deploy Web to Firebase Hosting
     needs: build_web
@@ -62,9 +60,9 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: default
-  beta_apk:
+  beta_appbundle:
     name: Upload Android Beta to Firebase App Distribution
-    needs: [build_apk]
+    needs: [build_appbundle]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -75,8 +73,8 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@main
       with:
-        name: apk-build
-    - name: Upload APK
+        name: appbundle
+    - name: Upload appbundle
       uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
       with:
         appId: ${{secrets.FIREBASE_ANDROID_APPID}}

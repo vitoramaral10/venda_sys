@@ -24,4 +24,9 @@ class ClienteEmail {
 
     return list;
   }
+
+  @override
+  String toString() {
+    return 'ClienteEmail{email: $email, status: $status}';
+  }
 }

@@ -5,7 +5,7 @@ class ClienteEndereco {
   final int municipioCodigo;
   final String municipio;
   final String uf;
-  final int cep;
+  final String cep;
   final int paisCodigo;
   final String pais;
   final String complemento;
@@ -47,11 +47,29 @@ class ClienteEndereco {
         'complemento': complemento,
       };
 
+      static ClienteEndereco empty = ClienteEndereco(
+        '',
+        '',
+        '',
+        0,
+        '',
+        '',
+        '',
+        0,
+        '',
+        '',
+      );
+
   static List<ClienteEndereco> fromJsonList(List<dynamic> json) {
     List<ClienteEndereco> list = json.map((e) {
       return ClienteEndereco.fromJson(e);
     }).toList();
 
     return list;
+  }
+
+  @override
+  String toString() {
+    return 'ClienteEndereco{logradouro: $logradouro, numero: $numero, bairro: $bairro, municipioCodigo: $municipioCodigo, municipio: $municipio, uf: $uf, cep: $cep, paisCodigo: $paisCodigo, pais: $pais, complemento: $complemento}';
   }
 }

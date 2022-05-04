@@ -80,6 +80,9 @@ class _ClientesFormState extends State<ClientesForm> {
                                 if (value!.isEmpty) {
                                   return 'Campo obrigatório';
                                 }
+                                if (!UtilBrasilFields.isCNPJValido(value)) {
+                                  return 'CNPJ inválido';
+                                }
                                 return null;
                               },
                               inputFormatters: [
@@ -116,6 +119,12 @@ class _ClientesFormState extends State<ClientesForm> {
                             child: CustomTextField(
                               label: 'Razão Social',
                               controller: _razaoSocialController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Campo obrigatório';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           const SizedBox(width: Constants.defaultPadding),
@@ -208,6 +217,10 @@ class _ClientesFormState extends State<ClientesForm> {
                                 if (value!.isEmpty) {
                                   return 'Campo obrigatório';
                                 }
+                                if (value.length != 10) {
+                                  return 'CEP inválido';
+                                }
+
                                 return null;
                               },
                             ),
@@ -316,38 +329,29 @@ class _ClientesFormState extends State<ClientesForm> {
         '',
         _cnpjController.text
             .replaceAll('.', '')
-            .replaceAll('/', '')
-            .replaceAll('-', ''),
+            .replaceAll('-', '')
+            .replaceAll('/', ''),
         _razaoSocialController.text,
         _nomeFantasiaController.text,
         _ieController.text,
-        [
-          ClienteEndereco(
-            _logradouroController.text,
-            _numeroController.text,
-            _bairroController.text,
-            0,
-            _cidadeController.text,
-            _estado,
-            int.parse(
-                _cepController.text.replaceAll('-', '').replaceAll('.', '')),
-            0,
-            'Brasil',
-            '',
-          ),
-        ],
-        'J',
-        [
-          ClienteEmail(
-            _emailController.text,
-            true,
-          ),
-        ],
+        ClienteEndereco(
+          _logradouroController.text,
+          _numeroController.text,
+          _bairroController.text,
+          0,
+          _cidadeController.text,
+          _estado,
+          _cepController.text.replaceAll('.', '').replaceAll('-', ''),
+          0,
+          'Brasil',
+          _complementoController.text,
+        ),
+        _tipoPessoa,
+        [ClienteEmail(_emailController.text, true)],
         int.parse(_telefoneController.text
             .replaceAll('(', '')
-            .replaceAll(')', '')
-            .replaceAll('-', '')
-            .replaceAll(' ', '')),
+            .replaceAll(') ', '')
+            .replaceAll('-', '')),
         _contatoController.text,
         _comentarioController.text,
       );

@@ -208,22 +208,20 @@ class FiscalBloc implements BlocBase {
               nota.destinatario.nome,
               nota.destinatario.nome,
               nota.destinatario.ie.toString(),
-              [
-                ClienteEndereco(
-                  nota.destinatario.endereco.logradouro,
-                  nota.destinatario.endereco.numero,
-                  nota.destinatario.endereco.bairro,
-                  nota.destinatario.endereco.municipioCodigo,
-                  nota.destinatario.endereco.municipio,
-                  nota.destinatario.endereco.uf,
-                  int.parse(nota.destinatario.endereco.cep
-                      .replaceAll('-', '')
-                      .replaceAll('.', '')),
-                  nota.destinatario.endereco.paisCodigo,
-                  nota.destinatario.endereco.pais,
-                  '',
-                ),
-              ],
+              ClienteEndereco(
+                nota.destinatario.endereco.logradouro,
+                nota.destinatario.endereco.numero,
+                nota.destinatario.endereco.bairro,
+                nota.destinatario.endereco.municipioCodigo,
+                nota.destinatario.endereco.municipio,
+                nota.destinatario.endereco.uf,
+                nota.destinatario.endereco.cep
+                    .replaceAll('-', '')
+                    .replaceAll('.', ''),
+                nota.destinatario.endereco.paisCodigo,
+                nota.destinatario.endereco.pais,
+                '',
+              ),
               'J',
               [],
               0,

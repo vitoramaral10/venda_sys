@@ -13,7 +13,7 @@ Box _box = Hive.box(boxName);
 
 class ClientesBloc implements BlocBase {
   final String _collection = 'clientes';
-  String _empresa = _box.get('empresa');
+  final String _empresa = _box.get('empresa');
 
   final StreamController<List<Cliente>> _clientesController =
       StreamController<List<Cliente>>.broadcast();
@@ -73,8 +73,6 @@ class ClientesBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    _empresa = _box.get('empresa');
-
     final _data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)

@@ -41,12 +41,34 @@ class _VendaSysAppState extends State<VendaSysApp> {
         title: 'VendaSys',
         routes: Routes.list,
         theme: ThemeData.light().copyWith(
-          scaffoldBackgroundColor: Constants.background,
-          canvasColor: Constants.secondary,
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Constants.primary,
-          ),
-        ),
+            scaffoldBackgroundColor: Constants.background,
+            canvasColor: Constants.secondary,
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Constants.primary,
+            ),
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Constants.primary,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              floatingLabelStyle: const TextStyle(
+                color: Constants.primary,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Constants.defaultPadding),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Constants.defaultPadding),
+                borderSide: const BorderSide(
+                  color: Constants.primary,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Constants.defaultPadding),
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                ),
+              ),
+            )),
         home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {

@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/clientes_bloc.dart';
 import 'package:venda_sys/components/base_widget.dart';
@@ -37,8 +38,7 @@ class ClientesList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ClientesForm()));
+          Navigator.pushNamed(context, '/clientes/novo');
         },
         child: const Icon(Icons.add),
       ),
@@ -50,12 +50,8 @@ class ClientesList extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ClientesForm(
-                        id: cliente.id,
-                      )));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ClientesForm()));
         },
         child: Dismissible(
           key: ValueKey<int>(index),
@@ -85,7 +81,7 @@ class ClientesList extends StatelessWidget {
               maxLines: 1,
             ),
             subtitle: Text(
-              cliente.cnpj.toString(),
+              UtilBrasilFields.obterCnpj(cliente.cnpj.toString()),
               maxLines: 1,
             ),
           ),

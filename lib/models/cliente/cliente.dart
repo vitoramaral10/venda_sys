@@ -1,18 +1,18 @@
-import 'package:venda_sys/models/cliente/telefone.dart';
-
 import 'email.dart';
 import 'endereco.dart';
 
 class Cliente {
   String id;
-  final int cnpj;
-  final int ie;
+  final String cnpj;
+  final String ie;
   final String razaoSocial;
   final String nomeFantasia;
-  final List<ClienteEndereco> enderecos;
+  ClienteEndereco endereco;
   final String tipoPessoa;
   final List<ClienteEmail> emails;
-  final List<ClienteTelefone> telefones;
+  final int telefone;
+  final String contato;
+  final String comentario;
 
   Cliente(
     this.id,
@@ -20,10 +20,12 @@ class Cliente {
     this.razaoSocial,
     this.nomeFantasia,
     this.ie,
-    this.enderecos,
+    this.endereco,
     this.tipoPessoa,
     this.emails,
-    this.telefones,
+    this.telefone,
+    this.contato,
+    this.comentario,
   );
 
   Cliente.fromJson(Map<String, dynamic> json)
@@ -32,21 +34,42 @@ class Cliente {
         razaoSocial = json['razaoSocial'],
         nomeFantasia = json['nomeFantasia'],
         ie = json['ie'] ?? 0,
-        enderecos = ClienteEndereco.fromJsonList(json['enderecos']),
+        endereco = ClienteEndereco.fromJson(json['endereco']),
         tipoPessoa = json['tipoPessoa'],
         emails = ClienteEmail.fromJsonList(json['emails']),
-        telefones = ClienteTelefone.fromJsonList(json['telefones']);
-
-  static Cliente empty = Cliente('', 0, '', '', 0, [], '', [], []);
+        telefone = json['telefone'],
+        contato = json['contato'],
+        comentario = json['comentario'];
 
   Map<String, dynamic> toJson() => {
         'cnpj': cnpj,
         'razaoSocial': razaoSocial,
         'nomeFantasia': nomeFantasia,
         'ie': ie,
-        'enderecos': enderecos.map((e) => e.toJson()).toList(),
+        'endereco': endereco.toJson(),
         'tipoPessoa': tipoPessoa,
         'emails': emails.map((e) => e.toJson()).toList(),
-        'telefones': telefones.map((e) => e.toJson()).toList(),
+        'telefone': telefone,
+        'contato': contato,
+        'comentario': comentario,
       };
+
+  static Cliente empty = Cliente(
+    '',
+    '',
+    '',
+    '',
+    '',
+    ClienteEndereco.empty,
+    '',
+    [],
+    0,
+    '',
+    '',
+  );
+
+  @override
+  String toString() {
+    return 'Cliente{id: $id, cnpj: $cnpj, razaoSocial: $razaoSocial, nomeFantasia: $nomeFantasia, ie: $ie, endereco: $endereco, tipoPessoa: $tipoPessoa, emails: $emails, telefone: $telefone, contato: $contato, comentario: $comentario}';
+  }
 }

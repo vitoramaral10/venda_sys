@@ -9,9 +9,7 @@ import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
 import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
-import 'package:venda_sys/models/cliente/email.dart';
 import 'package:venda_sys/models/cliente/endereco.dart';
-import 'package:venda_sys/models/cliente/telefone.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
 import 'package:venda_sys/models/produto.dart';
@@ -192,7 +190,7 @@ class FiscalBloc implements BlocBase {
           }
         });
 
-        //Verifica se o produto existe
+        //Verifica se o cliente existe
         QuerySnapshot<Map<String, dynamic>> _clientesCadastrados =
             await FirebaseFirestore.instance
                 .collection('empresas')
@@ -205,18 +203,33 @@ class FiscalBloc implements BlocBase {
         if (_clientesCadastrados.docs.isEmpty) {
           BlocProvider.getBloc<ClientesBloc>().save(
             Cliente(
+              '',
+              nota.destinatario.cnpj.toString(),
+              nota.destinatario.nome,
+              nota.destinatario.nome,
+              nota.destinatario.ie.toString(),
+              ClienteEndereco(
+                nota.destinatario.endereco.logradouro,
+                nota.destinatario.endereco.numero,
+                nota.destinatario.endereco.bairro,
+                nota.destinatario.endereco.municipioCodigo,
+                nota.destinatario.endereco.municipio,
+                nota.destinatario.endereco.uf,
+                nota.destinatario.endereco.cep
+                    .replaceAll('-', '')
+                    .replaceAll('.', ''),
+                nota.destinatario.endereco.paisCodigo,
+                nota.destinatario.endereco.pais,
                 '',
-                nota.destinatario.cnpj,
-                nota.destinatario.nome,
-                nota.destinatario.nome,
-                nota.destinatario.ie,
-                [ClienteEndereco.fromJson(nota.destinatario.endereco.toJson())],
-                '',
-                [ClienteEmail.empty],
-                [ClienteTelefone.empty]),
+              ),
+              'J',
+              [],
+              0,
+              '',
+              '',
+            ),
           );
         }
-
         search();
 
         return 'ok';

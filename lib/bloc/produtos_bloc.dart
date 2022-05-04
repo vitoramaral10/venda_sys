@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -15,8 +16,8 @@ class ProdutosBloc implements BlocBase {
 
   final StreamController<List<Produto>> _produtosController =
       StreamController<List<Produto>>.broadcast();
-      
-  Stream<List<Produto>>  get outProdutos => _produtosController.stream;
+
+  Stream<List<Produto>> get outProdutos => _produtosController.stream;
 
   Future<bool> delete(String id) async {
     try {
@@ -27,10 +28,11 @@ class ProdutosBloc implements BlocBase {
           .doc(id)
           .delete();
 
-      search();
+      BlocProvider.getBloc<ProdutosBloc>().search();
 
       return true;
     } catch (e) {
+      log(e.toString());
       return false;
     }
   }
@@ -79,10 +81,13 @@ class ProdutosBloc implements BlocBase {
         .orderBy('descricao')
         .get();
 
-    final List<Produto> produtos = _data.docs
-        .map((e) => Produto.fromJson(e.data()))
-        .toList();
+    final List<Produto> produtos = _data.docs.map((e) {
+      Produto _produto = Produto.fromJson(e.data());
 
+      _produto.id = e.id;
+
+      return _produto;
+    }).toList();
 
     _produtosController.sink.add(produtos);
   }

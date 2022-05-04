@@ -1,10 +1,10 @@
 import 'endereco.dart';
 
 class NotaFiscalDestinatario {
-  final int cnpj;
+  final String cnpj;
   final String nome;
   final int indicadorIEDestinatario;
-  final int ie;
+  final String ie;
   final NotaFiscalXMLEndereco endereco;
 
   NotaFiscalDestinatario(
@@ -29,5 +29,11 @@ class NotaFiscalDestinatario {
         'ie': ie,
         'endereco': endereco.toJson(),
       };
-  static NotaFiscalDestinatario empty = NotaFiscalDestinatario(0, '', 0, 0, NotaFiscalXMLEndereco.empty);
+  static NotaFiscalDestinatario empty =
+      NotaFiscalDestinatario('', '', 0, '', NotaFiscalXMLEndereco.empty);
+
+  @override
+  String toString() {
+    return 'NotaFiscalDestinatario{cnpj: $cnpj, nome: $nome, indicadorIEDestinatario: $indicadorIEDestinatario, ie: $ie, endereco: $endereco}';
+  }
 }

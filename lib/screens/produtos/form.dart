@@ -165,7 +165,6 @@ class _ProdutosFormState extends State<ProdutosForm> {
         padding: const EdgeInsets.all(8.0),
         child: DropdownButtonFormField<String>(
           isDense: true,
-          decoration: const InputDecoration(border: OutlineInputBorder()),
           items: unidadeMedidaList
               .map((e) => DropdownMenuItem(
                     child: Text(e.descricao),

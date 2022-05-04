@@ -13,7 +13,7 @@ Box _box = Hive.box(boxName);
 
 class ClientesBloc implements BlocBase {
   final String _collection = 'clientes';
-  String _empresa = _box.get('empresa');
+  final String _empresa = _box.get('empresa');
 
   final StreamController<List<Cliente>> _clientesController =
       StreamController<List<Cliente>>.broadcast();
@@ -73,8 +73,6 @@ class ClientesBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    _empresa = _box.get('empresa');
-
     final _data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
@@ -111,21 +109,6 @@ class ClientesBloc implements BlocBase {
     }
   }
 
-  Future<List<Cliente>> searchBy(String codigo) async {
-    try {
-      final _docs = await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .where('codigo', isEqualTo: codigo)
-          .get();
-
-      return _decode(_docs);
-    } catch (e) {
-      return const [];
-    }
-  }
-
   @override
   void addListener(VoidCallback listener) {}
 
@@ -140,15 +123,4 @@ class ClientesBloc implements BlocBase {
 
   @override
   void removeListener(VoidCallback listener) {}
-
-  List<Cliente> _decode(QuerySnapshot response) {
-    final clientes = response.docs.map<Cliente>((QueryDocumentSnapshot map) {
-      final data = map.data() as Map<String, dynamic>;
-
-      data['id'] = map.id;
-      return Cliente.fromJson(data);
-    }).toList();
-
-    return clientes;
-  }
 }

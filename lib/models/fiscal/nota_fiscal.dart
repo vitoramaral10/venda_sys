@@ -24,7 +24,7 @@ class NotaFiscal {
   );
 
   NotaFiscal.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : id = json['id'] ?? '',
         identificacao = NotaFiscalIdentificacao.fromJson(json['identificacao']),
         emitente = NotaFiscalEmitente.fromJson(json['emitente']),
         destinatario = NotaFiscalDestinatario.fromJson(json['destinatario']),
@@ -50,4 +50,9 @@ class NotaFiscal {
     NotaFiscalTotal.empty,
     false,
   );
+
+  @override
+  String toString() {
+    return 'NotaFiscal{id: $id, identificacao: $identificacao, emitente: $emitente, destinatario: $destinatario, produtos: $produtos, total: $total, cancelada: $cancelada}';
+  }
 }

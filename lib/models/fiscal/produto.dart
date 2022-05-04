@@ -70,4 +70,9 @@ class NotaFiscalProduto {
       return NotaFiscalProduto.fromJson(value);
     }).toList();
   }
+
+  @override
+  String toString() {
+    return 'NotaFiscalProduto{codigo: $codigo, ean: $ean, descricao: $descricao, ncm: $ncm, cfop: $cfop, unidadeMedida: $unidadeMedida, quantidade: $quantidade, valorUnitario: $valorUnitario, valorTotal: $valorTotal, eanTributavel: $eanTributavel, unidadeMedidaTributavel: $unidadeMedidaTributavel, quantidadeTributavel: $quantidadeTributavel, valorUnitarioTributavel: $valorUnitarioTributavel, indTot: $indTot}';
+  }
 }

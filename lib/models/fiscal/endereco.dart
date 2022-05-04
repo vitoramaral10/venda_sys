@@ -24,16 +24,16 @@ class NotaFiscalXMLEndereco {
   );
 
   NotaFiscalXMLEndereco.fromJson(Map<String, dynamic> json)
-      : logradouro = json['logradouro'],
-        numero = json['numero'],
-        bairro = json['bairro'],
-        municipioCodigo = json['municipioCodigo'],
-        municipio = json['municipio'],
-        uf = json['uf'],
-        cep = json['cep'],
-        paisCodigo = json['paisCodigo'],
-        pais = json['pais'],
-        telefone = json['telefone'];
+      : logradouro = json['logradouro'] ?? '',
+        numero = json['numero'] ?? '',
+        bairro = json['bairro'] ?? '',
+        municipioCodigo = json['municipioCodigo'] ?? 0,
+        municipio = json['municipio'] ?? '',
+        uf = json['uf'] ?? '',
+        cep = json['cep'] ?? '',
+        paisCodigo = json['paisCodigo'] ?? 0,
+        pais = json['pais'] ?? '',
+        telefone = json['telefone'] ?? 0;
 
   Map<String, dynamic> toJson() => {
         'logradouro': logradouro,
@@ -47,4 +47,9 @@ class NotaFiscalXMLEndereco {
         'telefone': telefone,
       };
   static NotaFiscalXMLEndereco empty = NotaFiscalXMLEndereco('', '', '', 0, '', '', '', 0, '', 0);
+
+  @override
+  String toString() {
+    return 'NotaFiscalXMLEndereco{logradouro: $logradouro, numero: $numero, bairro: $bairro, municipioCodigo: $municipioCodigo, municipio: $municipio, uf: $uf, cep: $cep, paisCodigo: $paisCodigo, pais: $pais, telefone: $telefone}';
+  }
 }

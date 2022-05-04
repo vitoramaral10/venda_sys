@@ -44,4 +44,9 @@ class NotaFiscalIdentificacao {
         'naturezaOperacao': naturezaOperacao,
       };
   static NotaFiscalIdentificacao empty = NotaFiscalIdentificacao(0, 0, 0, 0, DateTime.now(), DateTime.now(), 0, 0, '');
+
+  @override
+  String toString() {
+    return 'NotaFiscalIdentificacao{uf: $uf, tipo: $tipo, serie: $serie, numeroNf: $numeroNf, dataEmissao: $dataEmissao, datamovimentacao: $datamovimentacao, finalidade: $finalidade, presencial: $presencial, naturezaOperacao: $naturezaOperacao}';
+  }
 }

@@ -4,7 +4,7 @@ class NotaFiscalEmitente {
   final String cnpj;
   final String nome;
   final String nomeFantasia;
-  final int ie;
+  final String ie;
   final int ctr;
   final NotaFiscalXMLEndereco endereco;
 
@@ -18,11 +18,11 @@ class NotaFiscalEmitente {
   );
 
   NotaFiscalEmitente.fromJson(Map<String, dynamic> json)
-      : cnpj = json['cnpj'],
-        nome = json['nome'],
-        nomeFantasia = json['nomeFantasia'],
-        ie = json['ie'],
-        ctr = json['ctr'],
+      : cnpj = json['cnpj'] ?? '',
+        nome = json['nome'] ?? '',
+        nomeFantasia = json['nomeFantasia'] ?? '',
+        ie = json['ie'] ?? 0,
+        ctr = json['ctr'] ?? 0,
         endereco = NotaFiscalXMLEndereco.fromJson(json['endereco']);
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +33,11 @@ class NotaFiscalEmitente {
         'ctr': ctr,
         'endereco': endereco.toJson(),
       };
-  static NotaFiscalEmitente empty = NotaFiscalEmitente('', '', '', 0, 0, NotaFiscalXMLEndereco.empty);
+  static NotaFiscalEmitente empty =
+      NotaFiscalEmitente('', '', '', '', 0, NotaFiscalXMLEndereco.empty);
+
+  @override
+  String toString() {
+    return 'NotaFiscalEmitente{cnpj: $cnpj, nome: $nome, nomeFantasia: $nomeFantasia, ie: $ie, ctr: $ctr, endereco: $endereco}';
+  }
 }

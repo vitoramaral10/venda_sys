@@ -4,7 +4,7 @@ class NotaFiscalXMLEmitente {
   final String cnpj;
   final String nome;
   final String nomeFantasia;
-  final int ie;
+  final String ie;
   final int ctr;
   final NotaFiscalXMLEndereco endereco;
 
@@ -21,7 +21,7 @@ class NotaFiscalXMLEmitente {
       : cnpj = json['CNPJ'],
         nome = json['xNome'],
         nomeFantasia = json['xFant'],
-        ie = int.tryParse(json['IE']) ?? 0,
+        ie = json['IE'],
         ctr = int.tryParse(json['CRT']) ?? 0,
         endereco = NotaFiscalXMLEndereco.fromJson(json['enderEmit']);
 
@@ -34,5 +34,5 @@ class NotaFiscalXMLEmitente {
         'endereco': endereco.toJson(),
       };
   static NotaFiscalXMLEmitente empty =
-      NotaFiscalXMLEmitente('', '', '', 0, 0, NotaFiscalXMLEndereco.empty);
+      NotaFiscalXMLEmitente('', '', '', '', 0, NotaFiscalXMLEndereco.empty);
 }

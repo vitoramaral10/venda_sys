@@ -1,7 +1,7 @@
 import 'endereco.dart';
 
 class NotaFiscalXMLDestinatario {
-  final int cnpj;
+  final String cnpj;
   final String nome;
   final int indicadorIEDestinatario;
   final int ie;
@@ -16,7 +16,7 @@ class NotaFiscalXMLDestinatario {
   );
 
   NotaFiscalXMLDestinatario.fromJson(Map<String, dynamic> json)
-      : cnpj = int.tryParse(json['CNPJ'])??0,
+      : cnpj = json['CNPJ'],
         nome = json['xNome'],
         indicadorIEDestinatario = int.parse(json['indIEDest']),
         ie = int.tryParse(json['IE'])?? 0,
@@ -29,5 +29,5 @@ class NotaFiscalXMLDestinatario {
         'ie': ie,
         'endereco': endereco.toJson(),
       };
-  static NotaFiscalXMLDestinatario empty = NotaFiscalXMLDestinatario(0, '', 0, 0, NotaFiscalXMLEndereco.empty);
+  static NotaFiscalXMLDestinatario empty = NotaFiscalXMLDestinatario('', '', 0, 0, NotaFiscalXMLEndereco.empty);
 }

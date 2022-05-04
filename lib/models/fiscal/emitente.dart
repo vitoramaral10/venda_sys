@@ -1,7 +1,7 @@
 import 'endereco.dart';
 
 class NotaFiscalEmitente {
-  final int cnpj;
+  final String cnpj;
   final String nome;
   final String nomeFantasia;
   final int ie;
@@ -33,5 +33,5 @@ class NotaFiscalEmitente {
         'ctr': ctr,
         'endereco': endereco.toJson(),
       };
-  static NotaFiscalEmitente empty = NotaFiscalEmitente(0, '', '', 0, 0, NotaFiscalXMLEndereco.empty);
+  static NotaFiscalEmitente empty = NotaFiscalEmitente('', '', '', 0, 0, NotaFiscalXMLEndereco.empty);
 }

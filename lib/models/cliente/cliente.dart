@@ -3,7 +3,7 @@ import 'endereco.dart';
 
 class Cliente {
   String id;
-  final int cnpj;
+  final String cnpj;
   final String ie;
   final String razaoSocial;
   final String nomeFantasia;
@@ -41,7 +41,7 @@ class Cliente {
         contato = json['contato'],
         comentario = json['comentario'];
 
-  static Cliente empty = Cliente('', 0, '', '', '', [], '', [], 0, '', '');
+  static Cliente empty = Cliente('', '', '', '', '', [], '', [], 0, '', '');
 
   Map<String, dynamic> toJson() => {
         'cnpj': cnpj,

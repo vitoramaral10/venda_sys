@@ -1,5 +1,5 @@
 class Produto {
-  final String id;
+  String id;
   final String codigo;
   final String descricao;
   final String descricaoResumida;

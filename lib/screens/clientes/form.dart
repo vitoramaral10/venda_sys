@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -314,18 +312,12 @@ class _ClientesFormState extends State<ClientesForm> {
 
   _salvar() {
     if (_formKey.currentState!.validate()) {
-      int _cnpj = int.parse(_cnpjController.text!
-          .replaceAll('.', '')
-          .replaceAll('/', '')
-          .replaceAll('-', ''));
-      int _cep =
-          int.parse(_cepController.text.replaceAll(RegExp(r'[^0-9]'), ''));
-      int _telefone =
-          int.parse(_telefoneController.text.replaceAll(RegExp(r'[^0-9]'), ''));
-
       Cliente _cliente = Cliente(
         '',
-        _cnpj,
+        _cnpjController.text
+            .replaceAll('.', '')
+            .replaceAll('/', '')
+            .replaceAll('-', ''),
         _razaoSocialController.text,
         _nomeFantasiaController.text,
         _ieController.text,
@@ -337,20 +329,25 @@ class _ClientesFormState extends State<ClientesForm> {
             0,
             _cidadeController.text,
             _estado,
-            _cep,
+            int.parse(
+                _cepController.text.replaceAll('-', '').replaceAll('.', '')),
             0,
             'Brasil',
-            _complementoController.text,
+            '',
           ),
         ],
-        _tipoPessoa,
+        'J',
         [
           ClienteEmail(
             _emailController.text,
             true,
           ),
         ],
-        _telefone,
+        int.parse(_telefoneController.text
+            .replaceAll('(', '')
+            .replaceAll(')', '')
+            .replaceAll('-', '')
+            .replaceAll(' ', '')),
         _contatoController.text,
         _comentarioController.text,
       );

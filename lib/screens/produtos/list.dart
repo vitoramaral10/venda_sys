@@ -63,9 +63,7 @@ class ProdutosList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           confirmDismiss: (DismissDirection direction) async {
             if (direction == DismissDirection.startToEnd) {
-              final bool res = await _removePopup(context, produto);
-
-              return res;
+              await _removePopup(context, produto);
             }
             return null;
           },

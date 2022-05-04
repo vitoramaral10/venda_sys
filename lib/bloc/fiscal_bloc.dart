@@ -11,7 +11,6 @@ import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
 import 'package:venda_sys/models/cliente/email.dart';
 import 'package:venda_sys/models/cliente/endereco.dart';
-import 'package:venda_sys/models/cliente/telefone.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
 import 'package:venda_sys/models/produto.dart';
@@ -191,31 +190,6 @@ class FiscalBloc implements BlocBase {
                 .update(_update);
           }
         });
-
-        //Verifica se o produto existe
-        QuerySnapshot<Map<String, dynamic>> _clientesCadastrados =
-            await FirebaseFirestore.instance
-                .collection('empresas')
-                .doc(_empresa)
-                .collection('clientes')
-                .where('cnpj', isEqualTo: nota.destinatario.cnpj)
-                .get();
-
-        //Se não existe insere antes de atualizar o histórico
-        if (_clientesCadastrados.docs.isEmpty) {
-          BlocProvider.getBloc<ClientesBloc>().save(
-            Cliente(
-                '',
-                nota.destinatario.cnpj,
-                nota.destinatario.nome,
-                nota.destinatario.nome,
-                nota.destinatario.ie,
-                [ClienteEndereco.fromJson(nota.destinatario.endereco.toJson())],
-                '',
-                [ClienteEmail.empty],
-                [ClienteTelefone.empty]),
-          );
-        }
 
         search();
 

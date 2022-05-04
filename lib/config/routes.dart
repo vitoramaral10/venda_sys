@@ -16,6 +16,6 @@ class Routes {
     '/fiscal': (context) => FiscalList(),
     '/usuarios': (context) => const UsuariosList(),
     '/clientes': (context) => const ClientesList(),
-    '/clientes/novo': (context) => const ClientesForm(),
+    '/clientes/novo': (context) =>  const ClientesForm(),
   };
 }

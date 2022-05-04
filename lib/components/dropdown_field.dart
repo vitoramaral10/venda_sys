@@ -12,7 +12,7 @@ class DropdownField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 51,
+      height: 50,
       child: DropdownButtonFormField<String>(
         dropdownColor: Colors.white,
         value: value,

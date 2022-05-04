@@ -5,9 +5,10 @@ class ClienteEndereco {
   final int municipioCodigo;
   final String municipio;
   final String uf;
-  final String cep;
+  final int cep;
   final int paisCodigo;
   final String pais;
+  final String complemento;
 
   ClienteEndereco(
     this.logradouro,
@@ -19,6 +20,7 @@ class ClienteEndereco {
     this.cep,
     this.paisCodigo,
     this.pais,
+    this.complemento,
   );
 
   ClienteEndereco.fromJson(Map<String, dynamic> json)
@@ -30,7 +32,8 @@ class ClienteEndereco {
         uf = json['uf'],
         cep = json['cep'],
         paisCodigo = json['paisCodigo'] ?? 0,
-        pais = json['pais'];
+        pais = json['pais'],
+        complemento = json['complemento'];
 
   Map<String, dynamic> toJson() => {
         'logradouro': logradouro,
@@ -41,9 +44,8 @@ class ClienteEndereco {
         'cep': cep,
         'paisCodigo': paisCodigo,
         'pais': pais,
+        'complemento': complemento,
       };
-  static ClienteEndereco empty =
-      ClienteEndereco('', '', '', 0, '', '', '', 0, '');
 
   static List<ClienteEndereco> fromJsonList(List<dynamic> json) {
     List<ClienteEndereco> list = json.map((e) {

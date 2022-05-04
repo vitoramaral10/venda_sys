@@ -1,18 +1,18 @@
-import 'package:venda_sys/models/cliente/telefone.dart';
-
 import 'email.dart';
 import 'endereco.dart';
 
 class Cliente {
   String id;
   final int cnpj;
-  final int ie;
+  final String ie;
   final String razaoSocial;
   final String nomeFantasia;
   final List<ClienteEndereco> enderecos;
   final String tipoPessoa;
   final List<ClienteEmail> emails;
-  final List<ClienteTelefone> telefones;
+  int telefone;
+  String contato;
+  String comentario;
 
   Cliente(
     this.id,
@@ -23,7 +23,9 @@ class Cliente {
     this.enderecos,
     this.tipoPessoa,
     this.emails,
-    this.telefones,
+    this.telefone,
+    this.contato,
+    this.comentario,
   );
 
   Cliente.fromJson(Map<String, dynamic> json)
@@ -35,9 +37,11 @@ class Cliente {
         enderecos = ClienteEndereco.fromJsonList(json['enderecos']),
         tipoPessoa = json['tipoPessoa'],
         emails = ClienteEmail.fromJsonList(json['emails']),
-        telefones = ClienteTelefone.fromJsonList(json['telefones']);
+        telefone = json['telefone'],
+        contato = json['contato'],
+        comentario = json['comentario'];
 
-  static Cliente empty = Cliente('', 0, '', '', 0, [], '', [], []);
+  static Cliente empty = Cliente('', 0, '', '', '', [], '', [], 0, '', '');
 
   Map<String, dynamic> toJson() => {
         'cnpj': cnpj,
@@ -47,6 +51,8 @@ class Cliente {
         'enderecos': enderecos.map((e) => e.toJson()).toList(),
         'tipoPessoa': tipoPessoa,
         'emails': emails.map((e) => e.toJson()).toList(),
-        'telefones': telefones.map((e) => e.toJson()).toList(),
+        'telefone': telefone,
+        'contato': contato,
+        'comentario': comentario,
       };
 }

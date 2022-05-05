@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static const double defaultPadding = 16.0;
+  static const double defaultIconSize = 24.0;
 
   static const Color primary = Colors.red;
   static const Color secondary = Color(0xFFF3413F);

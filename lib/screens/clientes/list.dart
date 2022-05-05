@@ -5,7 +5,7 @@ import 'package:venda_sys/bloc/clientes_bloc.dart';
 import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
 
-import 'form.dart';
+import 'view.dart';
 
 class ClientesList extends StatelessWidget {
   const ClientesList({Key? key}) : super(key: key);
@@ -50,8 +50,14 @@ class ClientesList extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ClientesForm()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ClientesView(
+                cliente: cliente,
+              ),
+            ),
+          );
         },
         child: Dismissible(
           key: ValueKey<int>(index),

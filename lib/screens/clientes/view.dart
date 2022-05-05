@@ -1,21 +1,30 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:venda_sys/bloc/fiscal_bloc.dart';
 import 'package:venda_sys/components/base_widget.dart';
-import 'package:venda_sys/components/dropdown_field.dart';
+import 'package:venda_sys/components/carregando_widget.dart';
+import 'package:venda_sys/components/voltar_button.dart';
 import 'package:venda_sys/libraries/constants.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
+import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 
 class ClientesView extends StatelessWidget {
   final Cliente cliente;
+  final FiscalBloc _bloc = BlocProvider.getBloc<FiscalBloc>();
 
-  const ClientesView({Key? key, required this.cliente}) : super(key: key);
+  ClientesView({Key? key, required this.cliente}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _bloc.searchByCnpj(cliente.cnpj);
+
     return BaseWidget(
       title: 'Dados do cliente',
       child: Column(
         children: [
+          const VoltarButton(),
+          const SizedBox(height: Constants.defaultPadding),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(Constants.defaultPadding),
@@ -198,6 +207,103 @@ class ClientesView extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: Constants.defaultPadding),
+          StreamBuilder<List<NotaFiscal>>(
+            stream: _bloc.outNotaFiscalFiltered,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const CarregandoWidget();
+              }
+
+              if (snapshot.data!.isEmpty) {
+                return Container();
+              }
+
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Constants.defaultPadding),
+                ),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(Constants.defaultPadding),
+                  child: ExpansionTile(
+                    textColor: Constants.primary,
+                    iconColor: Constants.primary,
+                    title: const Text(
+                      'Notas emitidas',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: [
+                      const Divider(
+                        color: Constants.primary,
+                      ),
+                      const SizedBox(height: Constants.defaultPadding),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final notaFiscal = snapshot.data![index];
+                          return ListTile(
+                            leading: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  notaFiscal.identificacao.numeroNf.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            title: Text(
+                              UtilData.obterDataDDMMAAAA(
+                                      notaFiscal.identificacao.dataEmissao) +
+                                  " " +
+                                  UtilData.obterHoraHHMM(
+                                      notaFiscal.identificacao.dataEmissao),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(
+                              "Quantidade de itens: " +
+                                  notaFiscal.produtos.length.toString(),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            trailing: Text(
+                              "Valor Total: " +
+                                  UtilBrasilFields.obterReal(
+                                      notaFiscal.total.vNF),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/nota-fiscal',
+                                arguments: notaFiscal,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

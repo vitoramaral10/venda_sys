@@ -22,7 +22,12 @@ class FiscalBloc implements BlocBase {
 
   final StreamController<List<NotaFiscal>> _notaFiscalController =
       StreamController<List<NotaFiscal>>.broadcast();
+  final StreamController<List<NotaFiscal>> _notaFiscalFilteredController =
+      StreamController<List<NotaFiscal>>.broadcast();
+
   Stream<List<NotaFiscal>> get outNotaFiscal => _notaFiscalController.stream;
+  Stream<List<NotaFiscal>> get outNotaFiscalFiltered =>
+      _notaFiscalFilteredController.stream;
 
   Future<bool> edit(NotaFiscal fiscal) async {
     try {
@@ -321,5 +326,24 @@ class FiscalBloc implements BlocBase {
     }).toList();
 
     return fiscal;
+  }
+
+  Future<void> searchByCnpj(String cnpj) async {
+    final _notas = await FirebaseFirestore.instance
+        .collection('empresas')
+        .doc(_empresa)
+        .collection(_collection)
+        .where('destinatario.cnpj', isEqualTo: cnpj)
+        .orderBy('identificacao')
+        .get();
+
+    final List<NotaFiscal> _fiscais = _notas.docs.map((doc) {
+      var data = doc.data();
+
+      data['id'] = doc.id;
+      return NotaFiscal.fromJson(data);
+    }).toList();
+
+    _notaFiscalFilteredController.sink.add(_fiscais);
   }
 }

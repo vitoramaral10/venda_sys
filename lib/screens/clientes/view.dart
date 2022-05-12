@@ -89,21 +89,25 @@ class ClientesView extends StatelessWidget {
                   const SizedBox(height: Constants.defaultPadding),
                   Row(
                     children: [
-                      Expanded(
-                        child: InfoField(
-                          title: 'Email:',
-                          value: cliente.emails[0].email,
-                        ),
-                      ),
+                      cliente.emails!.isNotEmpty
+                          ? Expanded(
+                              child: InfoField(
+                                title: 'Email:',
+                                value: cliente.emails![0].email,
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(height: Constants.defaultPadding),
-                      Expanded(
-                        child: InfoField(
-                          title: 'Telefone:',
-                          value: UtilBrasilFields.obterTelefone(
-                            cliente.telefone.toString(),
-                          ),
-                        ),
-                      ),
+                      cliente.telefone.toString().length > 9
+                          ? Expanded(
+                              child: InfoField(
+                                title: 'Telefone:',
+                                value: UtilBrasilFields.obterTelefone(
+                                  cliente.telefone.toString(),
+                                ),
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(width: Constants.defaultPadding),
                       Expanded(
                         child: InfoField(

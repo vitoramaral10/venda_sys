@@ -103,8 +103,8 @@ Este projeto roda tanto em Android como na web.
 
 1. Compile o projeto para web
     ```sh
-   flutter build web
-   ```
+    flutter build web
+    ```
 
 2. Faça o upload para o firebase
     ```sh

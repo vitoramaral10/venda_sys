@@ -9,7 +9,7 @@ class Cliente {
   final String nomeFantasia;
   ClienteEndereco endereco;
   final String tipoPessoa;
-  final List<ClienteEmail> emails;
+  final List<ClienteEmail>? emails;
   final int telefone;
   final String contato;
   final String comentario;
@@ -48,7 +48,7 @@ class Cliente {
         'ie': ie,
         'endereco': endereco.toJson(),
         'tipoPessoa': tipoPessoa,
-        'emails': emails.map((e) => e.toJson()).toList(),
+        'emails': emails!.map((e) => e.toJson()).toList(),
         'telefone': telefone,
         'contato': contato,
         'comentario': comentario,

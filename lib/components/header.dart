@@ -19,6 +19,27 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        if (Responsive.isMobile(context))
+          InkWell(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Constants.defaultPadding,
+                vertical: Constants.defaultPadding / 2,
+              ),
+              decoration: BoxDecoration(
+                color: Constants.secondary,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(color: Colors.white10),
+              ),
+              child: Container(
+                height: 38,
+                child: const Icon(Icons.menu, color: Colors.white),
+              ),
+            ),
+          ),
         if (!Responsive.isMobile(context))
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,8 +61,7 @@ class Header extends StatelessWidget {
               ),
             ],
           ),
-        if (!Responsive.isMobile(context))
-          Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
+        Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
         const ProfileCard()
       ],
     );

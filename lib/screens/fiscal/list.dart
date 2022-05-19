@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
 import 'package:venda_sys/components/base_widget.dart';
@@ -17,6 +18,13 @@ class FiscalList extends StatelessWidget {
     BlocProvider.getBloc<FiscalBloc>().search();
 
     return BaseWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ImportXml.importPopup(context);
+        },
+        child: const Icon(Icons.file_upload_outlined),
+      ),
+      title: 'Fiscal',
       child: StreamBuilder(
         stream: BlocProvider.getBloc<FiscalBloc>().outNotaFiscal,
         builder: (context, snapshot) {
@@ -41,13 +49,6 @@ class FiscalList extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ImportXml.importPopup(context);
-        },
-        child: const Icon(Icons.file_upload_outlined),
-      ),
-      title: 'Fiscal',
     );
   }
 
@@ -140,6 +141,7 @@ class FiscalList extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await BlocProvider.getBloc<FiscalBloc>().cancel(nota.id);
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   } catch (e) {
                     errorPopup(

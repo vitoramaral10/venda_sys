@@ -18,8 +18,8 @@ class DropdownField extends StatelessWidget {
         value: value,
         items: items.entries
             .map((e) => DropdownMenuItem(
-                  child: Text(e.value),
                   value: e.key,
+                  child: Text(e.value),
                 ))
             .toList(),
         onChanged: onChanged,

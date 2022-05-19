@@ -17,6 +17,7 @@ class ProdutosForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProdutosFormState createState() => _ProdutosFormState();
 }
 
@@ -57,6 +58,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
 
       setState(() {});
     } else if (widget.id.isNotEmpty) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       errorPopup(
           context: context,
@@ -70,7 +72,7 @@ class _ProdutosFormState extends State<ProdutosForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(((widget.id.isNotEmpty) ? 'Editar' : 'Novo') + ' Produto'),
+        title: Text('${(widget.id.isNotEmpty) ? 'Editar' : 'Novo'} Produto'),
       ),
       body: Form(
         key: _formKey,
@@ -167,8 +169,8 @@ class _ProdutosFormState extends State<ProdutosForm> {
           isDense: true,
           items: unidadeMedidaList
               .map((e) => DropdownMenuItem(
-                    child: Text(e.descricao),
                     value: e.id,
+                    child: Text(e.descricao),
                   ))
               .toList(),
           onChanged: (value) {
@@ -216,13 +218,13 @@ class _ProdutosFormState extends State<ProdutosForm> {
   }
 
   bool _checkValue(String id, List<UnidadeMedida> unidadeMedidaList) {
-    bool _check = false;
+    bool check = false;
     for (var element in unidadeMedidaList) {
       if (element.id == id) {
-        _check = true;
+        check = true;
       }
     }
 
-    return _check;
+    return check;
   }
 }

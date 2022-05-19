@@ -267,27 +267,23 @@ class ClientesView extends StatelessWidget {
                               ],
                             ),
                             title: Text(
-                              UtilData.obterDataDDMMAAAA(
-                                      notaFiscal.identificacao.dataEmissao) +
-                                  " " +
-                                  UtilData.obterHoraHHMM(
-                                      notaFiscal.identificacao.dataEmissao),
+                              "${UtilData.obterDataDDMMAAAA(
+                                      notaFiscal.identificacao.dataEmissao)} ${UtilData.obterHoraHHMM(
+                                      notaFiscal.identificacao.dataEmissao)}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             subtitle: Text(
-                              "Quantidade de itens: " +
-                                  notaFiscal.produtos.length.toString(),
+                              "Quantidade de itens: ${notaFiscal.produtos.length}",
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
                             trailing: Text(
-                              "Valor Total: " +
-                                  UtilBrasilFields.obterReal(
-                                      notaFiscal.total.vNF),
+                              "Valor Total: ${UtilBrasilFields.obterReal(
+                                      notaFiscal.total.vNF)}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

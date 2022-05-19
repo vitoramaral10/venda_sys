@@ -19,7 +19,7 @@ class ProfileCard extends StatelessWidget {
           if (!snapshot.hasData) {
             return Container();
           }
-          Usuario _usuario = snapshot.data!;
+          Usuario usuario = snapshot.data!;
 
           return Container(
             margin: const EdgeInsets.only(left: Constants.defaultPadding),
@@ -47,7 +47,7 @@ class ProfileCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: Constants.defaultPadding / 2),
                     child: Text(
-                      _usuario.nome,
+                      usuario.nome,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

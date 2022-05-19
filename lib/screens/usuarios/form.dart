@@ -18,6 +18,7 @@ class UsuariosForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _UsuariosFormState createState() => _UsuariosFormState();
 }
 
@@ -42,6 +43,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
 
       setState(() {});
     } else if (widget.id.isNotEmpty) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       errorPopup(
           context: context,
@@ -56,7 +58,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ((widget.id.isNotEmpty) ? 'Editar' : 'Nova') + ' Unidade de Medida',
+          '${(widget.id.isNotEmpty) ? 'Editar' : 'Nova'} Unidade de Medida',
         ),
       ),
       body: Form(
@@ -77,7 +79,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
               child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final _usuario = Usuario(
+                      final usuarioFinal = Usuario(
                         widget.id,
                         _nomeController.text,
                         usuario!.email,
@@ -85,7 +87,7 @@ class _UsuariosFormState extends State<UsuariosForm> {
                         usuario!.empresas,
                       );
 
-                      (widget.id.isEmpty) ? _save(_usuario) : _edit(_usuario);
+                      (widget.id.isEmpty) ? _save(usuarioFinal) : _edit(usuarioFinal);
                     }
                   },
                   child: const Text('Salvar')),

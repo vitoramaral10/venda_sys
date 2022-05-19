@@ -14,6 +14,14 @@ class ProdutosList extends StatelessWidget {
     BlocProvider.getBloc<ProdutosBloc>().search();
 
     return BaseWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProdutosForm()));
+        },
+        child: const Icon(Icons.add),
+      ),
+      title: 'Produtos',
       child: StreamBuilder<List<Produto>>(
         stream: BlocProvider.getBloc<ProdutosBloc>().outProdutos,
         builder: (context, snapshot) {
@@ -35,14 +43,6 @@ class ProdutosList extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProdutosForm()));
-        },
-        child: const Icon(Icons.add),
-      ),
-      title: 'Produtos',
     );
   }
 
@@ -151,9 +151,10 @@ class ProdutosList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ProdutosBloc>()
+                  bool removed = await BlocProvider.getBloc<ProdutosBloc>()
                       .delete(produto.id);
-                  Navigator.of(context).pop(_removed);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(removed);
                 },
               ),
             ],

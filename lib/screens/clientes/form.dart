@@ -325,7 +325,7 @@ class _ClientesFormState extends State<ClientesForm> {
 
   _salvar() {
     if (_formKey.currentState!.validate()) {
-      Cliente _cliente = Cliente(
+      Cliente cliente = Cliente(
         '',
         _cnpjController.text
             .replaceAll('.', '')
@@ -356,7 +356,7 @@ class _ClientesFormState extends State<ClientesForm> {
         _comentarioController.text,
       );
 
-      BlocProvider.getBloc<ClientesBloc>().save(_cliente);
+      BlocProvider.getBloc<ClientesBloc>().save(cliente);
 
       Navigator.pop(context);
     }

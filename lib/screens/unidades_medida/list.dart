@@ -13,6 +13,14 @@ class UnidadesMedidaList extends StatelessWidget {
     BlocProvider.getBloc<UnidadesMedidaBloc>().search();
 
     return BaseWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
+        },
+        child: const Icon(Icons.add),
+      ),
+      title: 'Unidades de Medida',
       child: StreamBuilder(
         stream: BlocProvider.getBloc<UnidadesMedidaBloc>().outUnidadesMedida,
         builder: (context, snapshot) {
@@ -34,14 +42,6 @@ class UnidadesMedidaList extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => UnidadesMedidaForm()));
-        },
-        child: const Icon(Icons.add),
-      ),
-      title: 'Unidades de Medida',
     );
   }
 
@@ -117,10 +117,11 @@ class UnidadesMedidaList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed =
+                  bool removed =
                       await BlocProvider.getBloc<UnidadesMedidaBloc>()
                           .delete(unidadeMedida.id, context);
-                  Navigator.of(context).pop(_removed);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(removed);
                 },
               ),
             ],

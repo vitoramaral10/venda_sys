@@ -13,6 +13,11 @@ class UsuariosList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      title: 'Usuários',
       child: FutureBuilder(
         future: BlocProvider.getBloc<UsuariosBloc>().search(),
         builder: (context, snapshot) {
@@ -34,11 +39,6 @@ class UsuariosList extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      title: 'Usuários',
     );
   }
 
@@ -110,6 +110,7 @@ class UsuariosList extends StatelessWidget {
               ),
               onPressed: () async {
                 await BlocProvider.getBloc<UsuariosBloc>().delete(usuario.id);
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
               },
             ),

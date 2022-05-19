@@ -64,37 +64,37 @@ class FiscalBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    final _notas = await FirebaseFirestore.instance
+    final notas = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
         .collection(_collection)
         .orderBy('identificacao')
         .get();
 
-    final List<NotaFiscal> _fiscais = _notas.docs.map((doc) {
+    final List<NotaFiscal> fiscais = notas.docs.map((doc) {
       var data = doc.data();
 
       data['id'] = doc.id;
       return NotaFiscal.fromJson(data);
     }).toList();
 
-    _notaFiscalController.sink.add(_fiscais);
+    _notaFiscalController.sink.add(fiscais);
   }
 
   Future<NotaFiscal> getFiscal(String id) async {
     try {
-      final _fiscal = await FirebaseFirestore.instance
+      final fiscal = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc(id)
           .get();
 
-      final _fiscalData = _fiscal.data() as Map<String, dynamic>;
+      final fiscalData = fiscal.data() as Map<String, dynamic>;
 
-      _fiscalData.addAll({'id': id});
+      fiscalData.addAll({'id': id});
 
-      return NotaFiscal.fromJson(_fiscalData);
+      return NotaFiscal.fromJson(fiscalData);
     } catch (e) {
       return NotaFiscal.empty;
     }
@@ -102,14 +102,14 @@ class FiscalBloc implements BlocBase {
 
   Future<List<NotaFiscal>> searchBy(String codigo) async {
     try {
-      final _docs = await FirebaseFirestore.instance
+      final docs = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .where("codigo", isEqualTo: codigo)
           .get();
 
-      return _decode(_docs);
+      return _decode(docs);
     } catch (e) {
       return [];
     }
@@ -118,14 +118,14 @@ class FiscalBloc implements BlocBase {
   Future<String> importXML(BuildContext context, NotaFiscalXML nota) async {
     try {
       //Verifica se a nota já foi importada
-      final _doc = await FirebaseFirestore.instance
+      final doc = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc(nota.id)
           .get();
 
-      if (!_doc.exists) {
+      if (!doc.exists) {
         //Insere a nota
         await FirebaseFirestore.instance
             .collection('empresas')
@@ -136,7 +136,7 @@ class FiscalBloc implements BlocBase {
 
         nota.produtos.forEach((produto) async {
           //Verifica se o produto existe
-          QuerySnapshot<Map<String, dynamic>> _produtosCadastrados =
+          QuerySnapshot<Map<String, dynamic>> produtosCadastrados =
               await FirebaseFirestore.instance
                   .collection('empresas')
                   .doc(_empresa)
@@ -145,8 +145,8 @@ class FiscalBloc implements BlocBase {
                   .get();
 
           //Se não existe insere antes de atualizar o histórico
-          if (_produtosCadastrados.docs.isEmpty) {
-            final _unidadeMedida =
+          if (produtosCadastrados.docs.isEmpty) {
+            final unidadeMedida =
                 await BlocProvider.getBloc<UnidadesMedidaBloc>()
                     .searchBy('sigla', produto.unidadeMedida);
             BlocProvider.getBloc<ProdutosBloc>().save(
@@ -159,11 +159,11 @@ class FiscalBloc implements BlocBase {
                 0,
                 0,
                 produto.ncm,
-                _unidadeMedida.id,
+                unidadeMedida.id,
               ),
             );
 
-            _produtosCadastrados = await FirebaseFirestore.instance
+            produtosCadastrados = await FirebaseFirestore.instance
                 .collection('empresas')
                 .doc(_empresa)
                 .collection('produtos')
@@ -172,18 +172,18 @@ class FiscalBloc implements BlocBase {
           }
 
           //Atualiza o histórico
-          for (var doc in _produtosCadastrados.docs) {
-            double _quantidade =
+          for (var doc in produtosCadastrados.docs) {
+            double quantidade =
                 double.tryParse(doc.data()['estoque'].toString()) ?? 0;
 
-            final Map<String, dynamic> _update = {};
+            final Map<String, dynamic> update = {};
 
             if (nota.identificacao.tipo == 0) {
-              _update.addAll({'estoque': _quantidade + produto.quantidade});
-              _update.addAll({'valorCompra': produto.valorUnitario});
+              update.addAll({'estoque': quantidade + produto.quantidade});
+              update.addAll({'valorCompra': produto.valorUnitario});
             } else {
-              _update.addAll({'estoque': _quantidade - produto.quantidade});
-              _update.addAll({'valorVenda': produto.valorUnitario});
+              update.addAll({'estoque': quantidade - produto.quantidade});
+              update.addAll({'valorVenda': produto.valorUnitario});
             }
 
             FirebaseFirestore.instance
@@ -191,12 +191,12 @@ class FiscalBloc implements BlocBase {
                 .doc(_empresa)
                 .collection('produtos')
                 .doc(doc.id)
-                .update(_update);
+                .update(update);
           }
         });
 
         //Verifica se o cliente existe
-        QuerySnapshot<Map<String, dynamic>> _clientesCadastrados =
+        QuerySnapshot<Map<String, dynamic>> clientesCadastrados =
             await FirebaseFirestore.instance
                 .collection('empresas')
                 .doc(_empresa)
@@ -205,7 +205,7 @@ class FiscalBloc implements BlocBase {
                 .get();
 
         //Se não existe insere antes de atualizar o histórico
-        if (_clientesCadastrados.docs.isEmpty) {
+        if (clientesCadastrados.docs.isEmpty) {
           BlocProvider.getBloc<ClientesBloc>().save(
             Cliente(
               '',
@@ -248,19 +248,19 @@ class FiscalBloc implements BlocBase {
 
   Future cancel(String id) async {
     try {
-      final _doc = await FirebaseFirestore.instance
+      final doc = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc(id)
           .get();
-      final _data = _doc.data() as Map<String, dynamic>;
-      _data['id'] = _doc.id;
+      final data = doc.data() as Map<String, dynamic>;
+      data['id'] = doc.id;
 
-      final _nota = NotaFiscal.fromJson(_data);
+      final nota = NotaFiscal.fromJson(data);
 
-      for (var produto in _nota.produtos) {
-        final _produtosCadastrados = await FirebaseFirestore.instance
+      for (var produto in nota.produtos) {
+        final produtosCadastrados = await FirebaseFirestore.instance
             .collection('empresas')
             .doc(_empresa)
             .collection('produtos')
@@ -268,16 +268,16 @@ class FiscalBloc implements BlocBase {
             .get();
 
         //Atualiza o histórico
-        for (var doc in _produtosCadastrados.docs) {
-          double _quantidade =
+        for (var doc in produtosCadastrados.docs) {
+          double quantidade =
               double.tryParse(doc.data()['estoque'].toString()) ?? 0;
 
-          final Map<String, dynamic> _update = {};
+          final Map<String, dynamic> update = {};
 
-          if (_nota.identificacao.tipo == 1) {
-            _update.addAll({'estoque': _quantidade + produto.quantidade});
+          if (nota.identificacao.tipo == 1) {
+            update.addAll({'estoque': quantidade + produto.quantidade});
           } else {
-            _update.addAll({'estoque': _quantidade - produto.quantidade});
+            update.addAll({'estoque': quantidade - produto.quantidade});
           }
 
           FirebaseFirestore.instance
@@ -285,7 +285,7 @@ class FiscalBloc implements BlocBase {
               .doc(_empresa)
               .collection('produtos')
               .doc(doc.id)
-              .update(_update);
+              .update(update);
         }
       }
 
@@ -329,7 +329,7 @@ class FiscalBloc implements BlocBase {
   }
 
   Future<void> searchByCnpj(String cnpj) async {
-    final _notas = await FirebaseFirestore.instance
+    final notas = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
         .collection(_collection)
@@ -337,13 +337,13 @@ class FiscalBloc implements BlocBase {
         .orderBy('identificacao')
         .get();
 
-    final List<NotaFiscal> _fiscais = _notas.docs.map((doc) {
+    final List<NotaFiscal> fiscais = notas.docs.map((doc) {
       var data = doc.data();
 
       data['id'] = doc.id;
       return NotaFiscal.fromJson(data);
     }).toList();
 
-    _notaFiscalFilteredController.sink.add(_fiscais);
+    _notaFiscalFilteredController.sink.add(fiscais);
   }
 }

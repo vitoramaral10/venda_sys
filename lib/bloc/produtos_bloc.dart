@@ -74,19 +74,19 @@ class ProdutosBloc implements BlocBase {
   Future<void> search() async {
     _empresa = _box.get('empresa');
 
-    final _data = await FirebaseFirestore.instance
+    final data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
         .collection(_collection)
         .orderBy('descricao')
         .get();
 
-    final List<Produto> produtos = _data.docs.map((e) {
-      Produto _produto = Produto.fromJson(e.data());
+    final List<Produto> produtos = data.docs.map((e) {
+      Produto produto = Produto.fromJson(e.data());
 
-      _produto.id = e.id;
+      produto.id = e.id;
 
-      return _produto;
+      return produto;
     }).toList();
 
     _produtosController.sink.add(produtos);
@@ -112,14 +112,14 @@ class ProdutosBloc implements BlocBase {
 
   Future<List<Produto>> searchBy(String codigo) async {
     try {
-      final _docs = await FirebaseFirestore.instance
+      final docs = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .where('codigo', isEqualTo: codigo)
           .get();
 
-      return _decode(_docs);
+      return _decode(docs);
     } catch (e) {
       return const [];
     }

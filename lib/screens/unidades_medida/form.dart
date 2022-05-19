@@ -15,6 +15,7 @@ class UnidadesMedidaForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _UnidadesMedidaFormState createState() => _UnidadesMedidaFormState();
 }
 
@@ -41,6 +42,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
 
       setState(() {});
     } else if (widget.id.isNotEmpty) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       errorPopup(
           context: context,
@@ -54,7 +56,7 @@ class _UnidadesMedidaFormState extends State<UnidadesMedidaForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ((widget.id.isNotEmpty) ? 'Editar' : 'Nova') + ' Unidade de Medida',
+          '${(widget.id.isNotEmpty) ? 'Editar' : 'Nova'} Unidade de Medida',
         ),
       ),
       body: Form(

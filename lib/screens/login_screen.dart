@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/components/custom_text_field.dart';
 import 'package:venda_sys/components/error_popup.dart';
+import 'package:venda_sys/config/theme.dart';
+import 'package:venda_sys/libraries/constants.dart';
 import 'package:venda_sys/libraries/responsive.dart';
 
 // ignore: must_be_immutable
@@ -24,14 +26,15 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'VendaSys',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40,
-                    color: Colors.blue,
+                    color: myTheme.primaryColor,
                   ),
                 ),
+                const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   label: 'Email',
                   controller: _emailController,
@@ -44,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   label: 'Senha',
                   controller: _senhaController,
@@ -56,19 +60,23 @@ class LoginScreen extends StatelessWidget {
                     return null;
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () => _submit(context),
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                const SizedBox(height: Constants.defaultPadding),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(Constants.defaultPadding),
+                      ),
+                    ),
+                    onPressed: () => _submit(context),
+                    child: const Text(
+                      'Entrar',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -92,7 +100,7 @@ class LoginScreen extends StatelessWidget {
         errorPopup(
             context: context,
             title: 'Erro ao logar',
-            text: 'Email ou senha está incorreto!\n' + e.toString());
+            text: 'Email ou senha está incorreto!\n$e');
       }
     }
   }

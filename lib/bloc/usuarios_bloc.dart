@@ -43,13 +43,13 @@ class UsuariosBloc implements BlocBase {
   }
 
   Future<List<Usuario>> search() async {
-    final _usuarios = await FirebaseFirestore.instance
+    final usuarios = await FirebaseFirestore.instance
         .collection('usuarios')
         .where('empresas', arrayContains: _empresa)
         .orderBy('nome')
         .get();
 
-    final List<Usuario> _listUsuarios = _usuarios.docs.map((doc) {
+    final List<Usuario> listUsuarios = usuarios.docs.map((doc) {
       Map<String, dynamic> data = doc.data();
 
       data['id'] = doc.id;
@@ -57,23 +57,23 @@ class UsuariosBloc implements BlocBase {
       return Usuario.fromJson(data);
     }).toList();
 
-    return _listUsuarios;
+    return listUsuarios;
   }
 
   Future<Usuario> getUsuarios(String id) async {
     try {
-      final _usuarios = await FirebaseFirestore.instance
+      final usuarios = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc(id)
           .get();
 
-      final _usuariosData = _usuarios.data() as Map<String, dynamic>;
+      final usuariosData = usuarios.data() as Map<String, dynamic>;
 
-      _usuariosData.addAll({'id': id});
+      usuariosData.addAll({'id': id});
 
-      return Usuario.fromJson(_usuariosData);
+      return Usuario.fromJson(usuariosData);
     } catch (e) {
       return Usuario.empty;
     }
@@ -81,14 +81,14 @@ class UsuariosBloc implements BlocBase {
 
   Future<List<Usuario>> searchBy(String codigo) async {
     try {
-      final _docs = await FirebaseFirestore.instance
+      final docs = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .where("codigo", isEqualTo: codigo)
           .get();
 
-      return _decode(_docs);
+      return _decode(docs);
     } catch (e) {
       return [];
     }

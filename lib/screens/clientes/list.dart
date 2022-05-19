@@ -15,6 +15,13 @@ class ClientesList extends StatelessWidget {
     BlocProvider.getBloc<ClientesBloc>().search();
 
     return BaseWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/clientes/novo');
+        },
+        child: const Icon(Icons.add),
+      ),
+      title: 'Clientes',
       child: StreamBuilder<List<Cliente>>(
         stream: BlocProvider.getBloc<ClientesBloc>().outClientes,
         builder: (context, snapshot) {
@@ -36,13 +43,6 @@ class ClientesList extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/clientes/novo');
-        },
-        child: const Icon(Icons.add),
-      ),
-      title: 'Clientes',
     );
   }
 
@@ -116,9 +116,10 @@ class ClientesList extends StatelessWidget {
                   "Remover",
                 ),
                 onPressed: () async {
-                  bool _removed = await BlocProvider.getBloc<ClientesBloc>()
+                  bool removed = await BlocProvider.getBloc<ClientesBloc>()
                       .delete(cliente.id);
-                  Navigator.of(context).pop(_removed);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(removed);
                 },
               ),
             ],

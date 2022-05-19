@@ -18,18 +18,18 @@ class SideMenu extends StatelessWidget {
           if (!snapshot.hasData) {
             return Container();
           }
-          Usuario _usuario = snapshot.data!;
+          Usuario usuario = snapshot.data!;
 
           return Drawer(
             child: ListView(
               children: [
                 !Responsive.isDesktop(context)
                     ? UserAccountsDrawerHeader(
-                        accountName: Text(_usuario.nome),
-                        accountEmail: Text(_usuario.email),
+                        accountName: Text(usuario.nome),
+                        accountEmail: Text(usuario.email),
                         currentAccountPicture: CircleAvatar(
                           radius: 30.0,
-                          backgroundImage: NetworkImage(_usuario.imagem),
+                          backgroundImage: NetworkImage(usuario.imagem),
                           backgroundColor: Colors.transparent,
                         ),
                       )
@@ -118,6 +118,7 @@ class SideMenu extends StatelessWidget {
                     try {
                       await BlocProvider.getBloc<LoginBloc>().signOut();
 
+                      // ignore: use_build_context_synchronously
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/login', (route) => false);
                     } catch (e) {

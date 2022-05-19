@@ -39,19 +39,21 @@ class ImportXml {
                     NotaFiscalXML nota = NotaFiscalXML.fromJson(
                         data['nfeProc']['NFe']['infNFe']);
 
-                    final _imported = await BlocProvider.getBloc<FiscalBloc>()
+                    // ignore: use_build_context_synchronously
+                    final imported = await BlocProvider.getBloc<FiscalBloc>()
                         .importXML(context, nota);
 
-                    if (_imported == 'ok') {
+                    if (imported == 'ok') {
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     } else {
-                      String _text = (_imported == 'duplicated')
+                      String text = (imported == 'duplicated')
                           ? 'Esta nota já foi importada anteriormente!'
                           : 'Ocorreu um erro ao importar a nota, tente novamente';
                       errorPopup(
                         context: context,
                         title: 'Erro ao importar',
-                        text: _text,
+                        text: text,
                       );
                     }
                   } else {

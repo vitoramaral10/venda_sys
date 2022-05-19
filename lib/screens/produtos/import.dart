@@ -53,9 +53,9 @@ class _ProdutosImportState extends State<ProdutosImport> {
 
                         produto.un = unidadeMedida.id;
 
-                        bool _saved = await BlocProvider.getBloc<ProdutosBloc>().save(produto);
+                        bool saved = await BlocProvider.getBloc<ProdutosBloc>().save(produto);
 
-                        if (_saved) {
+                        if (saved) {
                           setState(() {
                             countFinal++;
                           });

@@ -73,22 +73,22 @@ class ClientesBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    final _data = await FirebaseFirestore.instance
+    final data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
         .collection(_collection)
         .orderBy('razaoSocial')
         .get();
 
-    List<Cliente> _clientes = _data.docs.map((doc) {
-      Cliente _cliente = Cliente.fromJson(doc.data());
+    List<Cliente> clientes = data.docs.map((doc) {
+      Cliente cliente = Cliente.fromJson(doc.data());
 
-      _cliente.id = doc.id;
+      cliente.id = doc.id;
 
-      return _cliente;
+      return cliente;
     }).toList();
 
-    _clientesController.sink.add(_clientes);
+    _clientesController.sink.add(clientes);
   }
 
   Future<Cliente> getCliente(String id) async {

@@ -53,21 +53,25 @@ class ProfileCard extends StatelessWidget {
                   ),
                 PopupMenuButton(
                   offset: const Offset(-15, 30),
-                  icon: const Icon(Icons.keyboard_arrow_down),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
+                  ),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    const PopupMenuItem(
-                      child: ListTile(
-                        title: Text('Imprimir'),
-                      ),
-                    ),
-                    const PopupMenuItem(
-                      child: ListTile(
-                        title: Text('Exportar'),
-                      ),
-                    ),
-                    const PopupMenuItem(
-                      child: ListTile(
-                        title: Text('Importação'),
+                    PopupMenuItem(
+                      onTap: () async {
+                        try {
+                          await BlocProvider.getBloc<LoginBloc>().signOut();
+
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/login', (route) => false);
+                        } catch (e) {
+                          throw Exception(e);
+                        }
+                      },
+                      child: const ListTile(
+                        title: Text('Sair'),
                       ),
                     ),
                   ],

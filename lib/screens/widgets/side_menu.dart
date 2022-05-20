@@ -91,41 +91,26 @@ class SideMenu extends StatelessWidget {
                   route: '/fiscal',
                 ),
                 const ExpansionTile(
-                    iconColor: Colors.white,
-                    collapsedIconColor: Colors.white,
-                    leading: Icon(
-                      Icons.settings,
+                  iconColor: Colors.white,
+                  collapsedIconColor: Colors.white,
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Configurações',
+                    style: TextStyle(
+                      fontSize: 16,
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    title: Text(
-                      'Configurações',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  children: [
+                    DrawerListTile(
+                      title: 'Usuários',
+                      route: '/usuarios',
                     ),
-                    children: [
-                      DrawerListTile(
-                        title: 'Usuários',
-                        route: '/usuarios',
-                      ),
-                    ]),
-                DrawerListTile(
-                  title: 'Sair',
-                  icon: Icons.exit_to_app,
-                  route: '/logout',
-                  onTap: () async {
-                    try {
-                      await BlocProvider.getBloc<LoginBloc>().signOut();
-
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/login', (route) => false);
-                    } catch (e) {
-                      throw Exception(e);
-                    }
-                  },
+                  ],
                 ),
               ],
             ),

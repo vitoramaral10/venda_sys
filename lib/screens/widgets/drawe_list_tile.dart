@@ -23,7 +23,7 @@ class DrawerListTile extends StatelessWidget {
       selectedTileColor: myTheme.backgroundColor,
       onTap: onTap ??
           () {
-            Navigator.pushNamed(context, route);
+            Navigator.pushReplacementNamed(context, route);
           },
       horizontalTitleGap: 0.0,
       leading: icon != null

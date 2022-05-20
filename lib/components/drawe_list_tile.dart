@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:venda_sys/config/theme.dart';
 
 class DrawerListTile extends StatelessWidget {
   final String title;
@@ -19,7 +20,7 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       selected: ModalRoute.of(context)?.settings.name == route,
-      selectedTileColor: const Color(0xFFff5a5a),
+      selectedTileColor: myTheme.backgroundColor,
       onTap: onTap ??
           () {
             Navigator.pushNamed(context, route);

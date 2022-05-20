@@ -34,6 +34,7 @@ class UnidadesMedidaList extends StatelessWidget {
 
             return ListView.builder(
               shrinkWrap: true,
+              physics: const ScrollPhysics(),
               itemCount: unidadesMedida.length,
               itemBuilder: (context, index) {
                 return _listTile(index, unidadesMedida[index], context);

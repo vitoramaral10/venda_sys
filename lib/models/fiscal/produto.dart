@@ -38,7 +38,7 @@ class NotaFiscalProduto {
         ncm = json['ncm'],
         cfop = json['cfop'],
         unidadeMedida = json['unidadeMedida'],
-        quantidade = json['quantidade'],
+        quantidade = double.parse(json['quantidade'].toString()),
         valorUnitario = json['valorUnitario'],
         valorTotal = json['valorTotal'],
         eanTributavel = json['eanTributavel'],
@@ -63,11 +63,12 @@ class NotaFiscalProduto {
         'valorUnitarioTributavel': valorUnitarioTributavel,
         'indTot': indTot,
       };
-  static NotaFiscalProduto empty = NotaFiscalProduto('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
+  static NotaFiscalProduto empty =
+      NotaFiscalProduto('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
 
   static List<NotaFiscalProduto> fromMap(json) {
     return json.map<NotaFiscalProduto>((value) {
-      return NotaFiscalProduto.fromJson(value);
+      return NotaFiscalProduto.empty;
     }).toList();
   }
 

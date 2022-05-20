@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
 import 'package:venda_sys/components/drawe_list_tile.dart';
+import 'package:venda_sys/config/theme.dart';
 import 'package:venda_sys/models/usuario.dart';
 
 import '../libraries/constants.dart';
@@ -21,6 +22,7 @@ class SideMenu extends StatelessWidget {
           Usuario usuario = snapshot.data!;
 
           return Drawer(
+            backgroundColor: myTheme.primaryColor,
             child: ListView(
               children: [
                 !Responsive.isDesktop(context)

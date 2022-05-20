@@ -34,6 +34,7 @@ class ProdutosList extends StatelessWidget {
 
             return ListView.builder(
               shrinkWrap: true,
+              physics: const ScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 80),
               itemCount: produtos.length,
               itemBuilder: (context, index) {

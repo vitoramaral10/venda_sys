@@ -34,9 +34,9 @@ class Header extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 border: Border.all(color: Colors.white10),
               ),
-              child: Container(
+              child: const SizedBox(
                 height: 38,
-                child: const Icon(Icons.menu, color: Colors.white),
+                child: Icon(Icons.menu, color: Colors.white),
               ),
             ),
           ),

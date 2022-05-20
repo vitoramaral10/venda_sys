@@ -2,10 +2,10 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
 import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
-import 'package:venda_sys/components/custom_text_field.dart';
-import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/produto.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
+import 'package:venda_sys/screens/widgets/custom_text_field.dart';
+import 'package:venda_sys/screens/widgets/error_popup.dart';
 
 // ignore: must_be_immutable
 class ProdutosForm extends StatefulWidget {

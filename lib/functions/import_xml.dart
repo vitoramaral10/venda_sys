@@ -5,8 +5,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
-import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
+import 'package:venda_sys/screens/widgets/error_popup.dart';
 import 'package:xml2json/xml2json.dart';
 
 class ImportXml {

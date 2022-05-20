@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
-import 'package:venda_sys/components/base_widget.dart';
-import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/functions/import_xml.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
+import 'package:venda_sys/screens/widgets/error_popup.dart';
 
 class FiscalList extends StatelessWidget {
   FiscalList({Key? key}) : super(key: key);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:venda_sys/components/base_widget.dart';
-import 'package:venda_sys/components/dashboard_button.dart';
 import 'package:venda_sys/functions/import_xml.dart';
+
+import 'widgets/base_widget.dart';
+import 'widgets/dashboard_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

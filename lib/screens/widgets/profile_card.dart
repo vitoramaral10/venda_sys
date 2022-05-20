@@ -1,10 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:venda_sys/bloc/login_bloc.dart';
+import 'package:venda_sys/libraries/constants.dart';
+import 'package:venda_sys/models/usuario.dart';
 
 import '../../libraries/responsive.dart';
-import '../bloc/login_bloc.dart';
-import '../libraries/constants.dart';
-import '../models/usuario.dart';
 
 class ProfileCard extends StatelessWidget {
   const ProfileCard({
@@ -51,9 +51,26 @@ class ProfileCard extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white,
+                PopupMenuButton(
+                  offset: const Offset(-15, 30),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    const PopupMenuItem(
+                      child: ListTile(
+                        title: Text('Imprimir'),
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      child: ListTile(
+                        title: Text('Exportar'),
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      child: ListTile(
+                        title: Text('Importação'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

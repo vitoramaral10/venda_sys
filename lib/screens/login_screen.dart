@@ -1,11 +1,12 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/login_bloc.dart';
-import 'package:venda_sys/components/custom_text_field.dart';
-import 'package:venda_sys/components/error_popup.dart';
 import 'package:venda_sys/config/theme.dart';
 import 'package:venda_sys/libraries/constants.dart';
 import 'package:venda_sys/libraries/responsive.dart';
+
+import 'widgets/custom_text_field.dart';
+import 'widgets/error_popup.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {

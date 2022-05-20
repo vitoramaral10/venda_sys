@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:venda_sys/libraries/constants.dart';
+import 'package:venda_sys/libraries/responsive.dart';
 
-import '../libraries/constants.dart';
-import '../libraries/responsive.dart';
 import 'profile_card.dart';
 
 // ignore: must_be_immutable

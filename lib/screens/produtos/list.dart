@@ -1,8 +1,8 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/produtos_bloc.dart';
-import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/models/produto.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
 
 import 'form.dart';
 

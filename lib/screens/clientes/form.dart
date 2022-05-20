@@ -3,13 +3,13 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:venda_sys/bloc/clientes_bloc.dart';
-import 'package:venda_sys/components/base_widget.dart';
-import 'package:venda_sys/components/custom_text_field.dart';
-import 'package:venda_sys/components/dropdown_field.dart';
 import 'package:venda_sys/libraries/constants.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
 import 'package:venda_sys/models/cliente/email.dart';
 import 'package:venda_sys/models/cliente/endereco.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
+import 'package:venda_sys/screens/widgets/custom_text_field.dart';
+import 'package:venda_sys/screens/widgets/dropdown_field.dart';
 
 class ClientesForm extends StatefulWidget {
   const ClientesForm({Key? key}) : super(key: key);

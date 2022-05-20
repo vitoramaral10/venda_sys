@@ -1,9 +1,9 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
+import 'package:venda_sys/screens/widgets/error_popup.dart';
 
 import '../../bloc/usuarios_bloc.dart';
-import '../../components/base_widget.dart';
-import '../../components/error_popup.dart';
 import '../../models/usuario.dart';
 import 'form.dart';
 

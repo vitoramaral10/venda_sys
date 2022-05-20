@@ -2,12 +2,12 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
-import 'package:venda_sys/components/base_widget.dart';
-import 'package:venda_sys/components/carregando_widget.dart';
-import 'package:venda_sys/components/voltar_button.dart';
 import 'package:venda_sys/libraries/constants.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
+import 'package:venda_sys/screens/widgets/carregando_widget.dart';
+import 'package:venda_sys/screens/widgets/voltar_button.dart';
 
 class ClientesView extends StatelessWidget {
   final Cliente cliente;

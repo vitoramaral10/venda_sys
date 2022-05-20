@@ -2,8 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/clientes_bloc.dart';
-import 'package:venda_sys/components/base_widget.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
+import 'package:venda_sys/screens/widgets/base_widget.dart';
 
 import 'view.dart';
 

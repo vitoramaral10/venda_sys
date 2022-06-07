@@ -3,22 +3,17 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:venda_sys/bloc/clientes_bloc.dart';
-import 'package:venda_sys/bloc/produtos_bloc.dart';
-import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
-import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/cliente/cliente.dart';
 import 'package:venda_sys/models/cliente/endereco.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
-import 'package:venda_sys/models/produto.dart';
 
-final Box _box = Hive.box(boxName);
+import '../config/constants.dart';
 
 class FiscalBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
-  final String _empresa = _box.get('empresa');
+  final String _empresa = Constants.box.get('empresa');
 
   final StreamController<List<NotaFiscal>> _notaFiscalController =
       StreamController<List<NotaFiscal>>.broadcast();
@@ -146,22 +141,22 @@ class FiscalBloc implements BlocBase {
 
           //Se não existe insere antes de atualizar o histórico
           if (produtosCadastrados.docs.isEmpty) {
-            final unidadeMedida =
-                await BlocProvider.getBloc<UnidadesMedidaBloc>()
-                    .searchBy('sigla', produto.unidadeMedida);
-            BlocProvider.getBloc<ProdutosBloc>().save(
-              Produto(
-                '',
-                produto.codigo,
-                produto.descricao,
-                '',
-                0,
-                0,
-                0,
-                produto.ncm,
-                unidadeMedida.id,
-              ),
-            );
+            // final unidadeMedida =
+            //     await BlocProvider.getBloc<UnidadesMedidaBloc>()
+            //         .searchBy('sigla', produto.unidadeMedida);
+            // // BlocProvider.getBloc<ProdutosBloc>().save(
+            //   Produto(
+            //     '',
+            //     produto.codigo,
+            //     produto.descricao,
+            //     '',
+            //     0,
+            //     0,
+            //     0,
+            //     produto.ncm,
+            //     unidadeMedida.id,
+            //   ),
+            // );
 
             produtosCadastrados = await FirebaseFirestore.instance
                 .collection('empresas')

@@ -3,15 +3,13 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:venda_sys/config/config.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
-Box _box = Hive.box(boxName);
+import '../config/constants.dart';
 
 class UnidadesMedidaBloc implements BlocBase {
   final String _collection = 'unidades_medidas';
-  String _empresa = _box.get('empresa');
+  String _empresa = Constants.box.get('empresa');
 
   final StreamController<List<UnidadeMedida>> _unidadesMedidaController =
       StreamController<List<UnidadeMedida>>.broadcast();
@@ -39,7 +37,6 @@ class UnidadesMedidaBloc implements BlocBase {
 
         return true;
       } else {
-
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Unidade de Medida está sendo utilizada!"),
@@ -86,7 +83,7 @@ class UnidadesMedidaBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    _empresa = _box.get('empresa');
+    _empresa = Constants.box.get('empresa');
 
     final unidadesMedida = await FirebaseFirestore.instance
         .collection('empresas')

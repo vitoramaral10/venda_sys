@@ -4,22 +4,19 @@ import 'dart:ui';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:venda_sys/config/config.dart';
-import 'package:venda_sys/models/usuario.dart';
+import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/models/user.dart';
 
-final Box _box = Hive.box(boxName);
-
-class UsuariosBloc implements BlocBase {
+class UsersBloc implements BlocBase {
   final String _collection = 'notas_fiscais';
-  final String _empresa = _box.get('empresa');
+  final String _empresa = Constants.box.get('empresa');
 
-  Future<bool> edit(Usuario usuarios) async {
+  Future<bool> edit(User user) async {
     try {
       await FirebaseFirestore.instance
-          .collection('usuarios')
-          .doc(usuarios.id.toString())
-          .set(usuarios.toJson());
+          .collection('users')
+          .doc(user.id.toString())
+          .set(user.toJson());
 
       return true;
     } catch (e) {
@@ -27,14 +24,14 @@ class UsuariosBloc implements BlocBase {
     }
   }
 
-  Future<bool> save(Usuario usuarios) async {
+  Future<bool> save(User users) async {
     try {
       await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc()
-          .set(usuarios.toJson());
+          .set(users.toJson());
 
       return true;
     } catch (e) {
@@ -42,44 +39,44 @@ class UsuariosBloc implements BlocBase {
     }
   }
 
-  Future<List<Usuario>> search() async {
-    final usuarios = await FirebaseFirestore.instance
-        .collection('usuarios')
+  Future<List<User>> search() async {
+    final users = await FirebaseFirestore.instance
+        .collection('users')
         .where('empresas', arrayContains: _empresa)
         .orderBy('nome')
         .get();
 
-    final List<Usuario> listUsuarios = usuarios.docs.map((doc) {
+    final List<User> listUsers = users.docs.map((doc) {
       Map<String, dynamic> data = doc.data();
 
       data['id'] = doc.id;
 
-      return Usuario.fromJson(data);
+      return User.fromJson(data);
     }).toList();
 
-    return listUsuarios;
+    return listUsers;
   }
 
-  Future<Usuario> getUsuarios(String id) async {
+  Future<User?> getUsers(String id) async {
     try {
-      final usuarios = await FirebaseFirestore.instance
+      final users = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
           .collection(_collection)
           .doc(id)
           .get();
 
-      final usuariosData = usuarios.data() as Map<String, dynamic>;
+      final usersData = users.data() as Map<String, dynamic>;
 
-      usuariosData.addAll({'id': id});
+      usersData.addAll({'id': id});
 
-      return Usuario.fromJson(usuariosData);
+      return User.fromJson(usersData);
     } catch (e) {
-      return Usuario.empty;
+      return null;
     }
   }
 
-  Future<List<Usuario>> searchBy(String codigo) async {
+  Future<List<User>> searchBy(String codigo) async {
     try {
       final docs = await FirebaseFirestore.instance
           .collection('empresas')
@@ -109,43 +106,43 @@ class UsuariosBloc implements BlocBase {
   @override
   void removeListener(VoidCallback listener) {}
 
-  List<Usuario> _decode(QuerySnapshot response) {
-    final usuarios = response.docs.map<Usuario>((QueryDocumentSnapshot map) {
+  List<User> _decode(QuerySnapshot response) {
+    final users = response.docs.map<User>((QueryDocumentSnapshot map) {
       final data = map.data() as Map<String, dynamic>;
       data['id'] = map.id;
 
-      return Usuario.fromJson(data);
+      return User.fromJson(data);
     }).toList();
 
-    return usuarios;
+    return users;
   }
 
   Future<void> delete(String id) async {
     try {
-      // final data = await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
-      // final usuarioData = data.data() as Map<String, dynamic>;
+      // final data = await FirebaseFirestore.instance.collection('users').doc(id).get();
+      // final userData = data.data() as Map<String, dynamic>;
 
-      //Usuario _usuario = Usuario.fromJson(usuarioData);
+      //User _user = User.fromJson(userData);
 
-      //_usuario.empresas.remove(_empresa);
+      //_user.empresas.remove(_empresa);
 
-      //await FirebaseFirestore.instance.collection('usuarios').doc(id).set(_usuario.toJson());
+      //await FirebaseFirestore.instance.collection('users').doc(id).set(_user.toJson());
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<Usuario> getUsuario(String id) async {
+  Future<User?> getUser(String id) async {
     try {
-      final usuario =
-          await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
-      final usuarioData = usuario.data() as Map<String, dynamic>;
+      final user =
+          await FirebaseFirestore.instance.collection('users').doc(id).get();
+      final userData = user.data() as Map<String, dynamic>;
 
-      usuarioData.addAll({'id': id});
+      userData.addAll({'id': id});
 
-      return Usuario.fromJson(usuarioData);
+      return User.fromJson(userData);
     } catch (e) {
-      return Usuario.empty;
+      return null;
     }
   }
 }

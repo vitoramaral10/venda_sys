@@ -6,8 +6,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:venda_sys/bloc/fiscal_bloc.dart';
 import 'package:venda_sys/models/fiscal_xml/nota_fiscal_xml.dart';
-import 'package:venda_sys/screens/widgets/error_popup.dart';
 import 'package:xml2json/xml2json.dart';
+
+import '../views/widgets/error_popup.dart';
 
 class ImportXml {
   static void importPopup(BuildContext context) {
@@ -51,7 +52,6 @@ class ImportXml {
                           ? 'Esta nota já foi importada anteriormente!'
                           : 'Ocorreu um erro ao importar a nota, tente novamente';
                       errorPopup(
-                        context: context,
                         title: 'Erro ao importar',
                         text: text,
                       );

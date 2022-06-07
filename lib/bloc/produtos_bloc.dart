@@ -1,153 +1,127 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:ui';
+// import 'dart:async';
+// import 'dart:developer';
+// import 'dart:ui';
 
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
-import 'package:venda_sys/config/config.dart';
-import 'package:venda_sys/models/produto.dart';
+// import 'package:bloc_pattern/bloc_pattern.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:venda_sys/models/produto.dart';
 
-Box _box = Hive.box(boxName);
+// import '../config/constants.dart';
 
-class ProdutosBloc implements BlocBase {
-  final String _collection = 'produtos';
-  String _empresa = _box.get('empresa');
+// class ProdutosBloc implements BlocBase {
+//   final StreamController<List<Produto>> _produtosController =
+//       StreamController<List<Produto>>.broadcast();
 
-  final StreamController<List<Produto>> _produtosController =
-      StreamController<List<Produto>>.broadcast();
+//   Stream<List<Produto>> get outProdutos => _produtosController.stream;
 
-  Stream<List<Produto>> get outProdutos => _produtosController.stream;
+//   Future<bool> delete(String id) async {
+//     try {
+//       await FirebaseFirestore.instance
+//           .collection('empresas')
+//           .doc(_empresa)
+//           .collection(_collection)
+//           .doc(id)
+//           .delete();
 
-  Future<bool> delete(String id) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc(id)
-          .delete();
+//       BlocProvider.getBloc<ProdutosBloc>().search();
 
-      BlocProvider.getBloc<ProdutosBloc>().search();
+//       return true;
+//     } catch (e) {
+//       log(e.toString());
+//       return false;
+//     }
+//   }
 
-      return true;
-    } catch (e) {
-      log(e.toString());
-      return false;
-    }
-  }
+//   Future<bool> edit(Produto produto) async {
+//     try {
+//       await FirebaseFirestore.instance
+//           .collection('empresas')
+//           .doc(_empresa)
+//           .collection(_collection)
+//           .doc(produto.id)
+//           .set(produto.toJson());
 
-  Future<bool> edit(Produto produto) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc(produto.id)
-          .set(produto.toJson());
+//       search();
 
-      search();
+//       return true;
+//     } catch (e) {
+//       return false;
+//     }
+//   }
 
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+//   Future<bool> save(Produto produto) async {
+//     try {
+//       await FirebaseFirestore.instance
+//           .collection('empresas')
+//           .doc(_empresa)
+//           .collection(_collection)
+//           .doc()
+//           .set(produto.toJson());
 
-  Future<bool> save(Produto produto) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc()
-          .set(produto.toJson());
+//       search();
 
-      search();
+//       return true;
+//     } catch (e) {
+//       return false;
+//     }
+//   }
 
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+//   Future<Produto> getProduto(String id) async {
+//     try {
+//       final produto = await FirebaseFirestore.instance
+//           .collection('empresas')
+//           .doc(_empresa)
+//           .collection(_collection)
+//           .doc(id)
+//           .get();
+//       final produtoData = produto.data() as Map<String, dynamic>;
 
-  Future<void> search() async {
-    _empresa = _box.get('empresa');
+//       produtoData.addAll({'id': id});
 
-    final data = await FirebaseFirestore.instance
-        .collection('empresas')
-        .doc(_empresa)
-        .collection(_collection)
-        .orderBy('descricao')
-        .get();
+//       return Produto.fromJson(produtoData);
+//     } catch (e) {
+//       return Produto.empty;
+//     }
+//   }
 
-    final List<Produto> produtos = data.docs.map((e) {
-      Produto produto = Produto.fromJson(e.data());
+//   Future<List<Produto>> searchBy(String codigo) async {
+//     try {
+//       final docs = await FirebaseFirestore.instance
+//           .collection('empresas')
+//           .doc(_empresa)
+//           .collection(_collection)
+//           .where('codigo', isEqualTo: codigo)
+//           .get();
 
-      produto.id = e.id;
+//       return _decode(docs);
+//     } catch (e) {
+//       return const [];
+//     }
+//   }
 
-      return produto;
-    }).toList();
+//   @override
+//   void addListener(VoidCallback listener) {}
 
-    _produtosController.sink.add(produtos);
-  }
+//   @override
+//   void dispose() {}
 
-  Future<Produto> getProduto(String id) async {
-    try {
-      final produto = await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc(id)
-          .get();
-      final produtoData = produto.data() as Map<String, dynamic>;
+//   @override
+//   bool get hasListeners => throw UnimplementedError();
 
-      produtoData.addAll({'id': id});
+//   @override
+//   void notifyListeners() {}
 
-      return Produto.fromJson(produtoData);
-    } catch (e) {
-      return Produto.empty;
-    }
-  }
+//   @override
+//   void removeListener(VoidCallback listener) {}
 
-  Future<List<Produto>> searchBy(String codigo) async {
-    try {
-      final docs = await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .where('codigo', isEqualTo: codigo)
-          .get();
+//   List<Produto> _decode(QuerySnapshot response) {
+//     final produtos = response.docs.map<Produto>((QueryDocumentSnapshot map) {
+//       final data = map.data() as Map<String, dynamic>;
 
-      return _decode(docs);
-    } catch (e) {
-      return const [];
-    }
-  }
+//       data['id'] = map.id;
+//       return Produto.fromJson(data);
+//     }).toList();
 
-  @override
-  void addListener(VoidCallback listener) {}
-
-  @override
-  void dispose() {}
-
-  @override
-  bool get hasListeners => throw UnimplementedError();
-
-  @override
-  void notifyListeners() {}
-
-  @override
-  void removeListener(VoidCallback listener) {}
-
-  List<Produto> _decode(QuerySnapshot response) {
-    final produtos = response.docs.map<Produto>((QueryDocumentSnapshot map) {
-      final data = map.data() as Map<String, dynamic>;
-
-      data['id'] = map.id;
-      return Produto.fromJson(data);
-    }).toList();
-
-    return produtos;
-  }
-}
+//     return produtos;
+//   }
+// }

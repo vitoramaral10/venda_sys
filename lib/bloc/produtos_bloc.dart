@@ -1,45 +1,11 @@
-// import 'dart:async';
-// import 'dart:developer';
-// import 'dart:ui';
-
-// import 'package:bloc_pattern/bloc_pattern.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:venda_sys/models/produto.dart';
-
-// import '../config/constants.dart';
-
-// class ProdutosBloc implements BlocBase {
-//   final StreamController<List<Produto>> _produtosController =
-//       StreamController<List<Produto>>.broadcast();
-
-//   Stream<List<Produto>> get outProdutos => _produtosController.stream;
-
-//   Future<bool> delete(String id) async {
+//   Future<bool> edit(Product product) async {
 //     try {
 //       await FirebaseFirestore.instance
 //           .collection('empresas')
 //           .doc(_empresa)
 //           .collection(_collection)
-//           .doc(id)
-//           .delete();
-
-//       BlocProvider.getBloc<ProdutosBloc>().search();
-
-//       return true;
-//     } catch (e) {
-//       log(e.toString());
-//       return false;
-//     }
-//   }
-
-//   Future<bool> edit(Produto produto) async {
-//     try {
-//       await FirebaseFirestore.instance
-//           .collection('empresas')
-//           .doc(_empresa)
-//           .collection(_collection)
-//           .doc(produto.id)
-//           .set(produto.toJson());
+//           .doc(product.id)
+//           .set(product.toJson());
 
 //       search();
 
@@ -49,14 +15,14 @@
 //     }
 //   }
 
-//   Future<bool> save(Produto produto) async {
+//   Future<bool> save(Product product) async {
 //     try {
 //       await FirebaseFirestore.instance
 //           .collection('empresas')
 //           .doc(_empresa)
 //           .collection(_collection)
 //           .doc()
-//           .set(produto.toJson());
+//           .set(product.toJson());
 
 //       search();
 
@@ -66,25 +32,25 @@
 //     }
 //   }
 
-//   Future<Produto> getProduto(String id) async {
+//   Future<Product> getProduct(String id) async {
 //     try {
-//       final produto = await FirebaseFirestore.instance
+//       final product = await FirebaseFirestore.instance
 //           .collection('empresas')
 //           .doc(_empresa)
 //           .collection(_collection)
 //           .doc(id)
 //           .get();
-//       final produtoData = produto.data() as Map<String, dynamic>;
+//       final productData = product.data() as Map<String, dynamic>;
 
-//       produtoData.addAll({'id': id});
+//       productData.addAll({'id': id});
 
-//       return Produto.fromJson(produtoData);
+//       return Product.fromJson(productData);
 //     } catch (e) {
-//       return Produto.empty;
+//       return Product.empty;
 //     }
 //   }
 
-//   Future<List<Produto>> searchBy(String codigo) async {
+//   Future<List<Product>> searchBy(String codigo) async {
 //     try {
 //       final docs = await FirebaseFirestore.instance
 //           .collection('empresas')
@@ -98,30 +64,3 @@
 //       return const [];
 //     }
 //   }
-
-//   @override
-//   void addListener(VoidCallback listener) {}
-
-//   @override
-//   void dispose() {}
-
-//   @override
-//   bool get hasListeners => throw UnimplementedError();
-
-//   @override
-//   void notifyListeners() {}
-
-//   @override
-//   void removeListener(VoidCallback listener) {}
-
-//   List<Produto> _decode(QuerySnapshot response) {
-//     final produtos = response.docs.map<Produto>((QueryDocumentSnapshot map) {
-//       final data = map.data() as Map<String, dynamic>;
-
-//       data['id'] = map.id;
-//       return Produto.fromJson(data);
-//     }).toList();
-
-//     return produtos;
-//   }
-// }

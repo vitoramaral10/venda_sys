@@ -1,5 +1,5 @@
 class Product {
-  String id;
+  String? id;
   final String codigo;
   final String descricao;
   final String descricaoResumida;
@@ -10,16 +10,16 @@ class Product {
   String un;
 
   Product(
-    this.id,
-    this.codigo,
-    this.descricao,
-    this.descricaoResumida,
-    this.estoque,
-    this.valorCompra,
-    this.valorVenda,
-    this.ncm,
-    this.un,
-  );
+    {this.id,
+    required this.codigo,
+    required this.descricao,
+    required this.descricaoResumida,
+    required this.estoque,
+    required this.valorCompra,
+    required this.valorVenda,
+    required this.ncm,
+    required this.un,
+  });
 
   Product.fromJson(Map<String, dynamic> json)
       : id = json['id'] ?? '',

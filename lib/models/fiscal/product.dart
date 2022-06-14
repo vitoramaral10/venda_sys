@@ -1,4 +1,4 @@
-class NotaFiscalProduto {
+class NotaFiscalProduct {
   final String codigo;
   final String ean;
   final String descricao;
@@ -14,7 +14,7 @@ class NotaFiscalProduto {
   final double valorUnitarioTributavel;
   final int indTot;
 
-  NotaFiscalProduto(
+  NotaFiscalProduct(
     this.codigo,
     this.ean,
     this.descricao,
@@ -31,7 +31,7 @@ class NotaFiscalProduto {
     this.indTot,
   );
 
-  NotaFiscalProduto.fromJson(Map<String, dynamic> json)
+  NotaFiscalProduct.fromJson(Map<String, dynamic> json)
       : codigo = json['codigo'],
         ean = json['ean'],
         descricao = json['descricao'],
@@ -63,17 +63,17 @@ class NotaFiscalProduto {
         'valorUnitarioTributavel': valorUnitarioTributavel,
         'indTot': indTot,
       };
-  static NotaFiscalProduto empty =
-      NotaFiscalProduto('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
+  static NotaFiscalProduct empty =
+      NotaFiscalProduct('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
 
-  static List<NotaFiscalProduto> fromMap(json) {
-    return json.map<NotaFiscalProduto>((value) {
-      return NotaFiscalProduto.empty;
+  static List<NotaFiscalProduct> fromMap(json) {
+    return json.map<NotaFiscalProduct>((value) {
+      return NotaFiscalProduct.empty;
     }).toList();
   }
 
   @override
   String toString() {
-    return 'NotaFiscalProduto{codigo: $codigo, ean: $ean, descricao: $descricao, ncm: $ncm, cfop: $cfop, unidadeMedida: $unidadeMedida, quantidade: $quantidade, valorUnitario: $valorUnitario, valorTotal: $valorTotal, eanTributavel: $eanTributavel, unidadeMedidaTributavel: $unidadeMedidaTributavel, quantidadeTributavel: $quantidadeTributavel, valorUnitarioTributavel: $valorUnitarioTributavel, indTot: $indTot}';
+    return 'NotaFiscalProduct{codigo: $codigo, ean: $ean, descricao: $descricao, ncm: $ncm, cfop: $cfop, unidadeMedida: $unidadeMedida, quantidade: $quantidade, valorUnitario: $valorUnitario, valorTotal: $valorTotal, eanTributavel: $eanTributavel, unidadeMedidaTributavel: $unidadeMedidaTributavel, quantidadeTributavel: $quantidadeTributavel, valorUnitarioTributavel: $valorUnitarioTributavel, indTot: $indTot}';
   }
 }

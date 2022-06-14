@@ -21,7 +21,7 @@ class UnidadesMedidaBloc implements BlocBase {
       final docs = await FirebaseFirestore.instance
           .collection('empresas')
           .doc(_empresa)
-          .collection('produtos')
+          .collection('products')
           .where('un', isEqualTo: id)
           .get();
 

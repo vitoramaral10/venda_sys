@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:excel_to_json/excel_to_json.dart';
 import 'package:flutter/material.dart';
 
-class ProdutosImport extends StatefulWidget {
-  const ProdutosImport({Key? key}) : super(key: key);
+class ProductsImport extends StatefulWidget {
+  const ProductsImport({Key? key}) : super(key: key);
 
   @override
-  State<ProdutosImport> createState() => _ProdutosImportState();
+  State<ProductsImport> createState() => _ProductsImportState();
 }
 
-class _ProdutosImportState extends State<ProdutosImport> {
+class _ProductsImportState extends State<ProductsImport> {
   int countInicial = 0;
   int countFinal = 0;
   bool loading = false;
@@ -19,7 +19,7 @@ class _ProdutosImportState extends State<ProdutosImport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Importar produtos'),
+        title: const Text('Importar products'),
       ),
       body: Center(
         child: Column(
@@ -36,26 +36,26 @@ class _ProdutosImportState extends State<ProdutosImport> {
                       countInicial = list.length;
                     });
 
-                    // for (var produtoExcel in list) {
-                      // Product produto = Product.fromJson(produtoExcel);
+                    // for (var productExcel in list) {
+                    // Product product = Product.fromJson(productExcel);
 
-                      // List<Product> produtosEncontrados =
-                      //     await BlocProvider.getBloc<ProdutosBloc>().searchBy(produto.codigo);
+                    // List<Product> productsEncontrados =
+                    //     await BlocProvider.getBloc<ProductsBloc>().searchBy(product.codigo);
 
-                      // if (produtosEncontrados.isEmpty) {
-                      //   UnidadeMedida unidadeMedida =
-                      //       await BlocProvider.getBloc<UnidadesMedidaBloc>().searchBy('descricao', produto.un);
+                    // if (productsEncontrados.isEmpty) {
+                    //   UnidadeMedida unidadeMedida =
+                    //       await BlocProvider.getBloc<UnidadesMedidaBloc>().searchBy('descricao', product.un);
 
-                      //   produto.un = unidadeMedida.id;
+                    //   product.un = unidadeMedida.id;
 
-                      //   bool saved = await BlocProvider.getBloc<ProdutosBloc>().save(produto);
+                    //   bool saved = await BlocProvider.getBloc<ProductsBloc>().save(product);
 
-                      //   if (saved) {
-                      //     setState(() {
-                      //       countFinal++;
-                      //     });
-                      //   }
-                      // }
+                    //   if (saved) {
+                    //     setState(() {
+                    //       countFinal++;
+                    //     });
+                    //   }
+                    // }
                     // }
                   });
                 },
@@ -66,7 +66,7 @@ class _ProdutosImportState extends State<ProdutosImport> {
             loading
                 ? const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('Produtos importados:'),
+                    child: Text('Products importados:'),
                   )
                 : Container(),
             loading

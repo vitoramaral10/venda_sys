@@ -129,62 +129,62 @@ class FiscalBloc implements BlocBase {
             .doc(nota.id)
             .set(nota.toJson());
 
-        nota.produtos.forEach((produto) async {
-          //Verifica se o produto existe
-          QuerySnapshot<Map<String, dynamic>> produtosCadastrados =
+        nota.products.forEach((product) async {
+          //Verifica se o product existe
+          QuerySnapshot<Map<String, dynamic>> productsCadastrados =
               await FirebaseFirestore.instance
                   .collection('empresas')
                   .doc(_empresa)
-                  .collection('produtos')
-                  .where('codigo', isEqualTo: produto.codigo)
+                  .collection('products')
+                  .where('codigo', isEqualTo: product.codigo)
                   .get();
 
           //Se não existe insere antes de atualizar o histórico
-          if (produtosCadastrados.docs.isEmpty) {
+          if (productsCadastrados.docs.isEmpty) {
             // final unidadeMedida =
             //     await BlocProvider.getBloc<UnidadesMedidaBloc>()
-            //         .searchBy('sigla', produto.unidadeMedida);
-            // // BlocProvider.getBloc<ProdutosBloc>().save(
-            //   Produto(
+            //         .searchBy('sigla', product.unidadeMedida);
+            // // BlocProvider.getBloc<ProductsBloc>().save(
+            //   Product(
             //     '',
-            //     produto.codigo,
-            //     produto.descricao,
+            //     product.codigo,
+            //     product.descricao,
             //     '',
             //     0,
             //     0,
             //     0,
-            //     produto.ncm,
+            //     product.ncm,
             //     unidadeMedida.id,
             //   ),
             // );
 
-            produtosCadastrados = await FirebaseFirestore.instance
+            productsCadastrados = await FirebaseFirestore.instance
                 .collection('empresas')
                 .doc(_empresa)
-                .collection('produtos')
-                .where('codigo', isEqualTo: produto.codigo)
+                .collection('products')
+                .where('codigo', isEqualTo: product.codigo)
                 .get();
           }
 
           //Atualiza o histórico
-          for (var doc in produtosCadastrados.docs) {
+          for (var doc in productsCadastrados.docs) {
             double quantidade =
                 double.tryParse(doc.data()['estoque'].toString()) ?? 0;
 
             final Map<String, dynamic> update = {};
 
             if (nota.identificacao.tipo == 0) {
-              update.addAll({'estoque': quantidade + produto.quantidade});
-              update.addAll({'valorCompra': produto.valorUnitario});
+              update.addAll({'estoque': quantidade + product.quantidade});
+              update.addAll({'valorCompra': product.valorUnitario});
             } else {
-              update.addAll({'estoque': quantidade - produto.quantidade});
-              update.addAll({'valorVenda': produto.valorUnitario});
+              update.addAll({'estoque': quantidade - product.quantidade});
+              update.addAll({'valorVenda': product.valorUnitario});
             }
 
             FirebaseFirestore.instance
                 .collection('empresas')
                 .doc(_empresa)
-                .collection('produtos')
+                .collection('products')
                 .doc(doc.id)
                 .update(update);
           }
@@ -254,31 +254,31 @@ class FiscalBloc implements BlocBase {
 
       final nota = NotaFiscal.fromJson(data);
 
-      for (var produto in nota.produtos) {
-        final produtosCadastrados = await FirebaseFirestore.instance
+      for (var product in nota.products) {
+        final productsCadastrados = await FirebaseFirestore.instance
             .collection('empresas')
             .doc(_empresa)
-            .collection('produtos')
-            .where('codigo', isEqualTo: produto.codigo)
+            .collection('products')
+            .where('codigo', isEqualTo: product.codigo)
             .get();
 
         //Atualiza o histórico
-        for (var doc in produtosCadastrados.docs) {
+        for (var doc in productsCadastrados.docs) {
           double quantidade =
               double.tryParse(doc.data()['estoque'].toString()) ?? 0;
 
           final Map<String, dynamic> update = {};
 
           if (nota.identificacao.tipo == 1) {
-            update.addAll({'estoque': quantidade + produto.quantidade});
+            update.addAll({'estoque': quantidade + product.quantidade});
           } else {
-            update.addAll({'estoque': quantidade - produto.quantidade});
+            update.addAll({'estoque': quantidade - product.quantidade});
           }
 
           FirebaseFirestore.instance
               .collection('empresas')
               .doc(_empresa)
-              .collection('produtos')
+              .collection('products')
               .doc(doc.id)
               .update(update);
         }

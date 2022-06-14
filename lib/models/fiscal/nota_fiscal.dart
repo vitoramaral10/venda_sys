@@ -1,7 +1,7 @@
 import 'destinatario.dart';
 import 'emitente.dart';
 import 'identificacao.dart';
-import 'produto.dart';
+import 'product.dart';
 import 'total.dart';
 
 class NotaFiscal {
@@ -9,7 +9,7 @@ class NotaFiscal {
   final NotaFiscalIdentificacao identificacao;
   final NotaFiscalEmitente emitente;
   final NotaFiscalDestinatario destinatario;
-  final List<NotaFiscalProduto> produtos;
+  final List<NotaFiscalProduct> products;
   final NotaFiscalTotal total;
   final bool cancelada;
 
@@ -18,7 +18,7 @@ class NotaFiscal {
     this.identificacao,
     this.emitente,
     this.destinatario,
-    this.produtos,
+    this.products,
     this.total,
     this.cancelada,
   );
@@ -28,7 +28,7 @@ class NotaFiscal {
         identificacao = NotaFiscalIdentificacao.fromJson(json['identificacao']),
         emitente = NotaFiscalEmitente.fromJson(json['emitente']),
         destinatario = NotaFiscalDestinatario.fromJson(json['destinatario']),
-        produtos = NotaFiscalProduto.fromMap(json['produtos']),
+        products = NotaFiscalProduct.fromMap(json['products']),
         total = NotaFiscalTotal.fromJson(json['total']),
         cancelada = json['cancelada'] ?? false;
 
@@ -36,7 +36,7 @@ class NotaFiscal {
         'identificacao': identificacao.toJson(),
         'emitente': emitente.toJson(),
         'destinatario': destinatario.toJson(),
-        'produtos': produtos.map((e) => e.toJson()).toList(),
+        'products': products.map((e) => e.toJson()).toList(),
         'total': total.toJson(),
         'cancelada': cancelada,
       };
@@ -53,6 +53,6 @@ class NotaFiscal {
 
   @override
   String toString() {
-    return 'NotaFiscal{id: $id, identificacao: $identificacao, emitente: $emitente, destinatario: $destinatario, produtos: $produtos, total: $total, cancelada: $cancelada}';
+    return 'NotaFiscal{id: $id, identificacao: $identificacao, emitente: $emitente, destinatario: $destinatario, products: $products, total: $total, cancelada: $cancelada}';
   }
 }

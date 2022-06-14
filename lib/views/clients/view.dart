@@ -265,7 +265,7 @@ class ClientesView extends StatelessWidget {
                               ),
                             ),
                             subtitle: Text(
-                              "Quantidade de itens: ${notaFiscal.produtos.length}",
+                              "Quantidade de itens: ${notaFiscal.products.length}",
                               style: const TextStyle(
                                 fontSize: 14,
                               ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:venda_sys/bloc/unidades_medida_bloc.dart';
 import 'package:venda_sys/models/product.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
 
+import '../../controllers/products_controller.dart';
 import '../widgets/custom_text_field.dart';
 
 // ignore: must_be_immutable
-class ProductFormPage extends GetView {
+class ProductFormPage extends GetView<ProductsController> {
   ProductFormPage({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -23,13 +23,13 @@ class ProductFormPage extends GetView {
 
   late String unidadeMedida = '';
 
-  late Product? produto;
+  late Product? product;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo Produto'),
+        title: const Text('Novo Product'),
       ),
       body: Form(
         key: _formKey,
@@ -81,19 +81,18 @@ class ProductFormPage extends GetView {
               child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Product produto = Product(
-                        '',
-                        _codigoController.text,
-                        _descricaoController.text,
-                        _descricaoResumidaController.text,
-                        double.tryParse(_estoqueController.text) ?? 0,
-                        double.tryParse(_valorCompraController.text) ?? 0,
-                        double.tryParse(_valorVendaController.text) ?? 0,
-                        int.tryParse(_ncmController.text) ?? 0,
-                        unidadeMedida,
+                      Product product = Product(
+                        codigo:_codigoController.text,
+                        descricao:_descricaoController.text,
+                        descricaoResumida:_descricaoResumidaController.text,
+                        estoque: double.tryParse(_estoqueController.text) ?? 0,
+                        valorCompra: double.tryParse(_valorCompraController.text) ?? 0,
+                        valorVenda: double.tryParse(_valorVendaController.text) ?? 0,
+                        ncm: int.tryParse(_ncmController.text) ?? 0,
+                        un: unidadeMedida,
                       );
 
-                      _save(produto);
+                      controller.save(product);
                     }
                   },
                   child: const Text('Salvar')),
@@ -139,32 +138,6 @@ class ProductFormPage extends GetView {
       );
     }
     return Container();
-  }
-
-  void _save(Product produto) {
-    // BlocProvider.getBloc<ProdutosBloc>().save(produto).then((e) {
-    //   if (e == true) {
-    //     Navigator.pop(context);
-    //   } else {
-    //     errorPopup(
-    //       text: 'Ocorreu um erro ao salvar, tente novamente!',
-    //       title: 'Erro ao salvar',
-    //     );
-    //   }
-    // });
-  }
-
-  void _edit(Product produto) {
-    // BlocProvider.getBloc<ProdutosBloc>().edit(produto).then((e) {
-    //   if (e == true) {
-    //     Navigator.pop(context);
-    //   } else {
-    //     errorPopup(
-    //       text: 'Ocorreu um erro ao editar, tente novamente!',
-    //       title: 'Erro ao editar',
-    //     );
-    //   }
-    // });
   }
 
   bool _checkValue(String id, List<UnidadeMedida> unidadeMedidaList) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../config/constants.dart';
@@ -8,9 +9,11 @@ class ProductsController extends GetxController {
   final String _collection = 'produtos';
   final String _empresa = Constants.box.get('empresa');
   final _products = [].obs;
+  final _loading = false.obs;
 
   // ignore: invalid_use_of_protected_member
   List get products => _products.value;
+  bool get loading => _loading.value;
 
   @override
   void onInit() {
@@ -19,6 +22,9 @@ class ProductsController extends GetxController {
   }
 
   Future<void> load() async {
+    _loading.value = true;
+    update();
+
     final data = await FirebaseFirestore.instance
         .collection('empresas')
         .doc(_empresa)
@@ -26,15 +32,65 @@ class ProductsController extends GetxController {
         .orderBy('descricao')
         .get();
 
-    final List<Product> produtos = data.docs.map((e) {
-      Product produto = Product.fromJson(e.data());
+    final List<Product> products = data.docs.map((e) {
+      Product product = Product.fromJson(e.data());
 
-      produto.id = e.id;
+      product.id = e.id;
 
-      return produto;
+      return product;
     }).toList();
 
-    _products.value = produtos;
+    _products.value = products;
+    _loading.value = false;
     update();
+  }
+
+  void delete(Product product) {
+    Get.defaultDialog(
+      title: 'Excluir Produto',
+      content: Text('Deseja excluir o produto ${product.descricao}?'),
+      actions: [
+        TextButton(
+          child: const Text('Cancelar'),
+          onPressed: () => Get.back(),
+        ),
+        ElevatedButton(
+          child: const Text('Excluir'),
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection('empresas')
+                .doc(_empresa)
+                .collection(_collection)
+                .doc(product.id)
+                .delete();
+
+            load();
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+  void save(Product product) {
+    if (product.id == null) {
+      FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc()
+          .set(product.toJson());
+    } else {
+      FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(_empresa)
+          .collection(_collection)
+          .doc(product.id)
+          .set(product.toJson());
+    }
+
+    load();
+
+    Get.back();
   }
 }

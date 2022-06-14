@@ -58,10 +58,10 @@ class SideMenu extends GetView<AuthController> {
                       ),
                       DrawerExpansionTile(
                           icon: FontAwesomeIcons.inbox,
-                          title: 'Produtos',
+                          title: 'Products',
                           children: [
                             DrawerTile(
-                              title: 'Produtos',
+                              title: 'Products',
                               route: '/products',
                             ),
                             DrawerTile(

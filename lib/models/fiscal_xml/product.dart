@@ -1,4 +1,4 @@
-class NotaFiscalXMLProduto {
+class NotaFiscalXMLProduct {
   final String codigo;
   final String ean;
   final String descricao;
@@ -14,7 +14,7 @@ class NotaFiscalXMLProduto {
   final double valorUnitarioTributavel;
   final int indTot;
 
-  NotaFiscalXMLProduto(
+  NotaFiscalXMLProduct(
     this.codigo,
     this.ean,
     this.descricao,
@@ -31,7 +31,7 @@ class NotaFiscalXMLProduto {
     this.indTot,
   );
 
-  NotaFiscalXMLProduto.fromJson(Map<String, dynamic> json)
+  NotaFiscalXMLProduct.fromJson(Map<String, dynamic> json)
       : codigo = json['prod']['cProd'],
         ean = json['prod']['cEAN'],
         descricao = json['prod']['xProd'],
@@ -63,11 +63,12 @@ class NotaFiscalXMLProduto {
         'valorUnitarioTributavel': valorUnitarioTributavel,
         'indTot': indTot,
       };
-  static NotaFiscalXMLProduto empty = NotaFiscalXMLProduto('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
+  static NotaFiscalXMLProduct empty =
+      NotaFiscalXMLProduct('', '', '', 0, 0, '', 0, 0, 0, '', '', 0, 0, 0);
 
-  static List<NotaFiscalXMLProduto> fromMap(json) {
-    return json.map<NotaFiscalXMLProduto>((value) {
-      return NotaFiscalXMLProduto.fromJson(value);
+  static List<NotaFiscalXMLProduct> fromMap(json) {
+    return json.map<NotaFiscalXMLProduct>((value) {
+      return NotaFiscalXMLProduct.fromJson(value);
     }).toList();
   }
 }

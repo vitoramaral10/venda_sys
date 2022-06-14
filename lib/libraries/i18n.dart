@@ -11,7 +11,7 @@ class I18n extends Translations {
         'pt_BR': {
           'title': 'Venda Sys',
           'importXml': 'Importar XML',
-          'products': 'Produtos',
+          'products': 'Products',
         },
       };
 }

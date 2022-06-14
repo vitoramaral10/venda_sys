@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/models/product.dart';
 import 'package:venda_sys/models/unidade_medida.dart';
+import 'package:venda_sys/views/widgets/base_widget.dart';
 
 import '../../controllers/products_controller.dart';
 import '../widgets/custom_text_field.dart';
@@ -27,77 +29,97 @@ class ProductFormPage extends GetView<ProductsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Novo Product'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            CustomTextField(
-                label: 'Código',
-                controller: _codigoController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Campo obrigatório!';
-                  }
-                  return null;
-                }),
-            CustomTextField(
-                label: 'Descrição',
-                controller: _descricaoController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Campo obrigatório!';
-                  }
-                  return null;
-                }),
-            CustomTextField(
-                label: 'Descrição Resumida',
-                controller: _descricaoResumidaController),
-            CustomTextField(
-              label: 'Valor de Compra',
-              controller: _valorCompraController,
-              keyboardType: TextInputType.number,
-            ),
-            CustomTextField(
-              label: 'Valor de Venda',
-              controller: _valorVendaController,
-              keyboardType: TextInputType.number,
-            ),
-            CustomTextField(
-              label: 'Estoque',
-              controller: _estoqueController,
-              keyboardType: TextInputType.number,
-            ),
-            CustomTextField(
-              label: 'NCM',
-              controller: _ncmController,
-              keyboardType: TextInputType.number,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Product product = Product(
-                        codigo:_codigoController.text,
-                        descricao:_descricaoController.text,
-                        descricaoResumida:_descricaoResumidaController.text,
-                        estoque: double.tryParse(_estoqueController.text) ?? 0,
-                        valorCompra: double.tryParse(_valorCompraController.text) ?? 0,
-                        valorVenda: double.tryParse(_valorVendaController.text) ?? 0,
-                        ncm: int.tryParse(_ncmController.text) ?? 0,
-                        un: unidadeMedida,
-                      );
-
-                      controller.save(product);
+    return BaseWidget(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Constants.defaultPadding),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(Constants.defaultPadding),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                CustomTextField(
+                  label: 'Código',
+                  controller: _codigoController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Campo obrigatório!';
                     }
+                    return null;
                   },
-                  child: const Text('Salvar')),
-            )
-          ],
+                ),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                    label: 'Descrição',
+                    controller: _descricaoController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Campo obrigatório!';
+                      }
+                      return null;
+                    }),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                    label: 'Descrição Resumida',
+                    controller: _descricaoResumidaController),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                  label: 'Valor de Compra',
+                  controller: _valorCompraController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                  label: 'Valor de Venda',
+                  controller: _valorVendaController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                  label: 'Estoque',
+                  controller: _estoqueController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: Constants.defaultPadding),
+                CustomTextField(
+                  label: 'NCM',
+                  controller: _ncmController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: Constants.defaultPadding),
+                SizedBox(
+                  height: 46,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          Product product = Product(
+                            codigo: _codigoController.text,
+                            descricao: _descricaoController.text,
+                            descricaoResumida:
+                                _descricaoResumidaController.text,
+                            estoque:
+                                double.tryParse(_estoqueController.text) ?? 0,
+                            valorCompra:
+                                double.tryParse(_valorCompraController.text) ??
+                                    0,
+                            valorVenda:
+                                double.tryParse(_valorVendaController.text) ??
+                                    0,
+                            ncm: int.tryParse(_ncmController.text) ?? 0,
+                            un: unidadeMedida,
+                          );
+
+                          controller.save(product);
+                        }
+                      },
+                      child: const Text('Salvar')),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

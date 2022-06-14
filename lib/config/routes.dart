@@ -3,6 +3,7 @@ import 'package:venda_sys/bindings/auth_binding.dart';
 import 'package:venda_sys/views/login_page.dart';
 import 'package:venda_sys/views/products/product_form_page.dart';
 
+import '../bindings/invoices_binding.dart';
 import '../bindings/product_binding.dart';
 import '../middleware/auth_middleware.dart';
 import '../views/clients/clients_form_page.dart';
@@ -45,6 +46,7 @@ class Routes {
     GetPage(
       name: '/invoices',
       page: () => InvoicesPage(),
+      binding: InvoicesBinding(),
       middlewares: [AuthMiddleware()],
     ),
     GetPage(

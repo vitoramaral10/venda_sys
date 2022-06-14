@@ -5,7 +5,7 @@ import 'product.dart';
 import 'total.dart';
 
 class NotaFiscal {
-  final String id;
+  late final String id;
   final NotaFiscalIdentificacao identificacao;
   final NotaFiscalEmitente emitente;
   final NotaFiscalDestinatario destinatario;

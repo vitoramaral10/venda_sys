@@ -1,24 +1,21 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'package:venda_sys/bloc/fiscal_bloc.dart';
 import 'package:venda_sys/functions/import_xml.dart';
 import 'package:venda_sys/models/fiscal/nota_fiscal.dart';
 
+import '../../controllers/invoices_controller.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/error_popup.dart';
 
-class InvoicesPage extends GetView {
+class InvoicesPage extends GetView<InvoicesController> {
   InvoicesPage({Key? key}) : super(key: key);
 
   final f = DateFormat('dd/MM/yyy hh:mm');
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.getBloc<FiscalBloc>().search();
-
     return BaseWidget(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -26,31 +23,41 @@ class InvoicesPage extends GetView {
         },
         child: const Icon(Icons.file_upload_outlined),
       ),
-      child: StreamBuilder(
-        stream: BlocProvider.getBloc<FiscalBloc>().outNotaFiscal,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            List<NotaFiscal> fiscal = snapshot.data! as List<NotaFiscal>;
-
-            fiscal.sort((a, b) => b.identificacao.dataEmissao
-                .compareTo(a.identificacao.dataEmissao));
-
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 80),
-              itemCount: fiscal.length,
-              itemBuilder: (context, index) {
-                return _listTile(index, fiscal[index], context);
-              },
-            );
-          }
-        },
+      child: Obx(
+        () => controller.loading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 80),
+                itemCount: controller.invoices.length,
+                itemBuilder: (context, index) {
+                  return _listTile(index, controller.invoices[index], context);
+                },
+              ),
       ),
+      // child: Obx(()=> controller.loading)?
+      //        Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     } else {
+      //       List<NotaFiscal> fiscal = snapshot.data! as List<NotaFiscal>;
+
+      //       fiscal.sort((a, b) => b.identificacao.dataEmissao
+      //           .compareTo(a.identificacao.dataEmissao));
+
+      //       return ListView.builder(
+      //         shrinkWrap: true,
+      //         physics: const ScrollPhysics(),
+      //         padding: const EdgeInsets.only(bottom: 80),
+      //         itemCount: fiscal.length,
+      //         itemBuilder: (context, index) {
+      //           return _listTile(index, fiscal[index], context);
+      //         },
+      //       );
+      // }
+      // },
+      // ),
     );
   }
 
@@ -142,13 +149,11 @@ class InvoicesPage extends GetView {
                 ),
                 onPressed: () async {
                   try {
-                    await BlocProvider.getBloc<FiscalBloc>().cancel(nota.id);
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                    controller.cancel(nota);
+
+                    Get.back();
                   } catch (e) {
-                    errorPopup(
-                        title: 'Erro desconhecido',
-                        text: e.toString());
+                    errorPopup(title: 'Erro desconhecido', text: e.toString());
                   }
                 },
               ),

@@ -59,21 +59,7 @@ class FiscalBloc implements BlocBase {
   }
 
   Future<void> search() async {
-    final notas = await FirebaseFirestore.instance
-        .collection('empresas')
-        .doc(_empresa)
-        .collection(_collection)
-        .orderBy('identificacao')
-        .get();
-
-    final List<NotaFiscal> fiscais = notas.docs.map((doc) {
-      var data = doc.data();
-
-      data['id'] = doc.id;
-      return NotaFiscal.fromJson(data);
-    }).toList();
-
-    _notaFiscalController.sink.add(fiscais);
+   
   }
 
   Future<NotaFiscal> getFiscal(String id) async {
@@ -238,62 +224,6 @@ class FiscalBloc implements BlocBase {
       }
     } catch (e) {
       return 'error';
-    }
-  }
-
-  Future cancel(String id) async {
-    try {
-      final doc = await FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc(id)
-          .get();
-      final data = doc.data() as Map<String, dynamic>;
-      data['id'] = doc.id;
-
-      final nota = NotaFiscal.fromJson(data);
-
-      for (var product in nota.products) {
-        final productsCadastrados = await FirebaseFirestore.instance
-            .collection('empresas')
-            .doc(_empresa)
-            .collection('products')
-            .where('codigo', isEqualTo: product.codigo)
-            .get();
-
-        //Atualiza o histórico
-        for (var doc in productsCadastrados.docs) {
-          double quantidade =
-              double.tryParse(doc.data()['estoque'].toString()) ?? 0;
-
-          final Map<String, dynamic> update = {};
-
-          if (nota.identificacao.tipo == 1) {
-            update.addAll({'estoque': quantidade + product.quantidade});
-          } else {
-            update.addAll({'estoque': quantidade - product.quantidade});
-          }
-
-          FirebaseFirestore.instance
-              .collection('empresas')
-              .doc(_empresa)
-              .collection('products')
-              .doc(doc.id)
-              .update(update);
-        }
-      }
-
-      FirebaseFirestore.instance
-          .collection('empresas')
-          .doc(_empresa)
-          .collection(_collection)
-          .doc(id)
-          .update({'cancelada': true});
-
-      search();
-    } catch (e) {
-      throw Exception(e);
     }
   }
 

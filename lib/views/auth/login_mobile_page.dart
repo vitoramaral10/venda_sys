@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:validators/validators.dart';
-import 'package:venda_sys/config/themes/light.dart';
 
 import '../../config/constants.dart';
 import '../../controllers/auth_controller.dart';
-import 'widgets/custom_text_field.dart';
+import '../widgets/custom_text_field.dart';
 
-class LoginPage extends GetView<AuthController> {
-  LoginPage({Key? key}) : super(key: key);
+class LoginMobilePage extends GetView<AuthController> {
+  LoginMobilePage({Key? key}) : super(key: key);
 
   static const routerName = "/login";
 
@@ -20,59 +19,69 @@ class LoginPage extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(Constants.defaultPadding),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  Constants.defaultPadding,
-                ),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(Constants.defaultPadding * 2),
-                width: !GetPlatform.isMobile ? 500 : double.infinity,
-                child: Form(
-                  key: _formKey,
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(Constants.defaultPadding),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(Constants.defaultPadding * 2),
+              width: !GetPlatform.isMobile ? 500 : double.infinity,
+              child: Form(
+                key: _formKey,
+                child: AutofillGroup(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'VendaSys',
-                        style: TextStyle(
-                            color: appLinkTxtColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Constants.defaultPadding * 2),
+                      Image.asset(
+                        'assets/logos/logo_yellow_amarelo.png',
+                        width: 180,
                       ),
-                      const SizedBox(height: Constants.defaultPadding),
+                      const SizedBox(height: Constants.defaultPadding * 4),
                       CustomTextField(
-                        label: 'Email',
+                        label: 'email'.tr,
                         controller: _emailController,
                         textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.emailAddress,
+                        autofillHints: const [AutofillHints.email],
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Campo obrigatório';
+                            return 'required_field'.tr;
                           } else if (!isEmail(value)) {
-                            return 'Email inválido!';
+                            return 'email_invalid'.tr;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: Constants.defaultPadding),
                       CustomTextField(
-                        label: 'Senha',
+                        label: 'password'.tr,
                         controller: _senhaController,
                         textCapitalization: TextCapitalization.none,
                         obscureText: true,
+                        autofillHints: const [AutofillHints.password],
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Campo obrigatório';
+                            return 'required_field'.tr;
+                          } else if (!isLength(value, 6, 10)) {
+                            return 'password_must_follow_the_rules'.tr;
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: Constants.defaultPadding),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: () {
+                              Get.toNamed('/forgot_password');
+                            },
+                            child: Text(
+                              'forgot_password'.tr,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54),
+                            )),
                       ),
                       const SizedBox(height: Constants.defaultPadding),
                       SizedBox(
@@ -87,7 +96,7 @@ class LoginPage extends GetView<AuthController> {
                               );
                             }
                           },
-                          child: const Text('Entrar'),
+                          child: Text('login'.tr),
                         ),
                       )
                     ],

@@ -13,6 +13,8 @@ class CustomTextField extends GetView {
   bool obscureText;
   List<TextInputFormatter>? inputFormatters;
   Function(String)? onChanged;
+  Function()? onEditingComplete;
+  Iterable<String>? autofillHints;
 
   CustomTextField({
     Key? key,
@@ -24,6 +26,8 @@ class CustomTextField extends GetView {
     this.obscureText = false,
     this.inputFormatters,
     this.onChanged,
+    this.onEditingComplete,
+    this.autofillHints,
   }) : super(key: key);
 
   @override
@@ -39,6 +43,8 @@ class CustomTextField extends GetView {
       validator: validator,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      autofillHints: autofillHints,
     );
   }
 }

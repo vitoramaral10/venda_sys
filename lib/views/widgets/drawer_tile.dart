@@ -18,7 +18,7 @@ class DrawerTile extends GetView {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (Get.currentRoute != route) Get.toNamed(route);
+        if (Get.currentRoute != route) Get.offAllNamed(route);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class DrawerTile extends GetView {
                     icon,
                     size: 20,
                     color: Get.currentRoute == route
-                        ? const Color.fromRGBO(255, 255, 255, 1)
+                        ? Colors.white
                         : const Color.fromRGBO(0, 0, 0, 0.7),
                   )
                 : null,

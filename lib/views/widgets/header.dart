@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import '../../config/constants.dart';
-import '../../config/themes/light.dart';
 import '../../controllers/auth_controller.dart';
 
 // ignore: must_be_immutable
@@ -24,35 +22,31 @@ class Header extends GetView<AuthController> {
               onTap: () {
                 controller.logout();
               },
-              child: const ListTile(
-                leading: Icon(FontAwesomeIcons.doorOpen),
-                title: Text('Sair'),
+              child: ListTile(
+                leading: const Icon(FontAwesomeIcons.doorOpen),
+                title: Text('exit'.tr),
               ),
             ),
           ],
           child: Center(
             child: Row(
-              children: const [
-                CircleAvatar(
-                  backgroundColor: appLinkTxtColor,
-                  foregroundImage: NetworkImage(
-                    'https://igd-wp-uploads-pluginaws.s3.amazonaws.com/wp-content/uploads/2016/05/30105213/Qual-e%CC%81-o-Perfil-do-Empreendedor.jpg',
+              children: [
+                const SizedBox(
+                  width: Constants.defaultPadding,
+                ),
+                Obx(
+                  () => Text(
+                    controller.userName,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: Constants.defaultPadding,
                 ),
-                Text(
-                  'Vitor Melo',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                SizedBox(
-                  width: Constants.defaultPadding,
-                ),
-                Icon(
+                const Icon(
                   FontAwesomeIcons.angleDown,
                   color: Colors.white,
                 ),

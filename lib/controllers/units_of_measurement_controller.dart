@@ -20,6 +20,8 @@ class UnitsOfMeasurementController extends GetxController {
 
   void loadUnits() {
     _loading.value = true;
+    update();
+
     FirebaseService().getUnitsOfMeasurement().then((units) {
       _units.value = units
           .map<UnitOfMeasurement>((e) => UnitOfMeasurement.fromJson(e))

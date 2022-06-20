@@ -16,6 +16,10 @@ ThemeData get lightTheme {
       onSecondary: btnPrimaryTxtColor,
       secondary: btnPrimaryBgColor,
     ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: btnPrimaryBgColor,
+      foregroundColor: btnSecondaryBgColor,
+    ),
     textTheme: TextTheme(
       bodyText1: GoogleFonts.ibmPlexSans(
         fontSize: 16,
@@ -129,7 +133,8 @@ ThemeData get lightTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(style: primaryButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: secondaryButtonStyle),
     textButtonTheme: TextButtonThemeData(style: textButtonStyle),
-    textSelectionTheme: const TextSelectionThemeData(cursorColor: appLinkTxtColor),
+    textSelectionTheme:
+        const TextSelectionThemeData(cursorColor: appLinkTxtColor),
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: const TextStyle(color: appTxtColor),
       fillColor: Colors.orange,

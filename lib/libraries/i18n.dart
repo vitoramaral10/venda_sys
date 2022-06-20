@@ -14,6 +14,10 @@ class I18N extends Translations {
           'user_or_password_invalid': 'User or password invalid',
           'user_not_found': 'User not found',
           'wrong_password': 'Wrong password',
+          'home': 'Home',
+          'products': 'Products',
+          'units_of_measurement': 'Units of measurement',
+          'clients': 'Clients',
         },
         'pt_BR': {
           'email': 'Email',
@@ -26,6 +30,10 @@ class I18N extends Translations {
           'user_or_password_invalid': 'Usuário ou senha inválidos',
           'user_not_found': 'Usuário não encontrado',
           'wrong_password': 'Senha incorreta',
+          'home': 'Home',
+          'products': 'Produtos',
+          'units_of_measurement': 'Unidades de medida',
+          'clients': 'Clientes',
         }
       };
 }

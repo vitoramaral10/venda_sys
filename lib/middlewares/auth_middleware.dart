@@ -6,5 +6,6 @@ class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
     FirebaseService().currentUser();
+    return null;
   }
 }

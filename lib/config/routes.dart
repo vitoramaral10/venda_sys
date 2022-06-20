@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 
 import '../bindings/auth_bindings.dart';
+import '../bindings/units_of_measurement.dart';
 import '../middlewares/auth_middleware.dart';
 import '../views/auth/login_page.dart';
 import '../views/home/home_page.dart';
+import '../views/products/units_of_measurement/units_of_measurement_page.dart';
 
 class Routes {
   static const initialRoute = '/login';
@@ -21,6 +23,14 @@ class Routes {
         AuthMiddleware(),
       ],
       binding: AuthBindings(),
+    ),
+    GetPage(
+      name: '/products/units_of_measurement',
+      page: () => const UnitsOfMeasurementPage(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+      binding: UnitsOfMeasurementBindings(),
     ),
   ];
 }

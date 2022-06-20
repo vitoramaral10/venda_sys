@@ -24,7 +24,7 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   get: ^4.6.5
   google_fonts: ^3.0.1
-  hive: ^2.2.1
+  hive: ^2.2.2
   hive_flutter: ^1.1.0
   url_strategy: ^0.2.0
   validators: ^3.0.0

@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/services/firebase_service.dart';
+
+import '../config/constants.dart';
 
 class AuthController extends GetxController {
   final _userName = ''.obs;
@@ -25,7 +25,11 @@ class AuthController extends GetxController {
         userName = user.displayName!;
       }
 
-      log('user: $user');
+      Map<String, dynamic>? userData =
+          await FirebaseService().getUserData(user!.email);
+
+      Constants.box.put('empresa', userData!['empresas'][0]);
+
       Get.offAllNamed('/home');
     } catch (e) {
       Get.defaultDialog(

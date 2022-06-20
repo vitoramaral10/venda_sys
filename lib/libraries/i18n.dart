@@ -18,6 +18,10 @@ class I18N extends Translations {
           'products': 'Products',
           'units_of_measurement': 'Units of measurement',
           'clients': 'Clients',
+          'description': 'Description',
+          'abbreviation': 'Abbreviation',
+          'save': 'Save',
+          'cancel': 'Cancel',
         },
         'pt_BR': {
           'email': 'Email',
@@ -34,6 +38,10 @@ class I18N extends Translations {
           'products': 'Produtos',
           'units_of_measurement': 'Unidades de medida',
           'clients': 'Clientes',
+          'description': 'Descrição',
+          'abbreviation': 'Abreviação',
+          'save': 'Salvar',
+          'cancel': 'Cancelar',
         }
       };
 }

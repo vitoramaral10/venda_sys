@@ -33,6 +33,7 @@ class BaseWidget extends GetView {
                   const Header(),
                   Expanded(
                     child: ListView(
+                      shrinkWrap: true,
                       padding: const EdgeInsets.all(Constants.defaultPadding),
                       children: [
                         Text(

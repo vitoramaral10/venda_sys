@@ -1,10 +1,10 @@
 class UnitOfMeasurement {
-  String id;
+  String? id;
   String description;
   String abbreviation;
 
   UnitOfMeasurement({
-    required this.id,
+    this.id,
     required this.description,
     required this.abbreviation,
   });

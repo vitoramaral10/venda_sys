@@ -5,6 +5,7 @@ import 'package:venda_sys/views/widgets/base_widget.dart';
 import 'package:venda_sys/views/widgets/loading_widget.dart';
 
 import '../../../controllers/units_of_measurement_controller.dart';
+import 'form.dart';
 
 class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
   const UnitsOfMeasurementPage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
     return BaseWidget(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed('/units_of_measurement/new');
+          UnitsOfMeasurementForm().show();
         },
         child: const Icon(FontAwesomeIcons.plus),
       ),

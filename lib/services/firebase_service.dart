@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/models/unit_of_measurement.dart';
 
 import '../config/constants.dart';
 
@@ -76,5 +77,18 @@ class FirebaseService {
       log(e.toString());
     }
     return null;
+  }
+
+  Future<void> createUnitOfMeasurement(UnitOfMeasurement unit) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('empresas')
+          .doc(Constants.box.get('empresa'))
+          .collection(Constants.unitsOfMeasurement)
+          .add(unit.toJson());
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 }

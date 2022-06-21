@@ -22,6 +22,7 @@ class I18N extends Translations {
           'abbreviation': 'Abbreviation',
           'save': 'Save',
           'cancel': 'Cancel',
+          'unit_in_use': 'Unit in use',
         },
         'pt_BR': {
           'email': 'Email',
@@ -42,6 +43,7 @@ class I18N extends Translations {
           'abbreviation': 'Abreviação',
           'save': 'Salvar',
           'cancel': 'Cancelar',
+          'unit_in_use': 'Unidade em uso',
         }
       };
 }

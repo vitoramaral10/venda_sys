@@ -8,4 +8,8 @@ class Constants {
   static Box box = Hive.box(boxName);
 
   static String boxName = 'vendasys';
+
+  static String collection = (const String.fromEnvironment('flavor') == 'prod')
+      ? 'empresas'
+      : 'empresas_teste';
 }

@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../models/unit_of_measurement.dart';
@@ -38,10 +39,12 @@ class UnitsOfMeasurementController extends GetxController {
 
   Future<void> create(UnitOfMeasurement unit) async {
     try {
+      Utils.loading();
       await FirebaseService().createUnitOfMeasurement(unit);
 
       loadUnits();
 
+      Get.back();
       Get.back();
     } catch (e) {
       log(e.toString());
@@ -50,8 +53,10 @@ class UnitsOfMeasurementController extends GetxController {
 
   Future<void> delete(UnitOfMeasurement unit) async {
     try {
+      Utils.loading();
       await FirebaseService().deleteUnitOfMeasurement(unit);
       loadUnits();
+      Get.back();
     } catch (e) {
       log(e.toString());
       rethrow;

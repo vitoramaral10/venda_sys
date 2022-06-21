@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/views/widgets/base_widget.dart';
 import 'package:venda_sys/views/widgets/loading_widget.dart';
 
@@ -33,40 +34,29 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                     key: Key(unit.id.toString()),
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
-                        return await Get.defaultDialog(
-                          titlePadding:
-                              const EdgeInsets.all(Constants.defaultPadding),
-                          contentPadding:
-                              const EdgeInsets.all(Constants.defaultPadding),
-                          title: 'Excluir unidade de medida',
+                        return await Utils.dialog(
+                          title: 'remove_unit_of_measurement'.tr,
                           content: Text(
-                              'Deseja excluir a unidade de medida "${unit.description}"?'),
-                          actions: [
-                            TextButton(
-                              child: const Text('Não'),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            ),
-                            ElevatedButton(
-                              child: const Text('Sim'),
-                              onPressed: () async {
-                                try {
-                                  await controller.delete(unit);
-                                } catch (e) {
-                                  if (e is Exception) {
-                                    Get.snackbar(
-                                      'Erro',
-                                      e.toString(),
-                                      backgroundColor: Colors.red,
-                                      colorText: Colors.white,
-                                    );
-                                  }
-                                }
-                                Get.back();
-                              },
-                            ),
-                          ],
+                              'do_you_want_to_remove_this_unit_of_measurement'
+                                  .tr),
+                          onConfirm: () async {
+                            try {
+                              await controller.delete(unit);
+                              Get.back();
+                            } catch (e) {
+                              if (e is Exception) {
+                                Get.snackbar(
+                                  'error'.tr,
+                                  e.toString(),
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                              }
+                            }
+                          },
+                          onCancel: () => Get.back(),
+                          confirmText: 'remove'.tr,
+                          cancelText: 'cancel'.tr,
                         );
                       }
                       return null;

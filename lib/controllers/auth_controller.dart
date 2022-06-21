@@ -1,84 +1,47 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:venda_sys/config/constants.dart';
-import 'package:venda_sys/controllers/users_controller.dart';
-import 'package:venda_sys/models/user.dart' as u;
+import 'package:venda_sys/services/firebase_service.dart';
+
+import '../config/constants.dart';
 
 class AuthController extends GetxController {
-  final _firebaseAuth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  final String _collection = 'usuarios';
+  final _userName = ''.obs;
 
-  final _user = u.User.empty.obs;
+  String get userName => _userName.value;
 
-  u.User get user => _user.value;
+  set userName(String value) => _userName.value = value;
+
+  void forgot(String text) {}
 
   Future<void> login(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      final userData = await _checkUserData(email: email);
-      Constants.box.put('empresa', userData!['empresas'][0]);
+      User? user = await FirebaseService().signInWithEmailAndPassword(
+        email,
+        password,
+      );
 
-      Get.toNamed('/home');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        Get.defaultDialog(
-          title: 'Erro',
-          middleText: 'Usuário não encontrado',
-          confirm: ElevatedButton(
-            onPressed: () => Get.back(),
-            child: const Text('Ok'),
-          ),
-        );
-      } else if (e.code == 'wrong-password') {
-        Get.defaultDialog(
-          title: 'Erro',
-          middleText: 'Senha incorreta',
-          confirm: ElevatedButton(
-            onPressed: () => Get.back(),
-            child: const Text('Ok'),
-          ),
-        );
-      } else {
-        Get.defaultDialog(
-          title: 'Erro',
-          middleText: 'Erro ao fazer login',
-          confirm: ElevatedButton(
-            onPressed: () => Get.back(),
-            child: const Text('Ok'),
-          ),
-        );
+      if (user != null && user.displayName != null) {
+        userName = user.displayName!;
       }
 
-      log(e.toString());
-    }
-  }
+      Map<String, dynamic>? userData =
+          await FirebaseService().getUserData(user!.email);
 
-  Future<void> checkLogged() async {
-    final userFirebase = _firebaseAuth.currentUser;
+      Constants.box.put('empresa', userData!['empresas'][0]);
 
-    if (userFirebase != null) {
-      _user.value = await UsersController().getUsers(userFirebase.uid);
-      update();
-    } else {
-      Get.toNamed('/logout');
-    }
-  }
-
-  Future<Map<String, dynamic>?> _checkUserData({required String email}) async {
-    try {
-      final companies = await _firestore
-          .collection(_collection)
-          .where('email', isEqualTo: email)
-          .get();
-      return companies.docs[0].data();
+      Get.offAllNamed('/home');
     } catch (e) {
-      throw Exception(e);
+      Get.defaultDialog(
+        title: 'Erro',
+        content: Text(e.toString()),
+        actions: [
+          ElevatedButton(
+            child: const Text('Ok'),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      );
     }
   }
 

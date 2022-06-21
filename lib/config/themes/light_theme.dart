@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import './light_colors.dart';
 import '../constants.dart';
+import './light_colors.dart';
 
 ThemeData get lightTheme {
   var theme = ThemeData(
@@ -15,56 +16,60 @@ ThemeData get lightTheme {
       onSecondary: btnPrimaryTxtColor,
       secondary: btnPrimaryBgColor,
     ),
-    textTheme: const TextTheme(
-      bodyText1: TextStyle(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: btnPrimaryBgColor,
+      foregroundColor: btnSecondaryBgColor,
+    ),
+    textTheme: TextTheme(
+      bodyText1: GoogleFonts.ibmPlexSans(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      bodyText2: TextStyle(
+      bodyText2: GoogleFonts.ibmPlexSans(
         color: appTxtColor,
         fontSize: 14,
       ),
-      headline1: TextStyle(
+      headline1: GoogleFonts.ibmPlexSans(
         fontSize: 24,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      headline2: TextStyle(
+      headline2: GoogleFonts.ibmPlexSans(
         fontSize: 20,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      headline3: TextStyle(
+      headline3: GoogleFonts.ibmPlexSans(
         fontSize: 18,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      headline4: TextStyle(
+      headline4: GoogleFonts.ibmPlexSans(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      headline5: TextStyle(
+      headline5: GoogleFonts.ibmPlexSans(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      headline6: TextStyle(
+      headline6: GoogleFonts.ibmPlexSans(
         fontSize: 22,
         color: appTxtColor,
       ),
-      subtitle1: TextStyle(
+      subtitle1: GoogleFonts.ibmPlexSans(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      subtitle2: TextStyle(
+      subtitle2: GoogleFonts.ibmPlexSans(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: appTxtColor,
       ),
-      button: TextStyle(
+      button: GoogleFonts.ibmPlexSans(
         fontSize: 14,
         fontWeight: FontWeight.bold,
       ),
@@ -128,7 +133,8 @@ ThemeData get lightTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(style: primaryButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: secondaryButtonStyle),
     textButtonTheme: TextButtonThemeData(style: textButtonStyle),
-    textSelectionTheme: const TextSelectionThemeData(cursorColor: appLinkTxtColor),
+    textSelectionTheme:
+        const TextSelectionThemeData(cursorColor: appLinkTxtColor),
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: const TextStyle(color: appTxtColor),
       fillColor: Colors.orange,

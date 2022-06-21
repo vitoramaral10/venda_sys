@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../config/constants.dart';
-  import 'header.dart';
+import 'breadcrumbs.dart';
+import 'header.dart';
 import 'side_menu.dart';
 
 // ignore: must_be_immutable
@@ -32,12 +33,17 @@ class BaseWidget extends GetView {
                   const Header(),
                   Expanded(
                     child: ListView(
+                      shrinkWrap: true,
                       padding: const EdgeInsets.all(Constants.defaultPadding),
                       children: [
                         Text(
                           Get.currentRoute.split('/').last.tr,
                           style: Theme.of(context).textTheme.headline1,
                         ),
+                        const SizedBox(
+                          height: Constants.defaultPadding,
+                        ),
+                        const BreadCrumbs(),
                         const SizedBox(
                           height: Constants.defaultPadding,
                         ),

@@ -28,6 +28,10 @@ class I18N extends Translations {
           'remove_unit_of_measurement': 'Remove unit of measurement?',
           'do_you_want_to_remove_this_unit_of_measurement':
               'Do you want to remove this unit of measurement?',
+          'product': 'Product',
+          'code': 'Code',
+          'resumedDescription': 'Resumed description',
+          'quantity': 'Quantity',
         },
         'pt_BR': {
           'email': 'Email',
@@ -54,6 +58,10 @@ class I18N extends Translations {
           'remove_unit_of_measurement': 'Remover unidade de medida?',
           'do_you_want_to_remove_this_unit_of_measurement':
               'Você deseja remover esta unidade de medida?',
+          'product': 'Produto',
+          'code': 'Código',
+          'resumedDescription': 'Descrição resumida',
+          'quantity': 'Quantidade',
         }
       };
 }

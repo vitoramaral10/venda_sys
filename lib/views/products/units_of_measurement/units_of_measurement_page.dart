@@ -14,7 +14,8 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseWidget(
+    return Obx(
+              () => BaseWidget(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           UnitsOfMeasurementForm().show();
@@ -23,8 +24,7 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
       ),
       child: controller.loading
           ? const LoadingWidget()
-          : Obx(
-              () => ListView.builder(
+          : ListView.builder(
                 shrinkWrap: true,
                 itemCount: controller.units.length,
                 itemBuilder: (context, index) {

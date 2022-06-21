@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:venda_sys/models/unit_of_measurement.dart';
 
 import '../config/constants.dart';
+import '../models/product.dart';
 
 class FirebaseService {
   FirebaseService();
@@ -116,4 +117,29 @@ class FirebaseService {
       rethrow;
     }
   }
+
+  Future<List<Product>> getProducts() async {
+    try {
+      final docs = await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection('products')
+          .get();
+
+      return docs.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+
+        data['id'] = doc.id;
+
+        return Product.fromJson(data);
+      }).toList();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  deleteProduct(Product product) {}
+
+  createProduct(Product product) {}
 }

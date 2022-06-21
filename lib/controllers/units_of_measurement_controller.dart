@@ -13,9 +13,13 @@ class UnitsOfMeasurementController extends GetxController {
       Get.find<UnitsOfMeasurementController>();
   final _units = <UnitOfMeasurement>[].obs;
   final _loading = false.obs;
+  final _selectedUnitId = ''.obs;
 
   List<UnitOfMeasurement> get units => _units.value;
   bool get loading => _loading.value;
+  String get selectedUnitId => _selectedUnitId.value;
+
+  selectUnitId(String value) => _selectedUnitId.value = value;
 
   @override
   void onInit() {

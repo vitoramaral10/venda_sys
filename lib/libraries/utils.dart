@@ -63,4 +63,15 @@ class Utils {
             ),
         ]);
   }
+
+  static double? cleanMoney(String value) {
+    value = value
+        .replaceAll(".", "")
+        .replaceAll(",", ".")
+        .replaceAll("R", "")
+        .replaceAll("\$", "")
+        .trim();
+
+    return double.tryParse(value);
+  }
 }

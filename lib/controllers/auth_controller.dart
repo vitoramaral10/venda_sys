@@ -17,6 +17,7 @@ class AuthController extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
+      Utils.loading();
       User? user = await FirebaseService().signInWithEmailAndPassword(
         email,
         password,

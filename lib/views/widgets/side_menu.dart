@@ -50,7 +50,7 @@ class SideMenu extends GetView {
                     children: [
                       DrawerTile(
                         title: 'products'.tr,
-                        route: '/products',
+                        route: '/products/products',
                       ),
                       DrawerTile(
                         title: 'units_of_measurement'.tr,

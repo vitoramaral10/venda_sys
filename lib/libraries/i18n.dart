@@ -22,6 +22,12 @@ class I18N extends Translations {
           'abbreviation': 'Abbreviation',
           'save': 'Save',
           'cancel': 'Cancel',
+          'unit_in_use': 'Unit in use',
+          'remove': 'Remove',
+          'loading': 'Loading',
+          'remove_unit_of_measurement': 'Remove unit of measurement?',
+          'do_you_want_to_remove_this_unit_of_measurement':
+              'Do you want to remove this unit of measurement?',
         },
         'pt_BR': {
           'email': 'Email',
@@ -42,6 +48,12 @@ class I18N extends Translations {
           'abbreviation': 'Abreviação',
           'save': 'Salvar',
           'cancel': 'Cancelar',
+          'unit_in_use': 'Unidade em uso',
+          'remove': 'Remover',
+          'loading': 'Carregando...',
+          'remove_unit_of_measurement': 'Remover unidade de medida?',
+          'do_you_want_to_remove_this_unit_of_measurement':
+              'Você deseja remover esta unidade de medida?',
         }
       };
 }

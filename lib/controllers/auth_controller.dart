@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../config/constants.dart';
@@ -32,15 +33,11 @@ class AuthController extends GetxController {
 
       Get.offAllNamed('/home');
     } catch (e) {
-      Get.defaultDialog(
+      Utils.dialog(
         title: 'Erro',
         content: Text(e.toString()),
-        actions: [
-          ElevatedButton(
-            child: const Text('Ok'),
-            onPressed: () => Get.back(),
-          ),
-        ],
+        onConfirm: () => Get.back(),
+        confirmText: 'Ok',
       );
     }
   }

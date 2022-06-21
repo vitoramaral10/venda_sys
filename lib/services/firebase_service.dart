@@ -44,10 +44,24 @@ class FirebaseService {
     }
   }
 
+  Future<Map<String, dynamic>?> getUserData(String? email) async {
+    try {
+      final companies = await FirebaseFirestore.instance
+          .collection('usuarios')
+          .where('email', isEqualTo: email)
+          .get();
+
+      return companies.docs[0].data();
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   Future<List<Map<String, dynamic>>> getUnitsOfMeasurement() async {
     try {
       final units = await FirebaseFirestore.instance
-          .collection('empresas')
+          .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.unitsOfMeasurement)
           .get();
@@ -65,27 +79,38 @@ class FirebaseService {
     }
   }
 
-  Future<Map<String, dynamic>?> getUserData(String? email) async {
-    try {
-      final companies = await FirebaseFirestore.instance
-          .collection('usuarios')
-          .where('email', isEqualTo: email)
-          .get();
-
-      return companies.docs[0].data();
-    } catch (e) {
-      log(e.toString());
-    }
-    return null;
-  }
-
   Future<void> createUnitOfMeasurement(UnitOfMeasurement unit) async {
     try {
       await FirebaseFirestore.instance
-          .collection('empresas')
+          .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.unitsOfMeasurement)
           .add(unit.toJson());
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> deleteUnitOfMeasurement(UnitOfMeasurement unit) async {
+    try {
+      final docs = await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection('products')
+          .where('un', isEqualTo: unit.id)
+          .get();
+
+      if (docs.docs.isNotEmpty) {
+        throw Exception('unit_in_use'.tr);
+      } else {
+        await FirebaseFirestore.instance
+            .collection(Constants.collection)
+            .doc(Constants.box.get('empresa'))
+            .collection(Constants.unitsOfMeasurement)
+            .doc(unit.id)
+            .delete();
+      }
     } catch (e) {
       log(e.toString());
       rethrow;

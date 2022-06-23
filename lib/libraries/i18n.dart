@@ -32,6 +32,7 @@ class I18N extends Translations {
           'code': 'Code',
           'resumedDescription': 'Resumed description',
           'quantity': 'Quantity',
+          'select_one_unit_of_measurement': 'Select one unit of measurement',
         },
         'pt_BR': {
           'email': 'Email',
@@ -62,6 +63,7 @@ class I18N extends Translations {
           'code': 'Código',
           'resumedDescription': 'Descrição resumida',
           'quantity': 'Quantidade',
+          'select_one_unit_of_measurement': 'Selecione uma unidade de medida'
         }
       };
 }

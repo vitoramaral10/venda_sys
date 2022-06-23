@@ -34,14 +34,13 @@ class ProductsController extends GetxController {
 
   Future<void> create(Product product) async {
     try {
-      print(product.sellingPrice);
-      // Utils.loading();
-      // await FirebaseService().createProduct(product);
+      Utils.loading();
+      await FirebaseService().createProduct(product);
 
-      // await loadProducts();
+      await loadProducts();
 
-      // Get.back();
-      // Get.back();
+      Get.back();
+      Get.back();
     } catch (e) {
       log(e.toString());
     }

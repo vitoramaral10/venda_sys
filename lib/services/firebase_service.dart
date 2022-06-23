@@ -139,7 +139,28 @@ class FirebaseService {
     }
   }
 
-  deleteProduct(Product product) {}
+  deleteProduct(Product product) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection('products')
+          .doc(product.id)
+          .delete();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
-  createProduct(Product product) {}
+  createProduct(Product product) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection('products')
+          .add(product.toJson());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

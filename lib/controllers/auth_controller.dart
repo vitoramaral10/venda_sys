@@ -43,5 +43,7 @@ class AuthController extends GetxController {
     }
   }
 
-  void logout() {}
+  void logout() {
+    Get.offAllNamed('/login');
+  }
 }

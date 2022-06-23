@@ -37,12 +37,12 @@ class FirebaseService {
     }
   }
 
-  void currentUser() {
+  Future<User?> currentUser() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
-    if (currentUser == null) {
-      Get.offAllNamed('/login');
-    }
+    await Future.delayed(const Duration(milliseconds: 1));
+
+    return currentUser;
   }
 
   Future<Map<String, dynamic>?> getUserData(String? email) async {

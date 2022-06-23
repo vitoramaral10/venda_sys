@@ -78,6 +78,9 @@ class ProductsPage extends GetView<ProductsController> {
                       ),
                     ),
                     child: Card(
+                      color: (product.quantity > 0)
+                          ? Colors.white
+                          : Colors.redAccent,
                       child: ListTile(
                         leading: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -241,7 +244,7 @@ class ProductsPage extends GetView<ProductsController> {
                     value: UnitsOfMeasurementController.to.selectedUnitId,
                     onChanged: (value) {
                       UnitsOfMeasurementController.to.selectUnitId(value!);
-                      // productEdited.unitOfMeasurement = value;
+                      productEdited.unitOfMeasurement = value;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {

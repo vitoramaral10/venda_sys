@@ -91,7 +91,7 @@ class LoginPage extends GetView<AuthController> {
                             onPressed: _submit,
                             child: Text('login'.tr),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

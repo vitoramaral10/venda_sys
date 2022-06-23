@@ -15,16 +15,16 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-              () => BaseWidget(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          UnitsOfMeasurementForm().show();
-        },
-        child: const Icon(FontAwesomeIcons.plus),
-      ),
-      child: controller.loading
-          ? const LoadingWidget()
-          : ListView.builder(
+      () => BaseWidget(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            UnitsOfMeasurementForm().show();
+          },
+          child: const Icon(FontAwesomeIcons.plus),
+        ),
+        child: controller.loading
+            ? const LoadingWidget()
+            : ListView.builder(
                 shrinkWrap: true,
                 itemCount: controller.units.length,
                 itemBuilder: (context, index) {
@@ -41,15 +41,18 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                                   .tr),
                           onConfirm: () async {
                             try {
+                              Get.back();
                               await controller.delete(unit);
                               Get.back();
                             } catch (e) {
                               if (e is Exception) {
+                                Get.back();
                                 Get.snackbar(
                                   'error'.tr,
                                   e.toString(),
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,
+                                  snackPosition: SnackPosition.BOTTOM,
                                 );
                               }
                             }
@@ -81,7 +84,7 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                   );
                 },
               ),
-            ),
+      ),
     );
   }
 }

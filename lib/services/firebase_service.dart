@@ -99,7 +99,7 @@ class FirebaseService {
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection('products')
-          .where('un', isEqualTo: unit.id)
+          .where('unitOfMeasurement', isEqualTo: unit.id)
           .get();
 
       if (docs.docs.isNotEmpty) {

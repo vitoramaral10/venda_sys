@@ -20,17 +20,20 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
           description: '',
           abbreviation: '',
         );
+
     return Form(
       key: formKey,
       child: Column(
         children: [
           CustomTextField(
             onChanged: (value) => unitOfMeasurementEdited.description = value,
+            initialValue: unitOfMeasurementEdited.description,
             label: 'description'.tr,
           ),
           const SizedBox(height: Constants.defaultPadding),
           CustomTextField(
             onChanged: (value) => unitOfMeasurementEdited.abbreviation = value,
+            initialValue: unitOfMeasurementEdited.abbreviation,
             label: 'abbreviation'.tr,
           ),
           const SizedBox(

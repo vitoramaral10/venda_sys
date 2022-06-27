@@ -67,5 +67,17 @@ class UnitsOfMeasurementController extends GetxController {
     }
   }
 
-  void updateUnitOfMeasurement(UnitOfMeasurement unitOfMeasurementEdited) {}
+  Future<void> updateUnitOfMeasurement(UnitOfMeasurement unit) async {
+    try {
+      Utils.loading();
+      await FirebaseService().updateUnitOfMeasurement(unit);
+
+      loadUnits();
+      Get.back();
+      Get.back();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

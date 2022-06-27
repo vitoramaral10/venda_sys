@@ -15,7 +15,6 @@ class UnitOfMeasurement {
         abbreviation = json['abbreviation'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
         'description': description,
         'abbreviation': abbreviation,
       };

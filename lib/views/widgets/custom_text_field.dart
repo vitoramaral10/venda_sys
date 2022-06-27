@@ -15,6 +15,7 @@ class CustomTextField extends GetView {
   Function(String)? onChanged;
   Function()? onEditingComplete;
   Iterable<String>? autofillHints;
+  String? initialValue;
 
   CustomTextField({
     Key? key,
@@ -28,11 +29,13 @@ class CustomTextField extends GetView {
     this.onChanged,
     this.onEditingComplete,
     this.autofillHints,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       controller: controller,
       decoration: InputDecoration(
         labelText: label,

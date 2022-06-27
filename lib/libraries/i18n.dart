@@ -37,6 +37,7 @@ class I18N extends Translations {
           'ncm': 'NCM',
           'sellingPrice': 'Selling Price',
           'buyingPrice': 'Buying Price',
+          'edit': 'Edit',
         },
         'pt_BR': {
           'email': 'Email',
@@ -72,6 +73,7 @@ class I18N extends Translations {
           'ncm': 'NCM',
           'sellingPrice': 'Preço de venda',
           'buyingPrice': 'Preço de venda',
+          'edit': 'Editar',
         }
       };
 }

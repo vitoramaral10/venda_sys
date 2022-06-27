@@ -123,7 +123,7 @@ class FirebaseService {
       final docs = await FirebaseFirestore.instance
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
-          .collection('products')
+          .collection(Constants.products)
           .get();
 
       return docs.docs.map((doc) {
@@ -144,7 +144,7 @@ class FirebaseService {
       await FirebaseFirestore.instance
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
-          .collection('products')
+          .collection(Constants.products)
           .doc(product.id)
           .delete();
     } catch (e) {
@@ -157,8 +157,21 @@ class FirebaseService {
       await FirebaseFirestore.instance
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
-          .collection('products')
+          .collection(Constants.products)
           .add(product.toJson());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  updateUnitOfMeasurement(UnitOfMeasurement unit) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection(Constants.unitsOfMeasurement)
+          .doc(unit.id)
+          .update(unit.toJson());
     } catch (e) {
       log(e.toString());
     }

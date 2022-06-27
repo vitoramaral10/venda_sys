@@ -7,14 +7,13 @@ import 'package:venda_sys/views/widgets/base_widget.dart';
 import 'package:venda_sys/views/widgets/loading_widget.dart';
 
 import '../../../controllers/units_of_measurement_controller.dart';
-import 'form.dart';
+import 'unit_of_measurement_form.dart';
 
 class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
   const UnitsOfMeasurementPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return Obx(
       () => BaseWidget(
         floatingActionButton: FloatingActionButton(
@@ -78,9 +77,15 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                       ),
                     ),
                     child: Card(
-                      child: ListTile(
-                        title: Text(unit.description),
-                        subtitle: Text(unit.abbreviation),
+                      child: InkWell(
+                        onTap: () => Utils.dialog(
+                            title: 'edit'.tr,
+                            content: UnitsOfMeasurementForm(
+                                unitOfMeasurement: unit)),
+                        child: ListTile(
+                          title: Text(unit.description),
+                          subtitle: Text(unit.abbreviation),
+                        ),
                       ),
                     ),
                   );

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/models/client.dart';
 import 'package:venda_sys/models/unit_of_measurement.dart';
 
 import '../config/constants.dart';
@@ -24,6 +25,8 @@ class FirebaseService {
         email: email,
         password: password,
       );
+
+      FirebaseAuth.instance.setPersistence(Persistence.SESSION);
 
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
@@ -189,4 +192,12 @@ class FirebaseService {
       log(e.toString());
     }
   }
+
+  getClients() {}
+
+  createClient(Client client) {}
+
+  deleteClient(Client client) {}
+
+  updateClient(Client client) {}
 }

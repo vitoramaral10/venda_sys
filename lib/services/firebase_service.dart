@@ -193,9 +193,48 @@ class FirebaseService {
     }
   }
 
-  getClients() {}
+  Future<List<Client>> getClients() async {
+    try {
+      final docs = await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection(Constants.clients)
+          .get();
 
-  createClient(Client client) {}
+      return docs.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+
+        data['id'] = doc.id;
+
+        return Client.fromJson(data);
+      }).toList();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  createClient(Client client) async {
+    try {
+      final docs = await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection(Constants.clients)
+          .where({'cnpj': client.cnpj}).get();
+
+      if (docs.docs.isEmpty) {
+        await FirebaseFirestore.instance
+            .collection(Constants.collection)
+            .doc(Constants.box.get('empresa'))
+            .collection(Constants.clients)
+            .add(client.toJson());
+      } else {
+        throw Exception('Client cadastrado');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
   deleteClient(Client client) {}
 

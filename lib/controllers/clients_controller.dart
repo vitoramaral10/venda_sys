@@ -42,6 +42,7 @@ class ClientsController extends GetxController {
       Get.back();
     } catch (e) {
       log(e.toString());
+      rethrow;
     }
   }
 

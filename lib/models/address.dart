@@ -1,14 +1,14 @@
 class Address {
-  final String street;
-  final String number;
-  final String district;
-  final int cityCode;
-  final String city;
-  final String uf;
-  final String cep;
-  final int countryCode;
-  final String country;
-  final String complement;
+  String street;
+  String number;
+  String district;
+  int cityCode;
+  String city;
+  String uf;
+  String cep;
+  int countryCode;
+  String country;
+  String complement;
 
   Address({
     required this.street,

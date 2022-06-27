@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/controllers/clients_controller.dart';
 import 'package:venda_sys/libraries/utils.dart';
@@ -15,13 +16,10 @@ class ClientsPage extends GetView<ClientsController> {
   Widget build(BuildContext context) {
     return Obx(
       () => BaseWidget(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => Utils.dialog(
-        //     title: 'client'.tr,
-        //     content: ClientForm(),
-        //   ),
-        //   child: const Icon(FontAwesomeIcons.plus),
-        // ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Get.toNamed('/clients/register'),
+          child: const Icon(FontAwesomeIcons.plus),
+        ),
         child: controller.loading
             ? const LoadingWidget()
             : ListView.builder(

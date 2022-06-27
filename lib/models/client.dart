@@ -1,5 +1,4 @@
 import 'address.dart';
-import 'email.dart';
 
 class Client {
   String? id;
@@ -9,7 +8,7 @@ class Client {
   String fantasyName;
   Address address;
   String typePerson;
-  List<Email>? emails;
+  String email;
   String phone;
   String contact;
   String comment;
@@ -22,7 +21,7 @@ class Client {
     required this.fantasyName,
     required this.address,
     required this.typePerson,
-    this.emails,
+    required this.email,
     required this.phone,
     required this.contact,
     required this.comment,
@@ -34,9 +33,9 @@ class Client {
         ie = json['ie'],
         corporateName = json['corporateName'],
         fantasyName = json['fantasyName'],
-        address = json['address'],
+        address = Address.fromJson(json['address']),
         typePerson = json['typePerson'],
-        emails = json['emails'],
+        email = json['email'],
         phone = json['phone'],
         contact = json['contact'],
         comment = json['comment'];
@@ -46,11 +45,23 @@ class Client {
         'ie': ie,
         'corporateName': corporateName,
         'fantasyName': fantasyName,
-        'address': address,
+        'address': address.toJson(),
         'typePerson': typePerson,
-        'emails': emails,
+        'email': email,
         'phone': phone,
         'contact': contact,
         'comment': comment,
       };
+
+  static Client empty = Client(
+      address: Address.empty,
+      cnpj: '',
+      comment: '',
+      contact: '',
+      corporateName: '',
+      fantasyName: '',
+      email: '',
+      ie: '',
+      phone: '',
+      typePerson: '');
 }

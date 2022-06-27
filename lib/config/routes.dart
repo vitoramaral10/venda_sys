@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
+import 'package:venda_sys/bindings/auth_bindings.dart';
+import 'package:venda_sys/bindings/clients.dart';
+import 'package:venda_sys/bindings/products_bindings.dart';
+import 'package:venda_sys/bindings/units_of_measurement.dart';
+import 'package:venda_sys/middlewares/auth_middleware.dart';
+import 'package:venda_sys/views/auth/login_page.dart';
+import 'package:venda_sys/views/clients/clients_form.dart';
+import 'package:venda_sys/views/clients/clients_page.dart';
+import 'package:venda_sys/views/home/home_page.dart';
 import 'package:venda_sys/views/products/products/products_page.dart';
-
-import '../bindings/auth_bindings.dart';
-import '../bindings/products_bindings.dart';
-import '../bindings/units_of_measurement.dart';
-import '../middlewares/auth_middleware.dart';
-import '../views/auth/login_page.dart';
-import '../views/home/home_page.dart';
-import '../views/products/units_of_measurement/units_of_measurement_page.dart';
+import 'package:venda_sys/views/products/units_of_measurement/units_of_measurement_page.dart';
 
 class Routes {
   static const initialRoute = '/login';
@@ -41,6 +43,30 @@ class Routes {
         AuthMiddleware(),
       ],
       binding: UnitsOfMeasurementBindings(),
+    ),
+    GetPage(
+      name: '/clients',
+      page: () => const ClientsPage(),
+      middlewares: [
+        // AuthMiddleware(),
+      ],
+      binding: ClientsBindings(),
+    ),
+    GetPage(
+      name: '/clients/register',
+      page: () => ClientsForm(),
+      middlewares: [
+        // AuthMiddleware(),
+      ],
+      binding: ClientsBindings(),
+    ),
+    GetPage(
+      name: '/clients/edit',
+      page: () => ClientsForm(),
+      middlewares: [
+        // AuthMiddleware(),
+      ],
+      binding: ClientsBindings(),
     ),
   ];
 }

@@ -38,6 +38,7 @@ class I18N extends Translations {
           'sellingPrice': 'Selling Price',
           'buyingPrice': 'Buying Price',
           'edit': 'Edit',
+          'form': 'Form',
         },
         'pt_BR': {
           'email': 'Email',
@@ -74,6 +75,7 @@ class I18N extends Translations {
           'sellingPrice': 'Preço de venda',
           'buyingPrice': 'Preço de venda',
           'edit': 'Editar',
+          'form': 'Formulário',
         }
       };
 }

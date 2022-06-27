@@ -79,59 +79,66 @@ class ProductsPage extends GetView<ProductsController> {
                       color: (product.quantity > 0)
                           ? Colors.white
                           : Colors.redAccent,
-                      child: ListTile(
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              product.code,
-                              style: TextStyle(
-                                color: product.quantity < 0
-                                    ? Colors.white
-                                    : Colors.black,
+                      child: InkWell(
+                        onTap: () => Utils.dialog(
+                            title: 'edit'.tr,
+                            content: ProductForm(
+                              product: product,
+                            )),
+                        child: ListTile(
+                          leading: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                product.code,
+                                style: TextStyle(
+                                  color: product.quantity < 0
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        title: Text(
-                          product.description,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: product.quantity < 0
-                                ? Colors.white
-                                : Colors.black,
+                            ],
                           ),
-                        ),
-                        subtitle: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Valor Compra: ${UtilBrasilFields.obterReal(product.buyingPrice!)}',
-                              style: TextStyle(
-                                color: product.quantity < 0
-                                    ? Colors.white
-                                    : Colors.black54,
+                          title: Text(
+                            product.description,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: product.quantity < 0
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          subtitle: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Valor Compra: ${UtilBrasilFields.obterReal(product.buyingPrice!)}',
+                                style: TextStyle(
+                                  color: product.quantity < 0
+                                      ? Colors.white
+                                      : Colors.black54,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Valor Venda: ${UtilBrasilFields.obterReal(product.sellingPrice!)}',
-                              style: TextStyle(
-                                color: product.quantity < 0
-                                    ? Colors.white
-                                    : Colors.black54,
+                              const SizedBox(
+                                width: 8,
                               ),
+                              Text(
+                                'Valor Venda: ${UtilBrasilFields.obterReal(product.sellingPrice!)}',
+                                style: TextStyle(
+                                  color: product.quantity < 0
+                                      ? Colors.white
+                                      : Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          trailing: Text(
+                            '${product.quantity}',
+                            style: TextStyle(
+                              color: product.quantity < 0
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
-                          ],
-                        ),
-                        trailing: Text(
-                          '${product.quantity}',
-                          style: TextStyle(
-                            color: product.quantity < 0
-                                ? Colors.white
-                                : Colors.black,
                           ),
                         ),
                       ),

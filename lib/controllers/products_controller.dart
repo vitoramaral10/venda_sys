@@ -58,5 +58,18 @@ class ProductsController extends GetxController {
     }
   }
 
-  void updateProduct(Product product) {}
+  Future<void> updateProduct(Product product) async {
+    try {
+      Utils.loading();
+      await FirebaseService().updateProduct(product);
+
+      await loadProducts();
+
+      Get.back();
+      Get.back();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

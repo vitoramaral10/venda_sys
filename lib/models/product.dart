@@ -33,7 +33,6 @@ class Product {
         unitOfMeasurement = json['unitOfMeasurement'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
         'code': code,
         'description': description,
         'resumedDescription': resumedDescription,

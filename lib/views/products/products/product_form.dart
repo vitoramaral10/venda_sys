@@ -1,4 +1,5 @@
 // ignore: must_be_immutable
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class ProductForm extends GetView<ProductsController> {
   }) : super(key: key);
 
   final formKey = GlobalKey<FormState>();
+  bool firstOpen = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,29 +57,45 @@ class ProductForm extends GetView<ProductsController> {
 
           units.addAll(UnitsOfMeasurementController.to.units);
 
+          if (product != null && firstOpen == true) {
+            for (var unit in units) {
+              if (unit.id == product!.unitOfMeasurement) {
+                UnitsOfMeasurementController.to
+                    .selectUnitId(product!.unitOfMeasurement);
+                firstOpen = false;
+              }
+            }
+          }
+
+          if (product != null) {}
+
           return Form(
             key: formKey,
             child: Column(
               children: [
                 CustomTextField(
                   onChanged: (value) => productEdited.code = value,
+                  initialValue: productEdited.code,
                   label: 'code'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   onChanged: (value) => productEdited.description = value,
+                  initialValue: productEdited.description,
                   label: 'description'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   onChanged: (value) =>
                       productEdited.resumedDescription = value,
+                  initialValue: productEdited.resumedDescription,
                   label: 'resumedDescription'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   onChanged: (value) =>
                       productEdited.quantity = int.parse(value),
+                  initialValue: productEdited.quantity.toString(),
                   label: 'quantity'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -87,6 +105,8 @@ class ProductForm extends GetView<ProductsController> {
                 CustomTextField(
                   onChanged: (value) =>
                       productEdited.buyingPrice = Utils.cleanMoney(value)!,
+                  initialValue:
+                      UtilBrasilFields.obterReal(productEdited.buyingPrice!),
                   label: 'buyingPrice'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -97,6 +117,8 @@ class ProductForm extends GetView<ProductsController> {
                 CustomTextField(
                   onChanged: (value) =>
                       productEdited.sellingPrice = Utils.cleanMoney(value)!,
+                  initialValue:
+                      UtilBrasilFields.obterReal(productEdited.buyingPrice!),
                   label: 'sellingPrice'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -106,6 +128,7 @@ class ProductForm extends GetView<ProductsController> {
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
                   onChanged: (value) => productEdited.ncm = value,
+                  initialValue: productEdited.ncm,
                   label: 'ncm'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),

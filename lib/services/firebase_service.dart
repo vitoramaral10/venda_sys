@@ -176,4 +176,17 @@ class FirebaseService {
       log(e.toString());
     }
   }
+
+  updateProduct(Product product) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Constants.collection)
+          .doc(Constants.box.get('empresa'))
+          .collection(Constants.products)
+          .doc(product.id)
+          .update(product.toJson());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

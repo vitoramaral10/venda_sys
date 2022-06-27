@@ -2,41 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/controllers/units_of_measurement_controller.dart';
-import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/models/unit_of_measurement.dart';
 import 'package:venda_sys/views/widgets/custom_text_field.dart';
 
-class UnitsOfMeasurementForm {
-  UnitsOfMeasurementForm();
+// ignore: must_be_immutable
+class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
+  UnitOfMeasurement? unitOfMeasurement;
 
-  void show() {
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController abbreviationController = TextEditingController();
+  UnitsOfMeasurementForm({Key? key, this.unitOfMeasurement}) : super(key: key);
 
-    Utils.dialog(
-      title: 'units_of_measurement'.tr,
-      content: Column(
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    UnitOfMeasurement? unitOfMeasurementEdited = unitOfMeasurement ??
+        UnitOfMeasurement(
+          description: '',
+          abbreviation: '',
+        );
+    return Form(
+      key: formKey,
+      child: Column(
         children: [
           CustomTextField(
-            controller: descriptionController,
+            onChanged: (value) => unitOfMeasurementEdited.description = value,
             label: 'description'.tr,
           ),
           const SizedBox(height: Constants.defaultPadding),
           CustomTextField(
-            controller: abbreviationController,
+            onChanged: (value) => unitOfMeasurementEdited.abbreviation = value,
             label: 'abbreviation'.tr,
           ),
+          const SizedBox(
+            height: Constants.defaultPadding,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'cancel'.tr,
+                ),
+              ),
+              const SizedBox(width: Constants.defaultPadding),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(Constants.defaultPadding / 3),
+                  ),
+                ),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    if (unitOfMeasurement != null) {
+                      controller
+                          .updateUnitOfMeasurement(unitOfMeasurementEdited);
+                    } else {
+                      controller.create(unitOfMeasurementEdited);
+                    }
+                  }
+                },
+                child:
+                    Text(unitOfMeasurement == null ? 'register'.tr : 'edit'.tr),
+              ),
+            ],
+          )
         ],
       ),
-      onCancel: () => Get.back(),
-      onConfirm: () => UnitsOfMeasurementController.to.create(
-        UnitOfMeasurement(
-          description: descriptionController.text,
-          abbreviation: abbreviationController.text,
-        ),
-      ),
-      cancelText: 'cancel'.tr,
-      confirmText: 'save'.tr,
     );
   }
 }

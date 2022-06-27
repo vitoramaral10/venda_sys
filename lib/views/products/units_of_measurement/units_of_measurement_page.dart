@@ -14,12 +14,14 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Obx(
       () => BaseWidget(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            UnitsOfMeasurementForm().show();
-          },
+          onPressed: () => Utils.dialog(
+            title: 'units_of_measurement'.tr,
+            content: UnitsOfMeasurementForm(),
+          ),
           child: const Icon(FontAwesomeIcons.plus),
         ),
         child: controller.loading

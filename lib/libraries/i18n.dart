@@ -33,6 +33,10 @@ class I18N extends Translations {
           'resumedDescription': 'Resumed description',
           'quantity': 'Quantity',
           'select_one_unit_of_measurement': 'Select one unit of measurement',
+          'register': 'Register',
+          'ncm': 'NCM',
+          'sellingPrice': 'Selling Price',
+          'buyingPrice': 'Buying Price',
         },
         'pt_BR': {
           'email': 'Email',
@@ -63,7 +67,11 @@ class I18N extends Translations {
           'code': 'Código',
           'resumedDescription': 'Descrição resumida',
           'quantity': 'Quantidade',
-          'select_one_unit_of_measurement': 'Selecione uma unidade de medida'
+          'select_one_unit_of_measurement': 'Selecione uma unidade de medida',
+          'register': 'Registrar',
+          'ncm': 'NCM',
+          'sellingPrice': 'Preço de venda',
+          'buyingPrice': 'Preço de venda',
         }
       };
 }

@@ -66,4 +66,6 @@ class UnitsOfMeasurementController extends GetxController {
       rethrow;
     }
   }
+
+  void updateUnitOfMeasurement(UnitOfMeasurement unitOfMeasurementEdited) {}
 }

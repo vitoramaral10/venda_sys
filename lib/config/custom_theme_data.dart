@@ -6,6 +6,9 @@ class CustomThemeData {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: Constants.backgroundColor,
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Constants.primaryColor,
+    ),
     textTheme: TextTheme(
       bodyText1: GoogleFonts.ibmPlexSans(
         fontSize: Constants.fontSize16,

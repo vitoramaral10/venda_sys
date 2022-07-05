@@ -71,6 +71,7 @@ class FirebaseService {
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.unitsOfMeasurement)
+          .orderBy('description')
           .get();
 
       return units.docs.map((doc) {

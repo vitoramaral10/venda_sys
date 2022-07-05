@@ -1,4 +1,7 @@
 {
+    "abbreviation": "Abreviação",
+    "cancel": "Cancelar",
+    "description": "Descrição",
     "email": "Email",
     "exit": "Sair",
     "forgot_password": "Esqueci a senha",
@@ -7,6 +10,7 @@
     "login": "Entrar",
     "password": "Senha",
     "products": "Produtos",
+    "register": "Salvar",
     "required_field": "Campo obrigatório",
     "units_of_measurement": "Unidades de medida"
 }

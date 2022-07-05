@@ -44,10 +44,26 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                           ),
                           actionParams: {
                             'onConfirm': () async {
-                              await controller.delete(unit);
-
-                              remove = true;
-                              Get.back();
+                              try {
+                                Utils.loading();
+                                await controller.delete(unit);
+                                Get.back();
+                                remove = true;
+                                Get.back();
+                              } catch (e) {
+                                Get.back();
+                                Get.back();
+                                Get.snackbar(
+                                  'Oops',
+                                  e.toString(),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                  padding: const EdgeInsets.all(
+                                    Constants.defaultPadding,
+                                  ),
+                                );
+                              }
                             },
                             'onCancel': () {
                               remove = false;

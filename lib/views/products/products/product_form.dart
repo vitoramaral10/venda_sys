@@ -25,7 +25,6 @@ class ProductForm extends GetView<ProductsController> {
     this.product,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => UnitsOfMeasurementController());
@@ -74,7 +73,7 @@ class ProductForm extends GetView<ProductsController> {
                 CustomTextField(
                   onChanged: (value) => productEdited.code = value,
                   initialValue: productEdited.code,
-                  label: 'code'.tr,
+                  label: 'reference'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
@@ -87,7 +86,7 @@ class ProductForm extends GetView<ProductsController> {
                   onChanged: (value) =>
                       productEdited.resumedDescription = value,
                   initialValue: productEdited.resumedDescription,
-                  label: 'resumedDescription'.tr,
+                  label: 'resumed_description'.tr,
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 CustomTextField(
@@ -105,7 +104,7 @@ class ProductForm extends GetView<ProductsController> {
                       productEdited.buyingPrice = Utils.cleanMoney(value)!,
                   initialValue:
                       UtilBrasilFields.obterReal(productEdited.buyingPrice!),
-                  label: 'buyingPrice'.tr,
+                  label: 'buying_price'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CurrencyInputFormatter(),
@@ -117,7 +116,7 @@ class ProductForm extends GetView<ProductsController> {
                       productEdited.sellingPrice = Utils.cleanMoney(value)!,
                   initialValue:
                       UtilBrasilFields.obterReal(productEdited.buyingPrice!),
-                  label: 'sellingPrice'.tr,
+                  label: 'selling_price'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CurrencyInputFormatter(),
@@ -170,7 +169,8 @@ class ProductForm extends GetView<ProductsController> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              Constants.smallButtonRadius,),
+                            Constants.smallButtonRadius,
+                          ),
                         ),
                       ),
                       onPressed: () {

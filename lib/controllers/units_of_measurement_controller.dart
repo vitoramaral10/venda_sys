@@ -57,10 +57,8 @@ class UnitsOfMeasurementController extends GetxController {
 
   Future<void> delete(UnitOfMeasurement unit) async {
     try {
-      Utils.loading();
       await FirebaseService().deleteUnitOfMeasurement(unit);
       loadUnits();
-      Get.back();
     } catch (e) {
       log(e.toString());
       rethrow;

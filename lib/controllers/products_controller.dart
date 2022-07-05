@@ -9,10 +9,10 @@ import 'package:venda_sys/services/firebase_service.dart';
 import '../models/product.dart';
 
 class ProductsController extends GetxController {
-  static ProductsController get to => Get.find<ProductsController>();
   final _products = <Product>[].obs;
   final _loading = false.obs;
 
+  static ProductsController get to => Get.find<ProductsController>();
   List<Product> get products => _products.value;
   bool get loading => _loading.value;
 

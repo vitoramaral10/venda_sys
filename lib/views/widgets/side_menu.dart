@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/views/widgets/drawer_expansion_tile.dart';
-
-import '../../config/constants.dart';
-import '../../config/themes/light.dart';
-import 'drawer_tile.dart';
+import 'package:venda_sys/views/widgets/drawer_tile.dart';
 
 class SideMenu extends GetView {
   const SideMenu({Key? key}) : super(key: key);
@@ -19,7 +17,7 @@ class SideMenu extends GetView {
           children: [
             Container(
               decoration: const BoxDecoration(
-                color: appLinkTxtColor,
+                color: Constants.primaryColor,
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0xFFDEE2E6),
@@ -35,7 +33,7 @@ class SideMenu extends GetView {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: Constants.flex2,
               child: ListView(
                 padding: const EdgeInsets.all(Constants.defaultPadding),
                 children: [

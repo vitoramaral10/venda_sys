@@ -7,14 +7,15 @@ import '../../controllers/auth_controller.dart';
 import '../widgets/custom_text_field.dart';
 
 class LoginMobilePage extends GetView<AuthController> {
-  LoginMobilePage({Key? key}) : super(key: key);
-
   static const routerName = "/login";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+
+  LoginMobilePage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +27,13 @@ class LoginMobilePage extends GetView<AuthController> {
           child: Center(
             child: Container(
               padding: const EdgeInsets.all(Constants.defaultPadding * 2),
-              width: !GetPlatform.isMobile ? 500 : double.infinity,
+              width: !GetPlatform.isMobile ? Constants.widthMobile : double.infinity,
               child: Form(
                 key: _formKey,
                 child: AutofillGroup(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(
-                        'assets/logos/logo_yellow_amarelo.png',
-                        width: 180,
-                      ),
-                      const SizedBox(height: Constants.defaultPadding * 4),
                       CustomTextField(
                         label: 'email'.tr,
                         controller: _emailController,
@@ -50,6 +46,7 @@ class LoginMobilePage extends GetView<AuthController> {
                           } else if (!isEmail(value)) {
                             return 'email_invalid'.tr;
                           }
+
                           return null;
                         },
                       ),
@@ -63,9 +60,10 @@ class LoginMobilePage extends GetView<AuthController> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'required_field'.tr;
-                          } else if (!isLength(value, 6, 10)) {
+                          } else if (!isLength(value, Constants.minPasswordLength)) {
                             return 'password_must_follow_the_rules'.tr;
                           }
+
                           return null;
                         },
                       ),
@@ -80,13 +78,13 @@ class LoginMobilePage extends GetView<AuthController> {
                               'forgot_password'.tr,
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black54),
-                            )),
+                                  color: Colors.black54,),
+                            ),),
                       ),
                       const SizedBox(height: Constants.defaultPadding),
                       SizedBox(
                         width: double.infinity,
-                        height: 50,
+                        height: Constants.buttonHeight,
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -98,7 +96,7 @@ class LoginMobilePage extends GetView<AuthController> {
                           },
                           child: Text('login'.tr),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

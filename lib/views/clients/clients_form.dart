@@ -12,14 +12,13 @@ import 'package:venda_sys/views/widgets/dropdown_field.dart';
 // ignore: must_be_immutable
 class ClientsForm extends GetView<ClientsController> {
   Client? client;
+  final _formKey = GlobalKey<FormState>();
 
   ClientsForm({Key? key, this.client}) : super(key: key);
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    Client clientEdited = client ?? Client.empty;
+    Client clientEdited = client ?? Client.empty();
 
     return BaseWidget(
       child: Form(
@@ -30,7 +29,6 @@ class ClientsForm extends GetView<ClientsController> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Constants.defaultPadding),
               ),
-              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(Constants.defaultPadding),
                 child: Column(
@@ -60,11 +58,12 @@ class ClientsForm extends GetView<ClientsController> {
                               if (!UtilBrasilFields.isCNPJValido(value)) {
                                 return 'CNPJ inválido';
                               }
+
                               return null;
                             },
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              CnpjInputFormatter()
+                              CnpjInputFormatter(),
                             ],
                           ),
                         ),
@@ -85,7 +84,7 @@ class ClientsForm extends GetView<ClientsController> {
                               clientEdited.typePerson = value!;
                             },
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(height: Constants.defaultPadding),
@@ -101,6 +100,7 @@ class ClientsForm extends GetView<ClientsController> {
                               if (value!.isEmpty) {
                                 return 'Campo obrigatório';
                               }
+
                               return null;
                             },
                           ),
@@ -116,47 +116,52 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                            child: CustomTextField(
-                          initialValue: clientEdited.email,
-                          onChanged: (value) => clientEdited.email = value,
-                          label: 'Email',
-                          validator: (value) {
-                            if (!value!.contains('@')) {
-                              return 'Email inválido';
-                            }
-                            return null;
-                          },
-                        )),
+                          child: CustomTextField(
+                            initialValue: clientEdited.email,
+                            onChanged: (value) => clientEdited.email = value,
+                            label: 'Email',
+                            validator: (value) {
+                              if (!value!.contains('@')) {
+                                return 'Email inválido';
+                              }
+
+                              return null;
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: Constants.defaultPadding),
                     Row(
                       children: [
                         Expanded(
-                            child: CustomTextField(
-                          initialValue: clientEdited.phone,
-                          onChanged: (value) => clientEdited.phone = value,
-                          label: 'Telefone',
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            TelefoneInputFormatter()
-                          ],
-                        )),
+                          child: CustomTextField(
+                            initialValue: clientEdited.phone,
+                            onChanged: (value) => clientEdited.phone = value,
+                            label: 'Telefone',
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              TelefoneInputFormatter(),
+                            ],
+                          ),
+                        ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                            child: CustomTextField(
-                          initialValue: clientEdited.contact,
-                          onChanged: (value) => clientEdited.contact = value,
-                          label: 'Contato',
-                        )),
+                          child: CustomTextField(
+                            initialValue: clientEdited.contact,
+                            onChanged: (value) => clientEdited.contact = value,
+                            label: 'Contato',
+                          ),
+                        ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                            child: CustomTextField(
-                          initialValue: clientEdited.comment,
-                          onChanged: (value) => clientEdited.comment = value,
-                          label: 'Comentário',
-                        )),
+                          child: CustomTextField(
+                            initialValue: clientEdited.comment,
+                            onChanged: (value) => clientEdited.comment = value,
+                            label: 'Comentário',
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -168,7 +173,6 @@ class ClientsForm extends GetView<ClientsController> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Constants.defaultPadding),
               ),
-              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(Constants.defaultPadding),
                 child: Column(
@@ -186,7 +190,7 @@ class ClientsForm extends GetView<ClientsController> {
                     Row(
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: Constants.flex3,
                           child: CustomTextField(
                             initialValue: clientEdited.address.cep,
                             onChanged: (value) =>
@@ -195,13 +199,14 @@ class ClientsForm extends GetView<ClientsController> {
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              CepInputFormatter()
+                              CepInputFormatter(),
                             ],
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Campo obrigatório';
                               }
-                              if (value.length != 10) {
+                              var other = 10;
+                              if (value.length != other) {
                                 return 'CEP inválido';
                               }
 
@@ -211,7 +216,7 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: 7,
+                          flex: Constants.flex7,
                           child: CustomTextField(
                             initialValue: clientEdited.address.street,
                             onChanged: (value) =>
@@ -221,7 +226,7 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: 2,
+                          flex: Constants.flex2,
                           child: CustomTextField(
                             initialValue: clientEdited.address.number,
                             onChanged: (value) =>
@@ -235,7 +240,7 @@ class ClientsForm extends GetView<ClientsController> {
                     Row(
                       children: [
                         Expanded(
-                          flex: 4,
+                          flex: Constants.flex4,
                           child: CustomTextField(
                             initialValue: clientEdited.address.complement,
                             onChanged: (value) =>
@@ -245,7 +250,7 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: 4,
+                          flex: Constants.flex4,
                           child: CustomTextField(
                             initialValue: clientEdited.address.district,
                             onChanged: (value) =>
@@ -255,7 +260,7 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: 4,
+                          flex: Constants.flex4,
                           child: CustomTextField(
                             initialValue: clientEdited.address.city,
                             onChanged: (value) =>
@@ -265,7 +270,7 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: 3,
+                          flex: Constants.flex3,
                           child: DropdownField(
                             items: Constants.estados(),
                             value: clientEdited.address.uf,
@@ -287,7 +292,7 @@ class ClientsForm extends GetView<ClientsController> {
                   child: Container(),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: Constants.buttonHeight,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -321,9 +326,9 @@ class ClientsForm extends GetView<ClientsController> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),

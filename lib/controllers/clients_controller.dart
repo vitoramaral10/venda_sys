@@ -8,10 +8,10 @@ import 'package:venda_sys/models/client.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 class ClientsController extends GetxController {
-  static ClientsController get to => Get.find<ClientsController>();
   final _clients = <Client>[].obs;
   final _loading = false.obs;
 
+  static ClientsController get to => Get.find<ClientsController>();
   List<Client> get clients => _clients.value;
   bool get loading => _loading.value;
 

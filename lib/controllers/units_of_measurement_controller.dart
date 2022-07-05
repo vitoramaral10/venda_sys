@@ -9,12 +9,12 @@ import 'package:venda_sys/services/firebase_service.dart';
 import '../models/unit_of_measurement.dart';
 
 class UnitsOfMeasurementController extends GetxController {
-  static UnitsOfMeasurementController get to =>
-      Get.find<UnitsOfMeasurementController>();
   final _units = <UnitOfMeasurement>[].obs;
   final _loading = false.obs;
   final _selectedUnitId = ''.obs;
 
+  static UnitsOfMeasurementController get to =>
+      Get.find<UnitsOfMeasurementController>();
   List<UnitOfMeasurement> get units => _units.value;
   bool get loading => _loading.value;
   String get selectedUnitId => _selectedUnitId.value;

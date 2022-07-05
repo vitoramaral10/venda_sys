@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../config/constants.dart';
-import '../config/themes/light.dart';
+import 'package:venda_sys/config/constants.dart';
 
 class Utils {
   static void loading() {
@@ -13,55 +11,33 @@ class Utils {
       title: "loading".tr,
       content: const Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(appLinkTxtColor),
+          valueColor: AlwaysStoppedAnimation<Color>(Constants.primaryColor),
         ),
       ),
       barrierDismissible: false,
     );
   }
 
-  static Future<T?> dialog<T>({
+  static void dialog({
     String? title,
-    String? middleText,
-    String? confirmText,
-    String? cancelText,
+    Map<String, dynamic>? actionParams,
     Widget? content,
     bool barrierDismissible = true,
-    Function()? onConfirm,
-    Function()? onCancel,
-    Widget? optionalButton,
-  }) async {
+  }) {
     title = (title == null) ? 'oops'.tr : title;
-    middleText = (middleText == null) ? 'occured_an_error'.tr : middleText;
-    confirmText = (confirmText == null) ? 'ok'.tr : confirmText;
-    cancelText = (cancelText == null) ? 'cancel'.tr : cancelText;
+    content = (content == null) ? Text('occured_an_error'.tr) : content;
 
-    return await Get.defaultDialog(
-        barrierDismissible: barrierDismissible,
-        radius: Constants.defaultPadding,
-        contentPadding: const EdgeInsets.all(Constants.defaultPadding),
-        titlePadding: const EdgeInsets.all(Constants.defaultPadding),
-        title: title,
-        middleText: middleText,
-        content: content,
-        actions: [
-          if (onCancel != null)
-            TextButton(
-              onPressed: onCancel,
-              child: Text(cancelText),
-            ),
-          if (onConfirm != null)
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(Constants.defaultPadding / 3),
-                ),
-              ),
-              onPressed: onConfirm,
-              child: Text(confirmText),
-            ),
-        ]);
+    Get.defaultDialog(
+      barrierDismissible: barrierDismissible,
+      radius: Constants.defaultPadding,
+      contentPadding: const EdgeInsets.all(Constants.defaultPadding),
+      titlePadding: const EdgeInsets.all(Constants.defaultPadding),
+      title: title,
+      content: content,
+      actions: (actionParams != null)
+          ? _dialogActions(actionParams: actionParams)
+          : null,
+    );
   }
 
   static double? cleanMoney(String value) {
@@ -73,5 +49,34 @@ class Utils {
         .trim();
 
     return double.tryParse(value);
+  }
+
+  static List<Widget> _dialogActions({
+    required Map<String, dynamic> actionParams,
+  }) {
+    String confirmText = (actionParams['confirmText'] == null)
+        ? 'ok'.tr
+        : actionParams['confirmText'];
+    String cancelText = (actionParams['cancelText'] == null)
+        ? 'cancel'.tr
+        : actionParams['cancelText'];
+
+    return [
+      if (actionParams['onCancel'] != null)
+        TextButton(
+          onPressed: actionParams['onCancel'],
+          child: Text(cancelText),
+        ),
+      if (actionParams['onConfirm'] != null)
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(Constants.smallButtonRadius),
+            ),
+          ),
+          onPressed: actionParams['onConfirm'],
+          child: Text(confirmText),
+        ),
+    ];
   }
 }

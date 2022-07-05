@@ -37,31 +37,27 @@ class ProductsPage extends GetView<ProductsController> {
                     key: Key(product.id.toString()),
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
-                        return await Utils.dialog(
-                          title: 'remove_unit_of_measurement'.tr,
-                          content: Text(
-                              'do_you_want_to_remove_this_unit_of_measurement'
-                                  .tr),
-                          onConfirm: () async {
-                            try {
+                        bool remove = false;
+
+                        Utils.dialog(
+                          title: 'Remover Produto',
+                          content: const Text(
+                            'O produto será removido permanentemente. Deseja continuar?',
+                          ),
+                          actionParams: {
+                            'onConfirm': () async {
                               await controller.delete(product);
-                              Get.back();
-                            } catch (e) {
-                              if (e is Exception) {
-                                Get.snackbar(
-                                  'error'.tr,
-                                  e.toString(),
-                                  backgroundColor: Colors.red,
-                                  colorText: Colors.white,
-                                );
-                              }
-                            }
+
+                              remove = true;
+                            },
+                            'onCancel': () => remove = false,
                           },
-                          onCancel: () => Get.back(),
-                          confirmText: 'remove'.tr,
-                          cancelText: 'cancel'.tr,
                         );
+                        Get.back();
+
+                        return remove;
                       }
+
                       return null;
                     },
                     background: Card(
@@ -81,10 +77,11 @@ class ProductsPage extends GetView<ProductsController> {
                           : Colors.redAccent,
                       child: InkWell(
                         onTap: () => Utils.dialog(
-                            title: 'edit'.tr,
-                            content: ProductForm(
-                              product: product,
-                            )),
+                          title: 'edit'.tr,
+                          content: ProductForm(
+                            product: product,
+                          ),
+                        ),
                         child: ListTile(
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

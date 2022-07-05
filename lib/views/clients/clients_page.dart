@@ -45,31 +45,27 @@ class ClientsPage extends GetView<ClientsController> {
                         direction: DismissDirection.startToEnd,
                         confirmDismiss: (DismissDirection direction) async {
                           if (direction == DismissDirection.startToEnd) {
-                            return await Utils.dialog(
-                              title: 'remove_unit_of_measurement'.tr,
-                              content: Text(
-                                  'do_you_want_to_remove_this_unit_of_measurement'
-                                      .tr),
-                              onConfirm: () async {
-                                try {
+                            bool remove = false;
+
+                            Utils.dialog(
+                              title: 'Remover Cliente',
+                              content: const Text(
+                                'O cliente será removido permanentemente. Deseja continuar?',
+                              ),
+                              actionParams: {
+                                'onConfirm': () async {
                                   await controller.delete(client);
-                                  Get.back();
-                                } catch (e) {
-                                  if (e is Exception) {
-                                    Get.snackbar(
-                                      'error'.tr,
-                                      e.toString(),
-                                      backgroundColor: Colors.red,
-                                      colorText: Colors.white,
-                                    );
-                                  }
-                                }
+
+                                  remove = true;
+                                },
+                                'onCancel': () => remove = false,
                               },
-                              onCancel: () => Get.back(),
-                              confirmText: 'remove'.tr,
-                              cancelText: 'cancel'.tr,
                             );
+                            Get.back();
+
+                            return remove;
                           }
+
                           return null;
                         },
                         background: Container(

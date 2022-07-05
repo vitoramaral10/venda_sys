@@ -35,34 +35,30 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                     key: Key(unit.id.toString()),
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
-                        return await Utils.dialog(
-                          title: 'remove_unit_of_measurement'.tr,
-                          content: Text(
-                              'do_you_want_to_remove_this_unit_of_measurement'
-                                  .tr),
-                          onConfirm: () async {
-                            try {
-                              Get.back();
+                        bool remove = false;
+
+                        Utils.dialog(
+                          title: 'Remover Unidade de medida',
+                          content: const Text(
+                            'A unidade de medida será removida permanentemente. Deseja continuar?',
+                          ),
+                          actionParams: {
+                            'onConfirm': () async {
                               await controller.delete(unit);
+
+                              remove = true;
                               Get.back();
-                            } catch (e) {
-                              if (e is Exception) {
-                                Get.back();
-                                Get.snackbar(
-                                  'error'.tr,
-                                  e.toString(),
-                                  backgroundColor: Colors.red,
-                                  colorText: Colors.white,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                );
-                              }
-                            }
+                            },
+                            'onCancel': () {
+                              remove = false;
+                              Get.back();
+                            },
                           },
-                          onCancel: () => Get.back(),
-                          confirmText: 'remove'.tr,
-                          cancelText: 'cancel'.tr,
                         );
+
+                        return remove;
                       }
+
                       return null;
                     },
                     background: Card(
@@ -79,9 +75,11 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                     child: Card(
                       child: InkWell(
                         onTap: () => Utils.dialog(
-                            title: 'edit'.tr,
-                            content: UnitsOfMeasurementForm(
-                                unitOfMeasurement: unit)),
+                          title: 'edit'.tr,
+                          content: UnitsOfMeasurementForm(
+                            unitOfMeasurement: unit,
+                          ),
+                        ),
                         child: ListTile(
                           title: Text(unit.description),
                           subtitle: Text(unit.abbreviation),

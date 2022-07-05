@@ -52,9 +52,8 @@ class Client {
         'contact': contact,
         'comment': comment,
       };
-
-  static Client empty = Client(
-      address: Address.empty,
+  static empty() => Client(
+      address: Address.empty(),
       cnpj: '',
       comment: '',
       contact: '',
@@ -63,5 +62,6 @@ class Client {
       email: '',
       ie: '',
       phone: '',
-      typePerson: '');
+      typePerson: '',);
+
 }

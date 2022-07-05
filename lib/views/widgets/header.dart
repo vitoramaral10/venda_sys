@@ -40,7 +40,7 @@ class Header extends GetView<AuthController> {
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                        fontSize: 16,),
                   ),
                 ),
                 const SizedBox(
@@ -56,7 +56,7 @@ class Header extends GetView<AuthController> {
         ),
         const SizedBox(
           width: Constants.defaultPadding,
-        )
+        ),
       ],
     );
   }

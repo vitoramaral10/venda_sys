@@ -17,14 +17,14 @@ import 'package:venda_sys/views/widgets/loading_widget.dart';
 // ignore: must_be_immutable
 class ProductForm extends GetView<ProductsController> {
   Product? product;
+  final formKey = GlobalKey<FormState>();
+  bool firstOpen = true;
 
   ProductForm({
     Key? key,
     this.product,
   }) : super(key: key);
 
-  final formKey = GlobalKey<FormState>();
-  bool firstOpen = true;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class ProductForm extends GetView<ProductsController> {
 
           units.addAll(UnitsOfMeasurementController.to.units);
 
-          if (product != null && firstOpen == true) {
+          if (product != null && firstOpen) {
             for (var unit in units) {
               if (unit.id == product!.unitOfMeasurement) {
                 UnitsOfMeasurementController.to
@@ -66,8 +66,6 @@ class ProductForm extends GetView<ProductsController> {
               }
             }
           }
-
-          if (product != null) {}
 
           return Form(
             key: formKey,
@@ -110,7 +108,7 @@ class ProductForm extends GetView<ProductsController> {
                   label: 'buyingPrice'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    CurrencyInputFormatter()
+                    CurrencyInputFormatter(),
                   ],
                 ),
                 const SizedBox(height: Constants.defaultPadding),
@@ -122,7 +120,7 @@ class ProductForm extends GetView<ProductsController> {
                   label: 'sellingPrice'.tr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    CurrencyInputFormatter()
+                    CurrencyInputFormatter(),
                   ],
                 ),
                 const SizedBox(height: Constants.defaultPadding),
@@ -149,6 +147,7 @@ class ProductForm extends GetView<ProductsController> {
                     if (value!.isEmpty) {
                       return 'required_field'.tr;
                     }
+
                     return null;
                   },
                 ),
@@ -171,7 +170,7 @@ class ProductForm extends GetView<ProductsController> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              Constants.defaultPadding / 3),
+                              Constants.smallButtonRadius,),
                         ),
                       ),
                       onPressed: () {
@@ -186,7 +185,7 @@ class ProductForm extends GetView<ProductsController> {
                       child: Text(product == null ? 'register'.tr : 'edit'.tr),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           );

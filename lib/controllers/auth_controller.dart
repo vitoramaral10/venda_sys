@@ -13,7 +13,9 @@ class AuthController extends GetxController {
 
   set userName(String value) => _userName.value = value;
 
-  void forgot(String text) {}
+  void forgot(String text) {
+    print(text);
+  }
 
   Future<void> login(String email, String password) async {
     try {
@@ -35,10 +37,9 @@ class AuthController extends GetxController {
       Get.offAllNamed('/home');
     } catch (e) {
       Utils.dialog(
-        title: 'Erro',
-        content: Text(e.toString()),
-        onConfirm: () => Get.back(),
-        confirmText: 'Ok',
+        content: const Text(
+          "Parece que ocorreu um erro ao tentar realizar o login.\nPor favor, verifique suas credenciais e tente novamente.",
+        ),
       );
     }
   }

@@ -8,10 +8,10 @@ import 'package:venda_sys/views/widgets/custom_text_field.dart';
 // ignore: must_be_immutable
 class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
   UnitOfMeasurement? unitOfMeasurement;
+  final formKey = GlobalKey<FormState>();
 
   UnitsOfMeasurementForm({Key? key, this.unitOfMeasurement}) : super(key: key);
 
-  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,9 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(Constants.defaultPadding / 3),
+                        BorderRadius.circular(Constants.smallButtonRadius,
+                        
+                  ),
                   ),
                 ),
                 onPressed: () {
@@ -72,7 +74,7 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
                     Text(unitOfMeasurement == null ? 'register'.tr : 'edit'.tr),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

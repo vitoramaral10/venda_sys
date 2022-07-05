@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:venda_sys/config/constants.dart';
 
 class DropdownField extends StatelessWidget {
   final Map<String, String> items;
@@ -6,13 +7,13 @@ class DropdownField extends StatelessWidget {
   final Function(String? value)? onChanged;
 
   const DropdownField(
-      {Key? key, required this.items, required this.value, this.onChanged})
+      {Key? key, required this.items, required this.value, this.onChanged,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: Constants.buttonHeight,
       child: DropdownButtonFormField<String>(
         dropdownColor: Colors.white,
         value: value,

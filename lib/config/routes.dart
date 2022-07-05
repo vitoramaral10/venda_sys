@@ -47,7 +47,7 @@ class Routes {
     GetPage(
       name: '/clients',
       page: () => const ClientsPage(),
-      middlewares: [
+      middlewares: const [
         // AuthMiddleware(),
       ],
       binding: ClientsBindings(),
@@ -55,7 +55,7 @@ class Routes {
     GetPage(
       name: '/clients/register',
       page: () => ClientsForm(),
-      middlewares: [
+      middlewares: const [
         // AuthMiddleware(),
       ],
       binding: ClientsBindings(),
@@ -63,7 +63,7 @@ class Routes {
     GetPage(
       name: '/clients/edit',
       page: () => ClientsForm(),
-      middlewares: [
+      middlewares: const [
         // AuthMiddleware(),
       ],
       binding: ClientsBindings(),

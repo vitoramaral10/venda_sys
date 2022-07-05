@@ -7,14 +7,13 @@ import '../../controllers/auth_controller.dart';
 import '../widgets/custom_text_field.dart';
 
 class LoginPage extends GetView<AuthController> {
-  LoginPage({Key? key}) : super(key: key);
-
   static const routerName = "/login";
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+
+  LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class LoginPage extends GetView<AuthController> {
         child: Center(
           child: SingleChildScrollView(
             child: Card(
-              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
                   Constants.defaultPadding,
@@ -32,7 +30,9 @@ class LoginPage extends GetView<AuthController> {
               ),
               child: Container(
                 padding: const EdgeInsets.all(Constants.defaultPadding * 2),
-                width: !GetPlatform.isMobile ? 500 : double.infinity,
+                width: !GetPlatform.isMobile
+                    ? Constants.widthMobile
+                    : double.infinity,
                 child: Form(
                   key: _formKey,
                   child: AutofillGroup(
@@ -40,31 +40,33 @@ class LoginPage extends GetView<AuthController> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomTextField(
-                          label: 'email'.tr,
+                          label: 'Email',
                           controller: _emailController,
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: const [AutofillHints.email],
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'required_field'.tr;
+                              return 'Campo obrigatório';
                             } else if (!isEmail(value)) {
-                              return 'email_invalid'.tr;
+                              return 'Email inválido';
                             }
+
                             return null;
                           },
                         ),
                         const SizedBox(height: Constants.defaultPadding),
                         CustomTextField(
-                          label: 'password'.tr,
+                          label: 'Senha',
                           controller: _senhaController,
                           textCapitalization: TextCapitalization.none,
                           obscureText: true,
                           autofillHints: const [AutofillHints.password],
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'required_field'.tr;
+                              return 'Campo obrigatório';
                             }
+
                             return null;
                           },
                           onEditingComplete: _submit,
@@ -73,23 +75,25 @@ class LoginPage extends GetView<AuthController> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                              onPressed: () {
-                                Get.toNamed('/forgot_password');
-                              },
-                              child: Text(
-                                'forgot_password'.tr,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black54),
-                              )),
+                            onPressed: () {
+                              Get.toNamed('/forgot_password');
+                            },
+                            child: const Text(
+                              'Esqueci a senha',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: Constants.defaultPadding),
                         SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: Constants.buttonHeight,
                           child: ElevatedButton(
                             onPressed: _submit,
-                            child: Text('login'.tr),
+                            child: const Text('Entrar'),
                           ),
                         ),
                       ],

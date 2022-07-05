@@ -14,6 +14,7 @@ class AuthMiddleware extends GetMiddleware {
         authController.logout();
       }
     });
+    
     return null;
   }
 }

@@ -9,11 +9,11 @@ import '../../controllers/auth_controller.dart';
 import '../widgets/custom_text_field.dart';
 
 class ForgotPage extends GetView<AuthController> {
-  ForgotPage({Key? key}) : super(key: key);
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
+
+  ForgotPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,6 @@ class ForgotPage extends GetView<AuthController> {
         child: Center(
           child: SingleChildScrollView(
             child: Card(
-              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
                   Constants.defaultPadding,
@@ -31,7 +30,9 @@ class ForgotPage extends GetView<AuthController> {
               ),
               child: Container(
                 padding: const EdgeInsets.all(Constants.defaultPadding * 2),
-                width: !GetPlatform.isMobile ? 500 : double.infinity,
+                width: !GetPlatform.isMobile
+                    ? Constants.widthMobile
+                    : double.infinity,
                 child: Form(
                   key: _formKey,
                   child: AutofillGroup(
@@ -55,7 +56,7 @@ class ForgotPage extends GetView<AuthController> {
                           'write_your_email'.tr,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.ibmPlexSans(
-                            fontSize: 14,
+                            fontSize: Constants.fontSize14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -74,13 +75,14 @@ class ForgotPage extends GetView<AuthController> {
                             if (!isEmail(value)) {
                               return 'email_invalid'.tr;
                             }
+
                             return null;
                           },
                         ),
                         const SizedBox(height: Constants.defaultPadding),
                         SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: Constants.buttonHeight,
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
@@ -91,7 +93,7 @@ class ForgotPage extends GetView<AuthController> {
                             },
                             child: Text('send_email'.tr),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

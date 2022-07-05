@@ -2,12 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-
-import '../bindings/auth_bindings.dart';
-import '../config/routes.dart';
-import '../config/themes/light.dart';
-import '../controllers/auth_controller.dart';
-import '../libraries/i18n.dart';
+import 'package:venda_sys/bindings/auth_bindings.dart';
+import 'package:venda_sys/config/custom_theme_data.dart';
+import 'package:venda_sys/config/routes.dart';
+import 'package:venda_sys/controllers/auth_controller.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -20,14 +18,13 @@ class App extends StatelessWidget {
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
           return GetMaterialApp(
-            translations: I18N(),
             locale: Get.deviceLocale,
             fallbackLocale: const Locale('en', 'US'),
             debugShowCheckedModeBanner: false,
             getPages: Routes.pages,
             initialBinding: AuthBindings(),
             initialRoute: Routes.initialRoute,
-            theme: lightTheme,
+            theme: CustomThemeData.lightTheme,
             title: 'Yellow - Console Emissor',
             defaultTransition: Transition.fadeIn,
             localizationsDelegates: const [
@@ -40,6 +37,6 @@ class App extends StatelessWidget {
               Locale('pt', 'BR'),
             ],
           );
-        });
+        },);
   }
 }

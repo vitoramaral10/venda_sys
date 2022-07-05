@@ -7,14 +7,20 @@ import 'config/constants.dart';
 import 'views/app.dart';
 
 void main() async {
-  log('Running in ${const String.fromEnvironment('flavor')} flavor',
-      name: 'main');
+  log(
+    'Running in ${const String.fromEnvironment('flavor')} flavor',
+    name: 'main',
+  );
 
   await Hive.initFlutter();
-  await Hive.openBox(Constants.boxName,
-      compactionStrategy: (entries, deletedEntries) {
-    return deletedEntries > 10;
-  });
+  await Hive.openBox(
+    Constants.boxName,
+    compactionStrategy: (entries, deletedEntries) {
+      var other = 10;
+
+      return deletedEntries > other;
+    },
+  );
 
   runApp(const App());
 }

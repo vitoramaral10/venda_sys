@@ -18,7 +18,9 @@ class FirebaseService {
   }
 
   Future<User?> signInWithEmailAndPassword(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -58,8 +60,9 @@ class FirebaseService {
       return companies.docs[0].data();
     } catch (e) {
       log(e.toString());
+
+      return null;
     }
-    return null;
   }
 
   Future<List<Map<String, dynamic>>> getUnitsOfMeasurement() async {
@@ -236,7 +239,11 @@ class FirebaseService {
     }
   }
 
-  deleteClient(Client client) {}
+  deleteClient(Client client) {
+    print(client);
+  }
 
-  updateClient(Client client) {}
+  updateClient(Client client) {
+    print(client);
+  }
 }

@@ -48,15 +48,16 @@ class Address {
         'complement': complement,
       };
 
-  static Address empty = Address(
-      cep: '',
-      city: '',
-      cityCode: 0,
-      complement: '',
-      country: '',
-      countryCode: 0,
-      district: '',
-      number: '',
-      street: '',
-      uf: '');
+  static empty() => Address(
+        cep: '',
+        city: '',
+        cityCode: 0,
+        complement: '',
+        country: '',
+        countryCode: 0,
+        district: '',
+        number: '',
+        street: '',
+        uf: '',
+      );
 }

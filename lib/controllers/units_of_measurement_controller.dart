@@ -3,18 +3,23 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../models/unit_of_measurement.dart';
 
 class UnitsOfMeasurementController extends GetxController {
-  static UnitsOfMeasurementController get to =>
-      Get.find<UnitsOfMeasurementController>();
   final _units = <UnitOfMeasurement>[].obs;
   final _loading = false.obs;
+  final _selectedUnitId = ''.obs;
 
+  static UnitsOfMeasurementController get to =>
+      Get.find<UnitsOfMeasurementController>();
   List<UnitOfMeasurement> get units => _units.value;
   bool get loading => _loading.value;
+  String get selectedUnitId => _selectedUnitId.value;
+
+  selectUnitId(String value) => _selectedUnitId.value = value;
 
   @override
   void onInit() {
@@ -38,13 +43,41 @@ class UnitsOfMeasurementController extends GetxController {
 
   Future<void> create(UnitOfMeasurement unit) async {
     try {
+      Utils.loading();
       await FirebaseService().createUnitOfMeasurement(unit);
 
       loadUnits();
 
       Get.back();
+      Get.back();
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  Future<void> delete(UnitOfMeasurement unit) async {
+    try {
+      Utils.loading();
+      await FirebaseService().deleteUnitOfMeasurement(unit);
+      loadUnits();
+      Get.back();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> updateUnitOfMeasurement(UnitOfMeasurement unit) async {
+    try {
+      Utils.loading();
+      await FirebaseService().updateUnitOfMeasurement(unit);
+
+      loadUnits();
+      Get.back();
+      Get.back();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
     }
   }
 }

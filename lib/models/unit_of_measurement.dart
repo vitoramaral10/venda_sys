@@ -11,13 +11,12 @@ class UnitOfMeasurement {
 
   UnitOfMeasurement.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        description = json['descricao'],
-        abbreviation = json['sigla'];
+        description = json['description'],
+        abbreviation = json['abbreviation'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'descricao': description,
-        'sigla': abbreviation,
+        'description': description,
+        'abbreviation': abbreviation,
       };
 
   @override

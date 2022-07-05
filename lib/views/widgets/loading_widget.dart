@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../config/constants.dart';
-import '../../config/themes/light.dart';
+import 'package:venda_sys/config/constants.dart';
 
 class LoadingWidget extends GetView {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -16,7 +14,7 @@ class LoadingWidget extends GetView {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(appLinkTxtColor),
+              valueColor: AlwaysStoppedAnimation(Constants.primaryColor),
             ),
             const SizedBox(height: 15),
             Text("loading".tr),

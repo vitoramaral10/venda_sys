@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../config/constants.dart';
-import '../../config/themes/light.dart';
+import 'package:venda_sys/config/constants.dart';
 
 class DrawerTile extends GetView {
   final String title;
@@ -10,9 +8,12 @@ class DrawerTile extends GetView {
 
   final IconData? icon;
 
-  const DrawerTile(
-      {Key? key, required this.title, required this.route, this.icon})
-      : super(key: key);
+  const DrawerTile({
+    Key? key,
+    required this.title,
+    required this.route,
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,8 @@ class DrawerTile extends GetView {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Get.currentRoute == route
-              ? lightTheme.primaryColor
-              : Colors.white,
+          color:
+              Get.currentRoute == route ? Constants.primaryColor : Colors.white,
           borderRadius: const BorderRadius.all(
             Radius.circular(
               Constants.defaultPadding / 2,
@@ -35,7 +35,7 @@ class DrawerTile extends GetView {
             leading: icon != null
                 ? Icon(
                     icon,
-                    size: 20,
+                    size: Constants.iconSize,
                     color: Get.currentRoute == route
                         ? Colors.white
                         : const Color.fromRGBO(0, 0, 0, 0.7),
@@ -48,7 +48,7 @@ class DrawerTile extends GetView {
                     ? Colors.white
                     : const Color.fromRGBO(0, 0, 0, 0.7),
               ),
-            )),
+            ),),
       ),
     );
   }

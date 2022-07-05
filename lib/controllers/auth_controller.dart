@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../config/constants.dart';
@@ -12,10 +15,13 @@ class AuthController extends GetxController {
 
   set userName(String value) => _userName.value = value;
 
-  void forgot(String text) {}
+  void forgot(String text) {
+    print(text);
+  }
 
   Future<void> login(String email, String password) async {
     try {
+      Utils.loading();
       User? user = await FirebaseService().signInWithEmailAndPassword(
         email,
         password,
@@ -30,20 +36,24 @@ class AuthController extends GetxController {
 
       Constants.box.put('empresa', userData!['empresas'][0]);
 
-      Get.offAllNamed('/home');
+      Get.offAndToNamed('/home');
     } catch (e) {
-      Get.defaultDialog(
-        title: 'Erro',
-        content: Text(e.toString()),
-        actions: [
-          ElevatedButton(
-            child: const Text('Ok'),
-            onPressed: () => Get.back(),
-          ),
-        ],
+      Get.back();
+
+      Utils.dialog(
+        content: const Text(
+          "Parece que ocorreu um erro ao tentar realizar o login.\nPor favor, verifique suas credenciais e tente novamente.",
+        ),
       );
     }
   }
 
-  void logout() {}
+  Future<void> logout() async {
+    try {
+      await Constants.box.clear();
+      Get.offAllNamed('/login');
+    } catch (e) {
+      log(e.toString(), name: 'logout');
+    }
+  }
 }

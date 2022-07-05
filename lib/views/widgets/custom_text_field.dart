@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class CustomTextField extends GetView {
   String label;
   @override
-  TextEditingController controller;
+  TextEditingController? controller;
   String? Function(String?)? validator;
   TextCapitalization textCapitalization;
   TextInputType? keyboardType;
@@ -15,11 +15,12 @@ class CustomTextField extends GetView {
   Function(String)? onChanged;
   Function()? onEditingComplete;
   Iterable<String>? autofillHints;
+  String? initialValue;
 
   CustomTextField({
     Key? key,
     required this.label,
-    required this.controller,
+    this.controller,
     this.validator,
     this.textCapitalization = TextCapitalization.characters,
     this.keyboardType,
@@ -28,11 +29,13 @@ class CustomTextField extends GetView {
     this.onChanged,
     this.onEditingComplete,
     this.autofillHints,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       controller: controller,
       decoration: InputDecoration(
         labelText: label,

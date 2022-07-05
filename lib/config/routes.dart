@@ -47,8 +47,8 @@ class Routes {
     GetPage(
       name: '/clients',
       page: () => const ClientsPage(),
-      middlewares: const [
-        // AuthMiddleware(),
+      middlewares: [
+        AuthMiddleware(),
       ],
       binding: ClientsBindings(),
     ),

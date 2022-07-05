@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,8 +36,10 @@ class AuthController extends GetxController {
 
       Constants.box.put('empresa', userData!['empresas'][0]);
 
-      Get.offAllNamed('/home');
+      Get.offAndToNamed('/home');
     } catch (e) {
+      Get.back();
+
       Utils.dialog(
         content: const Text(
           "Parece que ocorreu um erro ao tentar realizar o login.\nPor favor, verifique suas credenciais e tente novamente.",
@@ -44,7 +48,12 @@ class AuthController extends GetxController {
     }
   }
 
-  void logout() {
-    Get.offAllNamed('/login');
+  Future<void> logout() async {
+    try {
+      await Constants.box.clear();
+      Get.offAllNamed('/login');
+    } catch (e) {
+      log(e.toString(), name: 'logout');
+    }
   }
 }

@@ -40,16 +40,16 @@ class LoginPage extends GetView<AuthController> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomTextField(
-                          label: 'Email',
+                          label: 'email'.tr,
                           controller: _emailController,
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: const [AutofillHints.email],
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Campo obrigatório';
+                              return 'required_field'.tr;
                             } else if (!isEmail(value)) {
-                              return 'Email inválido';
+                              return 'invalid_email'.tr;
                             }
 
                             return null;
@@ -57,14 +57,14 @@ class LoginPage extends GetView<AuthController> {
                         ),
                         const SizedBox(height: Constants.defaultPadding),
                         CustomTextField(
-                          label: 'Senha',
+                          label: 'password'.tr,
                           controller: _senhaController,
                           textCapitalization: TextCapitalization.none,
                           obscureText: true,
                           autofillHints: const [AutofillHints.password],
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Campo obrigatório';
+                              return 'required_field'.tr;
                             }
 
                             return null;
@@ -78,9 +78,9 @@ class LoginPage extends GetView<AuthController> {
                             onPressed: () {
                               Get.toNamed('/forgot_password');
                             },
-                            child: const Text(
-                              'Esqueci a senha',
-                              style: TextStyle(
+                            child: Text(
+                              'forgot_password'.tr,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black54,
                               ),
@@ -93,7 +93,7 @@ class LoginPage extends GetView<AuthController> {
                           height: Constants.buttonHeight,
                           child: ElevatedButton(
                             onPressed: _submit,
-                            child: const Text('Entrar'),
+                            child: Text('login'.tr),
                           ),
                         ),
                       ],

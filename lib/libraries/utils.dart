@@ -8,7 +8,7 @@ class Utils {
       contentPadding: const EdgeInsets.all(Constants.defaultPadding),
       titlePadding: const EdgeInsets.all(Constants.defaultPadding),
       radius: Constants.defaultPadding,
-      title: "loading".tr,
+      title: "Carregando",
       content: const Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(Constants.primaryColor),
@@ -24,8 +24,10 @@ class Utils {
     Widget? content,
     bool barrierDismissible = true,
   }) {
-    title = (title == null) ? 'oops'.tr : title;
-    content = (content == null) ? Text('occured_an_error'.tr) : content;
+    title = (title == null) ? 'Oops' : title;
+    content = (content == null)
+        ? const Text('Ocorreu um erro, por favor tente novamente')
+        : content;
 
     Get.defaultDialog(
       barrierDismissible: barrierDismissible,
@@ -55,10 +57,10 @@ class Utils {
     required Map<String, dynamic> actionParams,
   }) {
     String confirmText = (actionParams['confirmText'] == null)
-        ? 'ok'.tr
+        ? 'Ok'
         : actionParams['confirmText'];
     String cancelText = (actionParams['cancelText'] == null)
-        ? 'cancel'.tr
+        ? 'Cancelar'
         : actionParams['cancelText'];
 
     return [

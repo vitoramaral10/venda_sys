@@ -22,20 +22,16 @@ class UnitsOfMeasurementController extends GetxController {
   selectUnitId(String value) => _selectedUnitId.value = value;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    loadUnits();
+    await loadUnits();
   }
 
-  void loadUnits() {
+  Future<void> loadUnits() async {
     _loading.value = true;
     update();
 
-    FirebaseService().getUnitsOfMeasurement().then((units) {
-      _units.value = units
-          .map<UnitOfMeasurement>((e) => UnitOfMeasurement.fromJson(e))
-          .toList();
-    });
+    _units.value = await FirebaseService().getUnitsOfMeasurement();
     _loading.value = false;
 
     update();
@@ -46,7 +42,7 @@ class UnitsOfMeasurementController extends GetxController {
       Utils.loading();
       await FirebaseService().createUnitOfMeasurement(unit);
 
-      loadUnits();
+      await loadUnits();
 
       Get.back();
       Get.back();
@@ -58,7 +54,7 @@ class UnitsOfMeasurementController extends GetxController {
   Future<void> delete(UnitOfMeasurement unit) async {
     try {
       await FirebaseService().deleteUnitOfMeasurement(unit);
-      loadUnits();
+      await loadUnits();
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -70,7 +66,7 @@ class UnitsOfMeasurementController extends GetxController {
       Utils.loading();
       await FirebaseService().updateUnitOfMeasurement(unit);
 
-      loadUnits();
+      await loadUnits();
       Get.back();
       Get.back();
     } catch (e) {

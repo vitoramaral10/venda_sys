@@ -5,6 +5,7 @@ import 'package:venda_sys/bindings/products_bindings.dart';
 import 'package:venda_sys/bindings/units_of_measurement.dart';
 import 'package:venda_sys/middlewares/auth_middleware.dart';
 import 'package:venda_sys/views/auth/login_page.dart';
+import 'package:venda_sys/views/clients/client_view.dart';
 import 'package:venda_sys/views/clients/clients_form.dart';
 import 'package:venda_sys/views/clients/clients_page.dart';
 import 'package:venda_sys/views/home/home_page.dart';
@@ -47,6 +48,14 @@ class Routes {
     GetPage(
       name: '/clients',
       page: () => const ClientsPage(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+      binding: ClientsBindings(),
+    ),
+    GetPage(
+      name: '/clients/view',
+      page: () => ClientView(),
       middlewares: [
         AuthMiddleware(),
       ],

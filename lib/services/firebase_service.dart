@@ -65,7 +65,7 @@ class FirebaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUnitsOfMeasurement() async {
+  Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
     try {
       final units = await FirebaseFirestore.instance
           .collection(Constants.collection)
@@ -79,7 +79,7 @@ class FirebaseService {
 
         data['id'] = doc.id;
 
-        return data;
+        return UnitOfMeasurement.fromJson(data);
       }).toList();
     } catch (e) {
       log(e.toString());

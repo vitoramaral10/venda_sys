@@ -53,7 +53,7 @@ class Constants {
     'F': 'Física',
   };
 
-
+  static const int phoneLength = 9;
 
   static Map<String, String> estados() {
     Map<String, String> estados = {'': 'Selecione'};

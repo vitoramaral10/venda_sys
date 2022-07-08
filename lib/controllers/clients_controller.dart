@@ -25,13 +25,19 @@ class ClientsController extends GetxController {
   }
 
   Future<void> loadClients() async {
-    _loading.value = true;
-    update();
+    try {
+      _loading.value = true;
+      update();
 
-    _clients.value = await FirebaseService().getClients();
-    _loading.value = false;
+      _clients.value = await FirebaseService().getClients();
+      _loading.value = false;
 
-    update();
+      update();
+    } catch (e) {
+      log(e.toString(), name: 'loadClients');
+
+      rethrow;
+    }
   }
 
   Future<void> create(Client client) async {

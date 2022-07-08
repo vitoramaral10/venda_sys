@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:venda_sys/config/constants.dart';
 
 class DrawerExpansionTile extends StatelessWidget {
   final IconData icon;
@@ -20,17 +19,9 @@ class DrawerExpansionTile extends StatelessWidget {
     return ExpansionTile(
       title: Transform.translate(
         offset: const Offset(-16, 0),
-        child: Text(
-          title,
-          style: const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.7)),
-        ),
+        child: Text(title),
       ),
-      leading: Icon(
-        icon,
-        size:Constants.iconSize,
-      ),
-      textColor: const Color.fromRGBO(0, 0, 0, 0.7),
-      iconColor: const Color.fromRGBO(0, 0, 0, 0.7),
+      leading: Icon(icon),
       initiallyExpanded: isSelected,
       children: children,
     );

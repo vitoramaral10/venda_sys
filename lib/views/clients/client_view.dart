@@ -53,7 +53,7 @@ class ClientView extends GetView<ClientsController> {
                       Expanded(
                         child: InfoField(
                           title: 'Tipo de Pessoa:',
-                          value: Constants.tiposPessoa[client.typePerson]!,
+                          value: client.typePerson,
                         ),
                       ),
                       const SizedBox(width: Constants.defaultPadding),

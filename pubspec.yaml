@@ -22,6 +22,7 @@ dependencies:
   google_fonts: ^3.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  search_cep: ^4.0.0+1
   translations_loader: ^1.0.2
   validators: ^3.0.0
 

@@ -3,6 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class Constants {
+  static const int flex1 = 1;
+  static const int flex2 = 2;
+  static const int flex3 = 3;
+  static const int flex4 = 4;
+  static const int flex5 = 5;
+  static const int flex6 = 6;
+  static const int flex7 = 7;
+  static const int flex8 = 8;
+  static const int flex9 = 9;
+  static const int flex10 = 10;
+  static const int flex11 = 11;
+  static const int flex12 = 12;
+
   static const double defaultPadding = 16.0;
   static const double middlePadding = Constants.defaultPadding / 2;
   static const double doublePadding = defaultPadding * 2;
@@ -13,11 +26,6 @@ class Constants {
   static const double widthMobile = 500;
   static const double dialogHeight = 200;
   static const double dialogWidth = 100;
-
-  static const int flex2 = 2;
-  static const int flex3 = 3;
-  static const int flex4 = 4;
-  static const int flex7 = 7;
 
   static const double iconSize = 20;
   static const int decimalPrecision = 2;
@@ -36,8 +44,19 @@ class Constants {
   static const Color textColor = Color(0xFF4D4D4D);
 
   static String unitsOfMeasurement = 'unidades_medidas';
-  static String products = 'products';
-  static String clients = 'clients';
+  static String products = 'produtos';
+  static String clients = 'clientes';
+
+  static const double radius = Constants.defaultPadding / 2;
+
+  static const double buttonRadius = 10;
+
+  static const Map<String, String> personType = {
+    'J': 'Jurídica',
+    'F': 'Física',
+  };
+
+  static const double datePickerSize = 300;
 
   static Box box = Hive.box(boxName);
 
@@ -47,11 +66,11 @@ class Constants {
       ? 'empresas'
       : 'empresas_teste';
 
-  static const tiposPessoa = {
-    '': 'Selecione',
-    'J': 'Jurídica',
-    'F': 'Física',
-  };
+  static const tiposPessoa = [
+    {'key': '', 'value': 'Selecione'},
+    {'key': 'PJ', 'value': 'Pessoa Jurídica'},
+    {'key': 'PF', 'value': 'Pessoa Física'},
+  ];
 
   static const int phoneLength = 9;
 

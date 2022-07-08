@@ -45,6 +45,8 @@ class SideMenu extends GetView {
                   DrawerExpansionTile(
                     icon: FontAwesomeIcons.inbox,
                     title: 'products'.tr,
+                    isSelected:
+                        Get.currentRoute.contains('/products') ? true : false,
                     children: [
                       DrawerTile(
                         title: 'products'.tr,

@@ -3,7 +3,6 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../models/product.dart';
@@ -23,35 +22,35 @@ class ProductsController extends GetxController {
   }
 
   Future<void> loadProducts() async {
-    _loading.value = true;
-    update();
+    try {
+      _loading.value = true;
+      update();
 
-    _products.value = await FirebaseService().getProducts();
-    _loading.value = false;
+      _products.value = await FirebaseService().getProducts();
+      _loading.value = false;
 
-    update();
+      update();
+    } catch (e) {
+      log(e.toString(), name: 'loadProducts');
+    }
   }
 
   Future<void> create(Product product) async {
     try {
-      Utils.loading();
       await FirebaseService().createProduct(product);
 
       await loadProducts();
-
-      Get.back();
-      Get.back();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'createProduct');
+
+      rethrow;
     }
   }
 
   Future<void> delete(Product product) async {
     try {
-      Utils.loading();
       await FirebaseService().deleteProduct(product);
       await loadProducts();
-      Get.back();
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -60,15 +59,11 @@ class ProductsController extends GetxController {
 
   Future<void> updateProduct(Product product) async {
     try {
-      Utils.loading();
       await FirebaseService().updateProduct(product);
 
       await loadProducts();
-
-      Get.back();
-      Get.back();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'updateProduct');
       rethrow;
     }
   }

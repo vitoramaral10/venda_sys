@@ -20,7 +20,7 @@ class ProductsPage extends GetView<ProductsController> {
       () => BaseWidget(
         floatingActionButton: FloatingActionButton(
           onPressed: () => Utils.dialog(
-            title: 'product'.tr,
+            title: 'Cadastrar',
             content: ProductForm(),
           ),
           child: const Icon(FontAwesomeIcons.plus),
@@ -37,25 +37,7 @@ class ProductsPage extends GetView<ProductsController> {
                     key: Key(product.id.toString()),
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
-                        bool remove = false;
-
-                        Utils.dialog(
-                          title: 'Remover Produto',
-                          content: const Text(
-                            'O produto será removido permanentemente. Deseja continuar?',
-                          ),
-                          actionParams: {
-                            'onConfirm': () async {
-                              await controller.delete(product);
-
-                              remove = true;
-                            },
-                            'onCancel': () => remove = false,
-                          },
-                        );
-                        Get.back();
-
-                        return remove;
+                        return await _removeProduct(product);
                       }
 
                       return null;
@@ -77,7 +59,7 @@ class ProductsPage extends GetView<ProductsController> {
                           : Colors.redAccent,
                       child: InkWell(
                         onTap: () => Utils.dialog(
-                          title: 'edit'.tr,
+                          title: 'Editar',
                           content: ProductForm(
                             product: product,
                           ),
@@ -89,9 +71,9 @@ class ProductsPage extends GetView<ProductsController> {
                               Text(
                                 product.code,
                                 style: TextStyle(
-                                  color: product.quantity < 0
+                                  color: product.quantity <= 0
                                       ? Colors.white
-                                      : Colors.black,
+                                      : Constants.textColor,
                                 ),
                               ),
                             ],
@@ -100,9 +82,9 @@ class ProductsPage extends GetView<ProductsController> {
                             product.description,
                             maxLines: 1,
                             style: TextStyle(
-                              color: product.quantity < 0
+                              color: product.quantity <= 0
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Constants.textColor,
                             ),
                           ),
                           subtitle: Row(
@@ -111,9 +93,9 @@ class ProductsPage extends GetView<ProductsController> {
                               Text(
                                 'Valor Compra: ${UtilBrasilFields.obterReal(product.buyingPrice!)}',
                                 style: TextStyle(
-                                  color: product.quantity < 0
+                                  color: product.quantity <= 0
                                       ? Colors.white
-                                      : Colors.black54,
+                                      : Constants.textColor,
                                 ),
                               ),
                               const SizedBox(
@@ -122,9 +104,9 @@ class ProductsPage extends GetView<ProductsController> {
                               Text(
                                 'Valor Venda: ${UtilBrasilFields.obterReal(product.sellingPrice!)}',
                                 style: TextStyle(
-                                  color: product.quantity < 0
+                                  color: product.quantity <= 0
                                       ? Colors.white
-                                      : Colors.black54,
+                                      : Constants.textColor,
                                 ),
                               ),
                             ],
@@ -132,9 +114,9 @@ class ProductsPage extends GetView<ProductsController> {
                           trailing: Text(
                             '${product.quantity}',
                             style: TextStyle(
-                              color: product.quantity < 0
+                              color: product.quantity <= 0
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Constants.textColor,
                             ),
                           ),
                         ),
@@ -145,5 +127,32 @@ class ProductsPage extends GetView<ProductsController> {
               ),
       ),
     );
+  }
+
+  Future<bool?> _removeProduct(Product product) async {
+    bool remove = false;
+
+    Utils.dialog(
+      title: 'Remover Produto',
+      content: const Text(
+        'O produto será removido permanentemente. Deseja continuar?',
+      ),
+      actionParams: {
+        'onConfirm': () async {
+          try {
+            await controller.delete(product);
+
+            Get.back();
+
+            remove = true;
+          } catch (e) {
+            Utils.dialog();
+          }
+        },
+        'onCancel': () => remove = false,
+      },
+    );
+
+    return remove;
   }
 }

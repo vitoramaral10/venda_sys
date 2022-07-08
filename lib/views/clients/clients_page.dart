@@ -38,7 +38,6 @@ class ClientsPage extends GetView<ClientsController> {
                         ),
                         subtitle: Text(
                           UtilBrasilFields.obterCnpj(client.cnpj.toString()),
-                          maxLines: 1,
                         ),
                       ),
                     ),

@@ -8,58 +8,119 @@ class CustomThemeData {
     scaffoldBackgroundColor: Constants.backgroundColor,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Constants.primaryColor,
+      foregroundColor: Colors.white,
+    ),
+    primaryColorLight: Constants.primaryColor,
+    colorScheme: const ColorScheme.light().copyWith(
+      primary: Constants.primaryColor,
+      secondary: Constants.primaryColor,
+      surface: Constants.primaryColor,
+      onSurface: Constants.textColor,
+      onPrimary: Constants.textColor,
+    ),
+    iconTheme: const IconThemeData(
+      size: 20,
+      color: Constants.textColor,
+    ),
+    scrollbarTheme: ScrollbarThemeData(
+      thumbColor: MaterialStateProperty.all(Constants.textColor),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return Constants.primaryColor;
+          }
+
+          return null;
+        },
+      ),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return Constants.primaryColor;
+          }
+
+          return null;
+        },
+      ),
+      trackColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return Constants.primaryColor.withOpacity(0.6);
+          }
+
+          return null;
+        },
+      ),
+    ),
+    tabBarTheme: const TabBarTheme(
+      unselectedLabelColor: Constants.textColor,
+      labelColor: Constants.primaryColor,
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(color: Constants.primaryColor, width: 2),
+      ),
+    ),
+    cardTheme: CardTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.radius),
+      ),
     ),
     textTheme: TextTheme(
       bodyText1: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize16,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       bodyText2: GoogleFonts.ibmPlexSans(
         color: Constants.textColor,
-        fontSize: Constants.fontSize14,
+        fontSize: 14,
       ),
       headline1: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize24,
+        fontSize: 24,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       headline2: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize20,
+        fontSize: 20,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       headline3: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize18,
+        fontSize: 18,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       headline4: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize16,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       headline5: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize14,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       headline6: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize22,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       subtitle1: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize14,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       subtitle2: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize12,
+        fontSize: 12,
         fontWeight: FontWeight.w400,
         color: Constants.textColor,
       ),
       button: GoogleFonts.ibmPlexSans(
-        fontSize: Constants.fontSize14,
+        fontSize: 14,
+        color: Constants.textColor,
         fontWeight: FontWeight.bold,
       ),
     ),
@@ -81,12 +142,13 @@ class CustomThemeData {
       style: ElevatedButton.styleFrom(
         elevation: 0,
         primary: Constants.primaryColor,
+        onPrimary: Colors.white,
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 12,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Constants.radius),
         ),
       ),
     ),
@@ -98,7 +160,7 @@ class CustomThemeData {
           vertical: 12,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Constants.radius),
         ),
       ),
     ),
@@ -107,6 +169,12 @@ class CustomThemeData {
         primary: Constants.textColor,
       ),
     ),
+    expansionTileTheme: const ExpansionTileThemeData(
+      iconColor: Constants.textColor,
+      textColor: Constants.textColor,
+      collapsedIconColor: Constants.textColor,
+      collapsedTextColor: Constants.textColor,
+    ),
     textSelectionTheme:
         const TextSelectionThemeData(cursorColor: Constants.textColor),
     inputDecorationTheme: InputDecorationTheme(
@@ -114,24 +182,27 @@ class CustomThemeData {
       fillColor: Colors.orange,
       contentPadding: const EdgeInsets.all(Constants.defaultPadding),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.red),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
       ),
       disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
+        borderSide: BorderSide(
+          color: Colors.grey[400]!,
+        ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.red),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Constants.radius),
       ),
       errorStyle: const TextStyle(
         color: Colors.red,

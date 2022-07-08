@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/config/custom_theme_data.dart';
 
 class DrawerTile extends GetView {
   final String title;
   final String route;
-
   final IconData? icon;
 
   const DrawerTile({
@@ -17,38 +17,40 @@ class DrawerTile extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (Get.currentRoute != route) Get.offAllNamed(route);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color:
-              Get.currentRoute == route ? Constants.primaryColor : Colors.white,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(
-              Constants.defaultPadding / 2,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(Constants.radius),
+        onTap: () =>
+            (Get.currentRoute != route) ? Get.offAllNamed(route) : null,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Get.currentRoute == route
+                ? CustomThemeData.lightTheme.primaryColor
+                : Colors.transparent,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(Constants.radius),
             ),
           ),
-        ),
-        child: ListTile(
+          child: ListTile(
             leading: icon != null
                 ? Icon(
                     icon,
-                    size: Constants.iconSize,
                     color: Get.currentRoute == route
                         ? Colors.white
-                        : const Color.fromRGBO(0, 0, 0, 0.7),
+                        : Constants.textColor,
                   )
                 : null,
             title: Text(
               title,
-              style: TextStyle(
+              style: Get.textTheme.headline5!.copyWith(
                 color: Get.currentRoute == route
                     ? Colors.white
-                    : const Color.fromRGBO(0, 0, 0, 0.7),
+                    : Constants.textColor,
               ),
-            ),),
+            ),
+          ),
+        ),
       ),
     );
   }

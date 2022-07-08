@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:venda_sys/bindings/auth_bindings.dart';
-import 'package:venda_sys/bindings/clients.dart';
+import 'package:venda_sys/bindings/clients_bindings.dart';
 import 'package:venda_sys/bindings/products_bindings.dart';
-import 'package:venda_sys/bindings/units_of_measurement.dart';
+import 'package:venda_sys/bindings/units_of_measurement_bindings.dart';
 import 'package:venda_sys/middlewares/auth_middleware.dart';
 import 'package:venda_sys/views/auth/login_page.dart';
 import 'package:venda_sys/views/clients/client_view.dart';
@@ -64,8 +64,8 @@ class Routes {
     GetPage(
       name: '/clients/register',
       page: () => ClientsForm(),
-      middlewares: const [
-        // AuthMiddleware(),
+      middlewares: [
+        AuthMiddleware(),
       ],
       binding: ClientsBindings(),
     ),

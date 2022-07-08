@@ -31,14 +31,8 @@ class FirebaseService {
       FirebaseAuth.instance.setPersistence(Persistence.SESSION);
 
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw Exception('user_not_found'.tr);
-      } else if (e.code == 'wrong-password') {
-        throw Exception('wrong_password'.tr);
-      } else {
-        throw Exception('error'.tr);
-      }
+    } on FirebaseAuthException {
+      rethrow;
     }
   }
 
@@ -120,7 +114,6 @@ class FirebaseService {
             .delete();
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }

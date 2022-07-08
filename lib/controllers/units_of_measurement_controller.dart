@@ -3,7 +3,6 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 import '../models/unit_of_measurement.dart';
@@ -28,26 +27,27 @@ class UnitsOfMeasurementController extends GetxController {
   }
 
   Future<void> loadUnits() async {
-    _loading.value = true;
-    update();
+    try {
+      _loading.value = true;
+      update();
 
-    _units.value = await FirebaseService().getUnitsOfMeasurement();
-    _loading.value = false;
+      _units.value = await FirebaseService().getUnitsOfMeasurement();
+      _loading.value = false;
 
-    update();
+      update();
+    } catch (e) {
+      log(e.toString(), name: 'createUnitOfMeasurement');
+    }
   }
 
   Future<void> create(UnitOfMeasurement unit) async {
     try {
-      Utils.loading();
       await FirebaseService().createUnitOfMeasurement(unit);
 
       await loadUnits();
-
-      Get.back();
-      Get.back();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'createUnitOfMeasurement');
+      rethrow;
     }
   }
 
@@ -56,21 +56,18 @@ class UnitsOfMeasurementController extends GetxController {
       await FirebaseService().deleteUnitOfMeasurement(unit);
       await loadUnits();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'deleteUnitOfMeasurement');
       rethrow;
     }
   }
 
   Future<void> updateUnitOfMeasurement(UnitOfMeasurement unit) async {
     try {
-      Utils.loading();
       await FirebaseService().updateUnitOfMeasurement(unit);
 
       await loadUnits();
-      Get.back();
-      Get.back();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'updateUnitOfMeasurement');
       rethrow;
     }
   }

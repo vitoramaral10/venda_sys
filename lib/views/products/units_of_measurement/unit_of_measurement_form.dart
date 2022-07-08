@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/controllers/units_of_measurement_controller.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/models/unit_of_measurement.dart';
-import 'package:venda_sys/views/widgets/custom_text_field.dart';
 
 // ignore: must_be_immutable
 class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
@@ -11,7 +11,6 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
   final formKey = GlobalKey<FormState>();
 
   UnitsOfMeasurementForm({Key? key, this.unitOfMeasurement}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +24,20 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
       key: formKey,
       child: Column(
         children: [
-          CustomTextField(
+          TextFormField(
             onChanged: (value) => unitOfMeasurementEdited.description = value,
             initialValue: unitOfMeasurementEdited.description,
-            label: 'description'.tr,
+            decoration: InputDecoration(
+              labelText: 'description'.tr,
+            ),
           ),
           const SizedBox(height: Constants.defaultPadding),
-          CustomTextField(
+          TextFormField(
             onChanged: (value) => unitOfMeasurementEdited.abbreviation = value,
             initialValue: unitOfMeasurementEdited.abbreviation,
-            label: 'abbreviation'.tr,
+            decoration: InputDecoration(
+              labelText: 'abbreviation'.tr,
+            ),
           ),
           const SizedBox(
             height: Constants.defaultPadding,
@@ -52,21 +55,23 @@ class UnitsOfMeasurementForm extends GetView<UnitsOfMeasurementController> {
               ),
               const SizedBox(width: Constants.defaultPadding),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(Constants.smallButtonRadius,
-                        
-                  ),
-                  ),
-                ),
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    if (unitOfMeasurement != null) {
-                      controller
-                          .updateUnitOfMeasurement(unitOfMeasurementEdited);
-                    } else {
-                      controller.create(unitOfMeasurementEdited);
+                    try {
+                      Get.back();
+                      Utils.loading();
+
+                      if (unitOfMeasurement != null) {
+                        await controller
+                            .updateUnitOfMeasurement(unitOfMeasurementEdited);
+                      } else {
+                        await controller.create(unitOfMeasurementEdited);
+                      }
+
+                      Get.back();
+                    } catch (e) {
+                      Get.back();
+                      Utils.dialog();
                     }
                   }
                 },

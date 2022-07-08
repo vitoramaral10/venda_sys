@@ -13,9 +13,7 @@ class LoadingWidget extends GetView {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Constants.primaryColor),
-            ),
+            const CircularProgressIndicator(),
             const SizedBox(height: 15),
             Text("loading".tr),
           ],

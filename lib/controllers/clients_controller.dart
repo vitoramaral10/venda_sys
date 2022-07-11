@@ -46,7 +46,7 @@ class ClientsController extends GetxController {
 
       await loadClients();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'createClient');
       rethrow;
     }
   }

@@ -217,7 +217,8 @@ class FirebaseService {
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.clients)
-          .where({'cnpj': client.cnpj}).get();
+          .where('cnpj', isEqualTo: client.cnpj)
+          .get();
 
       if (docs.docs.isEmpty) {
         await FirebaseFirestore.instance
@@ -226,10 +227,10 @@ class FirebaseService {
             .collection(Constants.clients)
             .add(client.toJson());
       } else {
-        throw Exception('Client cadastrado');
+        throw Exception('Cliente cadastrado');
       }
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
   }
 

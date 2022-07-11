@@ -349,22 +349,21 @@ class ClientsForm extends GetView<ClientsController> {
                   child: Container(),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     try {
                       if (_formKey.currentState!.validate()) {
                         if (client == null) {
-                          controller.create(clientEdited);
+                          Utils.loading();
+                          await controller.create(clientEdited);
+
+                          Get.back();
+                          Get.back();
                         } else {
-                          controller.updateClient(clientEdited);
+                          await controller.updateClient(clientEdited);
                         }
                       }
                     } catch (e) {
-                      Get.snackbar(
-                        'error'.tr,
-                        e.toString(),
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                      );
+                      Utils.dialog();
                     }
                   },
                   child: const Text('Salvar'),

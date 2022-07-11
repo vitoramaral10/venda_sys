@@ -13,10 +13,11 @@ import 'package:venda_sys/controllers/auth_controller.dart';
 import 'package:venda_sys/services/localization_service.dart';
 
 void main() async {
-  log(
+  // ignore: avoid_print
+  print(
     'Running in ${const String.fromEnvironment('flavor')} flavor',
-    name: 'main',
   );
+
   await Hive.initFlutter();
   await Hive.openBox(
     Constants.boxName,

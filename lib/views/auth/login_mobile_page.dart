@@ -4,7 +4,6 @@ import 'package:validators/validators.dart';
 
 import '../../config/constants.dart';
 import '../../controllers/auth_controller.dart';
-import '../widgets/custom_text_field.dart';
 
 class LoginMobilePage extends GetView<AuthController> {
   static const routerName = "/login";
@@ -16,7 +15,6 @@ class LoginMobilePage extends GetView<AuthController> {
 
   LoginMobilePage({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +25,19 @@ class LoginMobilePage extends GetView<AuthController> {
           child: Center(
             child: Container(
               padding: const EdgeInsets.all(Constants.defaultPadding * 2),
-              width: !GetPlatform.isMobile ? Constants.widthMobile : double.infinity,
+              width: !GetPlatform.isMobile
+                  ? Constants.widthMobile
+                  : double.infinity,
               child: Form(
                 key: _formKey,
                 child: AutofillGroup(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomTextField(
-                        label: 'email'.tr,
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'email'.tr,
+                        ),
                         controller: _emailController,
                         textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.emailAddress,
@@ -51,8 +53,10 @@ class LoginMobilePage extends GetView<AuthController> {
                         },
                       ),
                       const SizedBox(height: Constants.defaultPadding),
-                      CustomTextField(
-                        label: 'password'.tr,
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'password'.tr,
+                        ),
                         controller: _senhaController,
                         textCapitalization: TextCapitalization.none,
                         obscureText: true,
@@ -60,7 +64,10 @@ class LoginMobilePage extends GetView<AuthController> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'required_field'.tr;
-                          } else if (!isLength(value, Constants.minPasswordLength)) {
+                          } else if (!isLength(
+                            value,
+                            Constants.minPasswordLength,
+                          )) {
                             return 'password_must_follow_the_rules'.tr;
                           }
 
@@ -71,15 +78,17 @@ class LoginMobilePage extends GetView<AuthController> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                            onPressed: () {
-                              Get.toNamed('/forgot_password');
-                            },
-                            child: Text(
-                              'forgot_password'.tr,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black54,),
-                            ),),
+                          onPressed: () {
+                            Get.toNamed('/forgot_password');
+                          },
+                          child: Text(
+                            'forgot_password'.tr,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: Constants.defaultPadding),
                       SizedBox(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:validators/validators.dart';
+import 'package:venda_sys/libraries/utils.dart';
 
 import '../../config/constants.dart';
 import '../../controllers/auth_controller.dart';
-import '../widgets/custom_text_field.dart';
 
 class LoginPage extends GetView<AuthController> {
   static const routerName = "/login";
@@ -39,8 +39,10 @@ class LoginPage extends GetView<AuthController> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomTextField(
-                          label: 'email'.tr,
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'email'.tr,
+                          ),
                           controller: _emailController,
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.emailAddress,
@@ -56,8 +58,10 @@ class LoginPage extends GetView<AuthController> {
                           },
                         ),
                         const SizedBox(height: Constants.defaultPadding),
-                        CustomTextField(
-                          label: 'password'.tr,
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'password'.tr,
+                          ),
                           controller: _senhaController,
                           textCapitalization: TextCapitalization.none,
                           obscureText: true,
@@ -108,12 +112,21 @@ class LoginPage extends GetView<AuthController> {
     );
   }
 
-  _submit() {
+  _submit() async {
     if (_formKey.currentState!.validate()) {
-      controller.login(
-        _emailController.text,
-        _senhaController.text,
-      );
+      try {
+        Utils.loading();
+
+        await controller.login(
+          _emailController.text,
+          _senhaController.text,
+        );
+
+        Get.offAndToNamed('/home');
+      } catch (e) {
+        Get.back();
+        Utils.dialog();
+      }
     }
   }
 }

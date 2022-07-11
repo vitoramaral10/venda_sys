@@ -2,17 +2,24 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:search_cep/search_cep.dart';
 import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/controllers/clients_controller.dart';
+import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/models/client.dart';
 import 'package:venda_sys/views/widgets/base_widget.dart';
-import 'package:venda_sys/views/widgets/custom_text_field.dart';
-import 'package:venda_sys/views/widgets/dropdown_field.dart';
 
 // ignore: must_be_immutable
 class ClientsForm extends GetView<ClientsController> {
   Client? client;
   final _formKey = GlobalKey<FormState>();
+  final _postalCodeController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _complementController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _numberFocus = FocusNode();
 
   ClientsForm({Key? key, this.client}) : super(key: key);
 
@@ -20,36 +27,39 @@ class ClientsForm extends GetView<ClientsController> {
   Widget build(BuildContext context) {
     Client clientEdited = client ?? Client.empty();
 
+    _postalCodeController.text = clientEdited.address.cep;
+    _addressController.text = clientEdited.address.street;
+    _numberController.text = clientEdited.address.number;
+    _complementController.text = clientEdited.address.complement;
+    _districtController.text = clientEdited.address.district;
+    _cityController.text = clientEdited.address.city;
+    controller.state = clientEdited.address.uf;
+
     return BaseWidget(
       child: Form(
         key: _formKey,
         child: Column(
           children: [
             Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Constants.defaultPadding),
-              ),
               child: Padding(
                 padding: const EdgeInsets.all(Constants.defaultPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
+                    Text(
                       'Dados da Empresa',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Get.textTheme.headline4,
                     ),
                     const Divider(),
                     const SizedBox(height: Constants.defaultPadding),
                     Row(
                       children: [
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.cnpj,
                             onChanged: (value) => clientEdited.cnpj = value,
-                            label: 'CNPJ',
+                            decoration:
+                                const InputDecoration(labelText: 'CNPJ'),
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -69,19 +79,31 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: CustomTextField(
-                            label: 'Inscrição Estadual',
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'Inscrição Estadual',
+                            ),
                             initialValue: clientEdited.ie,
                             onChanged: (value) => clientEdited.ie = value,
                           ),
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: DropdownField(
-                            items: Constants.tiposPessoa,
+                          child: DropdownButtonFormField<String>(
+                            items: Constants.tiposPessoa
+                                .map((tipoPessoa) => DropdownMenuItem<String>(
+                                      value: tipoPessoa['key'],
+                                      child: Text(tipoPessoa['value']!),
+                                    ))
+                                .toList(),
                             value: clientEdited.typePerson,
                             onChanged: (value) {
                               clientEdited.typePerson = value!;
+                            },
+                            validator: (value) {
+                              return (value!.isEmpty)
+                                  ? 'required_field'.tr
+                                  : null;
                             },
                           ),
                         ),
@@ -91,11 +113,13 @@ class ClientsForm extends GetView<ClientsController> {
                     Row(
                       children: [
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.corporateName,
                             onChanged: (value) =>
                                 clientEdited.corporateName = value,
-                            label: 'Razão Social',
+                            decoration: const InputDecoration(
+                              labelText: 'Razão Social',
+                            ),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Campo obrigatório';
@@ -107,19 +131,23 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.fantasyName,
                             onChanged: (value) =>
                                 clientEdited.fantasyName = value,
-                            label: 'Nome Fantasia',
+                            decoration: const InputDecoration(
+                              labelText: 'Nome Fantasia',
+                            ),
                           ),
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.email,
                             onChanged: (value) => clientEdited.email = value,
-                            label: 'Email',
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                            ),
                             validator: (value) {
                               if (!value!.contains('@')) {
                                 return 'Email inválido';
@@ -135,10 +163,12 @@ class ClientsForm extends GetView<ClientsController> {
                     Row(
                       children: [
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.phone,
                             onChanged: (value) => clientEdited.phone = value,
-                            label: 'Telefone',
+                            decoration: const InputDecoration(
+                              labelText: 'Telefone',
+                            ),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -148,18 +178,22 @@ class ClientsForm extends GetView<ClientsController> {
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.contact,
                             onChanged: (value) => clientEdited.contact = value,
-                            label: 'Contato',
+                            decoration: const InputDecoration(
+                              labelText: 'Contato',
+                            ),
                           ),
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          child: CustomTextField(
+                          child: TextFormField(
                             initialValue: clientEdited.comment,
                             onChanged: (value) => clientEdited.comment = value,
-                            label: 'Comentário',
+                            decoration: const InputDecoration(
+                              labelText: 'Comentário',
+                            ),
                           ),
                         ),
                       ],
@@ -170,68 +204,70 @@ class ClientsForm extends GetView<ClientsController> {
             ),
             const SizedBox(height: Constants.defaultPadding),
             Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Constants.defaultPadding),
-              ),
               child: Padding(
                 padding: const EdgeInsets.all(Constants.defaultPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'Endereço',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('Endereço', style: Get.textTheme.headline3),
                     const Divider(),
                     const SizedBox(height: Constants.defaultPadding),
                     Row(
                       children: [
                         Expanded(
-                          flex: Constants.flex3,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.cep,
-                            onChanged: (value) =>
-                                clientEdited.address.cep = value,
-                            label: 'CEP',
+                          flex: Constants.flex2,
+                          child: TextFormField(
+                            controller: _postalCodeController,
+                            decoration: const InputDecoration(labelText: 'CEP'),
                             keyboardType: TextInputType.number,
+                            onChanged: _searchCEP,
                             inputFormatters: [
+                              // obrigatório
                               FilteringTextInputFormatter.digitsOnly,
                               CepInputFormatter(),
                             ],
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Campo obrigatório';
-                              }
-                              var other = 10;
-                              if (value.length != other) {
-                                return 'CEP inválido';
-                              }
-
-                              return null;
+                              return (value!.isEmpty)
+                                  ? 'required_field'.tr
+                                  : null;
                             },
                           ),
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
-                          flex: Constants.flex7,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.street,
-                            onChanged: (value) =>
-                                clientEdited.address.street = value,
-                            label: 'Logradouro',
+                          flex: Constants.flex4,
+                          child: TextFormField(
+                            controller: _addressController,
+                            decoration:
+                                const InputDecoration(labelText: 'Logradouro'),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              return (value!.isEmpty)
+                                  ? 'required_field'.tr
+                                  : null;
+                            },
                           ),
                         ),
                         const SizedBox(width: Constants.defaultPadding),
                         Expanded(
                           flex: Constants.flex2,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.number,
-                            onChanged: (value) =>
-                                clientEdited.address.number = value,
-                            label: 'Número',
+                          child: TextFormField(
+                            controller: _numberController,
+                            focusNode: _numberFocus,
+                            decoration:
+                                const InputDecoration(labelText: 'Número'),
+                          ),
+                        ),
+                        const SizedBox(width: Constants.defaultPadding),
+                        Expanded(
+                          flex: Constants.flex4,
+                          child: TextFormField(
+                            controller: _complementController,
+                            decoration:
+                                const InputDecoration(labelText: 'Complemento'),
                           ),
                         ),
                       ],
@@ -240,43 +276,64 @@ class ClientsForm extends GetView<ClientsController> {
                     Row(
                       children: [
                         Expanded(
-                          flex: Constants.flex4,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.complement,
-                            onChanged: (value) =>
-                                clientEdited.address.complement = value,
-                            label: 'Complemento',
-                          ),
-                        ),
-                        const SizedBox(width: Constants.defaultPadding),
-                        Expanded(
-                          flex: Constants.flex4,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.district,
-                            onChanged: (value) =>
-                                clientEdited.address.district = value,
-                            label: 'Bairro',
-                          ),
-                        ),
-                        const SizedBox(width: Constants.defaultPadding),
-                        Expanded(
-                          flex: Constants.flex4,
-                          child: CustomTextField(
-                            initialValue: clientEdited.address.city,
-                            onChanged: (value) =>
-                                clientEdited.address.city = value,
-                            label: 'Cidade',
-                          ),
-                        ),
-                        const SizedBox(width: Constants.defaultPadding),
-                        Expanded(
-                          flex: Constants.flex3,
-                          child: DropdownField(
-                            items: Constants.estados(),
-                            value: clientEdited.address.uf,
-                            onChanged: (value) {
-                              clientEdited.address.uf = value!;
+                          flex: Constants.flex5,
+                          child: TextFormField(
+                            controller: _districtController,
+                            decoration:
+                                const InputDecoration(labelText: 'Bairro'),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              return (value!.isEmpty)
+                                  ? 'required_field'.tr
+                                  : null;
                             },
+                          ),
+                        ),
+                        const SizedBox(width: Constants.defaultPadding),
+                        Expanded(
+                          flex: Constants.flex5,
+                          child: TextFormField(
+                            controller: _cityController,
+                            decoration:
+                                const InputDecoration(labelText: 'Cidade'),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              return (value!.isEmpty)
+                                  ? 'required_field'.tr
+                                  : null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: Constants.defaultPadding),
+                        Expanded(
+                          flex: Constants.flex2,
+                          child: Obx(
+                            () => DropdownButtonFormField<String>(
+                              hint: const Text('UF'),
+                              onChanged: (regiaoSelecionada) {
+                                clientEdited.address.uf = regiaoSelecionada!;
+                              },
+                              value: (Estados.listaEstadosSigla
+                                      .contains(controller.state))
+                                  ? controller.state
+                                  : null,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                return (value!.isEmpty)
+                                    ? 'required_field'.tr
+                                    : null;
+                              },
+                              items: Estados.listaEstadosSigla
+                                  .map((String regiao) {
+                                return DropdownMenuItem(
+                                  value: regiao,
+                                  child: Text(regiao),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ],
@@ -291,41 +348,25 @@ class ClientsForm extends GetView<ClientsController> {
                 Expanded(
                   child: Container(),
                 ),
-                SizedBox(
-                  height: Constants.buttonHeight,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(Constants.defaultPadding),
-                      ),
-                    ),
-                    onPressed: () {
-                      try {
-                        if (_formKey.currentState!.validate()) {
-                          if (client == null) {
-                            controller.create(clientEdited);
-                          } else {
-                            controller.updateClient(clientEdited);
-                          }
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      if (_formKey.currentState!.validate()) {
+                        if (client == null) {
+                          Utils.loading();
+                          await controller.create(clientEdited);
+
+                          Get.back();
+                          Get.back();
+                        } else {
+                          await controller.updateClient(clientEdited);
                         }
-                      } catch (e) {
-                        Get.snackbar(
-                          'error'.tr,
-                          e.toString(),
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
                       }
-                    },
-                    child: const Text(
-                      'Salvar',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                    } catch (e) {
+                      Utils.dialog();
+                    }
+                  },
+                  child: const Text('Salvar'),
                 ),
               ],
             ),
@@ -333,5 +374,60 @@ class ClientsForm extends GetView<ClientsController> {
         ),
       ),
     );
+  }
+
+  void _searchCEP(value) async {
+    var other = 10;
+
+    if (value.length == other) {
+      try {
+        Utils.loading();
+
+        final infoCepJSON = await ViaCepSearchCep().searchInfoByCep(
+          cep: value.replaceAll('.', '').replaceAll('-', ''),
+        );
+
+        infoCepJSON.fold((_) => null, (data) {
+          _cityController.text = data.localidade!;
+          _districtController.text = data.bairro!;
+          _addressController.text = data.logradouro!;
+          controller.state = data.uf ?? 'SP';
+          _complementController.text = data.complemento!;
+          _numberController.text = '';
+
+          _numberFocus.requestFocus();
+        });
+
+        Get.back();
+      } catch (e) {
+        _postalCodeController.text = '';
+        _cityController.text = '';
+        _districtController.text = '';
+        _addressController.text = '';
+        controller.state = 'SP';
+        _complementController.text = '';
+        _numberController.text = '';
+
+        Get.back();
+
+        Utils.dialog(
+          title: 'CEP Inválido',
+          content: Column(
+            children: [
+              const Text(
+                'Por favor revise a informação.',
+              ),
+              const SizedBox(
+                height: Constants.defaultPadding,
+              ),
+              ElevatedButton(
+                onPressed: () => Get.back(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }

@@ -11,7 +11,6 @@ import 'package:venda_sys/libraries/input_formatters/currency_input_formatter.da
 import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/models/product.dart';
 import 'package:venda_sys/models/unit_of_measurement.dart';
-import 'package:venda_sys/views/widgets/custom_text_field.dart';
 import 'package:venda_sys/views/widgets/loading_widget.dart';
 
 // ignore: must_be_immutable
@@ -25,11 +24,8 @@ class ProductForm extends GetView<ProductsController> {
     this.product,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => UnitsOfMeasurementController());
-
     Product? productEdited = product ??
         Product(
           buyingPrice: 0,
@@ -71,63 +67,77 @@ class ProductForm extends GetView<ProductsController> {
             key: formKey,
             child: Column(
               children: [
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) => productEdited.code = value,
                   initialValue: productEdited.code,
-                  label: 'code'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'reference'.tr,
+                  ),
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) => productEdited.description = value,
                   initialValue: productEdited.description,
-                  label: 'description'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'description'.tr,
+                  ),
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) =>
                       productEdited.resumedDescription = value,
                   initialValue: productEdited.resumedDescription,
-                  label: 'resumedDescription'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'resumed_description'.tr,
+                  ),
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) =>
                       productEdited.quantity = int.parse(value),
                   initialValue: productEdited.quantity.toString(),
-                  label: 'quantity'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'quantity'.tr,
+                  ),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) =>
                       productEdited.buyingPrice = Utils.cleanMoney(value)!,
                   initialValue:
                       UtilBrasilFields.obterReal(productEdited.buyingPrice!),
-                  label: 'buyingPrice'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'buying_price'.tr,
+                  ),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CurrencyInputFormatter(),
                   ],
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) =>
                       productEdited.sellingPrice = Utils.cleanMoney(value)!,
                   initialValue:
                       UtilBrasilFields.obterReal(productEdited.buyingPrice!),
-                  label: 'sellingPrice'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'selling_price'.tr,
+                  ),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CurrencyInputFormatter(),
                   ],
                 ),
                 const SizedBox(height: Constants.defaultPadding),
-                CustomTextField(
+                TextFormField(
                   onChanged: (value) => productEdited.ncm = value,
                   initialValue: productEdited.ncm,
-                  label: 'ncm'.tr,
+                  decoration: InputDecoration(
+                    labelText: 'ncm'.tr,
+                  ),
                 ),
                 const SizedBox(height: Constants.defaultPadding),
                 DropdownButtonFormField<String>(
@@ -170,15 +180,25 @@ class ProductForm extends GetView<ProductsController> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              Constants.smallButtonRadius,),
+                            Constants.smallButtonRadius,
+                          ),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          if (product != null) {
-                            controller.updateProduct(productEdited);
-                          } else {
-                            controller.create(productEdited);
+                          try {
+                            Utils.loading();
+
+                            if (product != null) {
+                              await controller.updateProduct(productEdited);
+                            } else {
+                              await controller.create(productEdited);
+                            }
+
+                            Get.back();
+                            Get.back();
+                          } catch (e) {
+                            Utils.dialog();
                           }
                         }
                       },

@@ -4,15 +4,10 @@ import 'package:venda_sys/config/constants.dart';
 
 class Utils {
   static void loading() {
-    Get.defaultDialog(
-      contentPadding: const EdgeInsets.all(Constants.defaultPadding),
-      titlePadding: const EdgeInsets.all(Constants.defaultPadding),
-      radius: Constants.defaultPadding,
-      title: "Carregando",
+    dialog(
+      title: "loading".tr,
       content: const Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Constants.primaryColor),
-        ),
+        child: CircularProgressIndicator(),
       ),
       barrierDismissible: false,
     );
@@ -26,15 +21,16 @@ class Utils {
   }) {
     title = (title == null) ? 'Oops' : title;
     content = (content == null)
-        ? const Text('Ocorreu um erro, por favor tente novamente')
+        ? const Text('Ocorreu um erro, por favor tente novamente.')
         : content;
 
     Get.defaultDialog(
       barrierDismissible: barrierDismissible,
-      radius: Constants.defaultPadding,
+      radius: Constants.radius,
       contentPadding: const EdgeInsets.all(Constants.defaultPadding),
       titlePadding: const EdgeInsets.all(Constants.defaultPadding),
       title: title,
+      titleStyle: Get.textTheme.headline2,
       content: content,
       actions: (actionParams != null)
           ? _dialogActions(actionParams: actionParams)

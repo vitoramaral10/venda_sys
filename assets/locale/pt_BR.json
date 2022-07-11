@@ -1,12 +1,27 @@
 {
+    "abbreviation": "Abreviação",
+    "buying_price": "Preço de compra",
+    "cancel": "Cancelar",
+    "clients": "Clientes",
+    "description": "Descrição",
     "email": "Email",
     "exit": "Sair",
     "forgot_password": "Esqueci a senha",
     "home": "Início",
     "invalid_email": "Email Inválido",
+    "loading": "Carregando...",
     "login": "Entrar",
+    "ncm": "NCM",
     "password": "Senha",
     "products": "Produtos",
+    "quantity": "Quantidade",
+    "reference": "Referência",
+    "register": "Salvar",
     "required_field": "Campo obrigatório",
-    "units_of_measurement": "Unidades de medida"
+    "resumed_description": "Descrição resumida",
+    "select_one_unit_of_measurement": "Selecione uma unidade de medida",
+    "selling_price": "Preço de venda",
+    "unit_in_use": "Unidades de medida em uso",
+    "units_of_measurement": "Unidades de medida",
+    "view": "Visualizar"
 }

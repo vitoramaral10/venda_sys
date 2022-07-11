@@ -30,6 +30,7 @@ void main() async {
   Get.put(AuthController());
   runApp(
     GetMaterialApp(
+      smartManagement: SmartManagement.onlyBuilder,
       enableLog: false,
       translations: LocalizationService(
         await TranslationsLoader.loadTranslations("assets/locale"),

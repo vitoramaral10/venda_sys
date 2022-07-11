@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import '../../config/constants.dart';
-import '../../controllers/auth_controller.dart';
+import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/controllers/auth_controller.dart';
+import 'package:venda_sys/libraries/utils.dart';
 
 // ignore: must_be_immutable
 class Header extends GetView<AuthController> {
@@ -19,8 +20,12 @@ class Header extends GetView<AuthController> {
           offset: const Offset(-16, 50),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
             PopupMenuItem(
-              onTap: () {
-                controller.logout();
+              onTap: () async {
+                try {
+                  await controller.logout();
+                } catch (e) {
+                  Utils.dialog();
+                }
               },
               child: ListTile(
                 leading: const Icon(FontAwesomeIcons.doorOpen),
@@ -37,10 +42,10 @@ class Header extends GetView<AuthController> {
                 Obx(
                   () => Text(
                     controller.userName,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,),
+                    style: Get.textTheme.headline4!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(

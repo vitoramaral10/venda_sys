@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:venda_sys/config/constants.dart';
 import 'package:venda_sys/libraries/utils.dart';
+import 'package:venda_sys/models/unit_of_measurement.dart';
 import 'package:venda_sys/views/widgets/base_widget.dart';
 import 'package:venda_sys/views/widgets/loading_widget.dart';
 
@@ -18,7 +19,7 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
       () => BaseWidget(
         floatingActionButton: FloatingActionButton(
           onPressed: () => Utils.dialog(
-            title: 'units_of_measurement'.tr,
+            title: 'Cadastrar',
             content: UnitsOfMeasurementForm(),
           ),
           child: const Icon(FontAwesomeIcons.plus),
@@ -35,28 +36,7 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
                     key: Key(unit.id.toString()),
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
-                        bool remove = false;
-
-                        Utils.dialog(
-                          title: 'Remover Unidade de medida',
-                          content: const Text(
-                            'A unidade de medida será removida permanentemente. Deseja continuar?',
-                          ),
-                          actionParams: {
-                            'onConfirm': () async {
-                              await controller.delete(unit);
-
-                              remove = true;
-                              Get.back();
-                            },
-                            'onCancel': () {
-                              remove = false;
-                              Get.back();
-                            },
-                          },
-                        );
-
-                        return remove;
+                        return await _removeUnit(unit);
                       }
 
                       return null;
@@ -91,5 +71,36 @@ class UnitsOfMeasurementPage extends GetView<UnitsOfMeasurementController> {
               ),
       ),
     );
+  }
+
+  Future<bool?> _removeUnit(UnitOfMeasurement unit) async {
+    bool remove = false;
+
+    Utils.dialog(
+      title: 'Remover Unidade de medida',
+      content: const Text(
+        'A unidade de medida será removida permanentemente. Deseja continuar?',
+      ),
+      actionParams: {
+        'onConfirm': () async {
+          try {
+            Get.back();
+            Utils.loading();
+            await controller.delete(unit);
+            Get.back();
+            remove = true;
+          } catch (e) {
+            Get.back();
+            Utils.dialog();
+          }
+        },
+        'onCancel': () {
+          remove = false;
+          Get.back();
+        },
+      },
+    );
+
+    return remove;
   }
 }

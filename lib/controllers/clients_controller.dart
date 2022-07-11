@@ -3,17 +3,20 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:venda_sys/libraries/utils.dart';
 import 'package:venda_sys/models/client.dart';
 import 'package:venda_sys/services/firebase_service.dart';
 
 class ClientsController extends GetxController {
   final _clients = <Client>[].obs;
   final _loading = false.obs;
+  final _state = ''.obs;
 
   static ClientsController get to => Get.find<ClientsController>();
   List<Client> get clients => _clients.value;
   bool get loading => _loading.value;
+  String get state => _state.value;
+
+  set state(String value) => _state.value = value;
 
   @override
   Future<void> onInit() async {
@@ -22,36 +25,36 @@ class ClientsController extends GetxController {
   }
 
   Future<void> loadClients() async {
-    _loading.value = true;
-    update();
+    try {
+      _loading.value = true;
+      update();
 
-    _clients.value = await FirebaseService().getClients();
-    _loading.value = false;
+      _clients.value = await FirebaseService().getClients();
+      _loading.value = false;
 
-    update();
+      update();
+    } catch (e) {
+      log(e.toString(), name: 'loadClients');
+
+      rethrow;
+    }
   }
 
   Future<void> create(Client client) async {
     try {
-      Utils.loading();
       await FirebaseService().createClient(client);
 
       await loadClients();
-
-      Get.back();
-      Get.back();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'createClient');
       rethrow;
     }
   }
 
   Future<void> delete(Client client) async {
     try {
-      Utils.loading();
       await FirebaseService().deleteClient(client);
       await loadClients();
-      Get.back();
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -60,13 +63,9 @@ class ClientsController extends GetxController {
 
   Future<void> updateClient(Client client) async {
     try {
-      Utils.loading();
       await FirebaseService().updateClient(client);
 
       await loadClients();
-
-      Get.back();
-      Get.back();
     } catch (e) {
       log(e.toString());
       rethrow;

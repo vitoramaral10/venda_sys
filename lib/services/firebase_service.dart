@@ -31,14 +31,8 @@ class FirebaseService {
       FirebaseAuth.instance.setPersistence(Persistence.SESSION);
 
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw Exception('user_not_found'.tr);
-      } else if (e.code == 'wrong-password') {
-        throw Exception('wrong_password'.tr);
-      } else {
-        throw Exception('error'.tr);
-      }
+    } on FirebaseAuthException {
+      rethrow;
     }
   }
 
@@ -65,12 +59,13 @@ class FirebaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUnitsOfMeasurement() async {
+  Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
     try {
       final units = await FirebaseFirestore.instance
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.unitsOfMeasurement)
+          .orderBy('description')
           .get();
 
       return units.docs.map((doc) {
@@ -78,7 +73,7 @@ class FirebaseService {
 
         data['id'] = doc.id;
 
-        return data;
+        return UnitOfMeasurement.fromJson(data);
       }).toList();
     } catch (e) {
       log(e.toString());
@@ -119,7 +114,6 @@ class FirebaseService {
             .delete();
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -223,7 +217,8 @@ class FirebaseService {
           .collection(Constants.collection)
           .doc(Constants.box.get('empresa'))
           .collection(Constants.clients)
-          .where({'cnpj': client.cnpj}).get();
+          .where('cnpj', isEqualTo: client.cnpj)
+          .get();
 
       if (docs.docs.isEmpty) {
         await FirebaseFirestore.instance
@@ -232,10 +227,10 @@ class FirebaseService {
             .collection(Constants.clients)
             .add(client.toJson());
       } else {
-        throw Exception('Client cadastrado');
+        throw Exception('Cliente cadastrado');
       }
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
   }
 

@@ -10,11 +10,13 @@ import 'side_menu.dart';
 class BaseWidget extends GetView {
   Widget child;
   FloatingActionButton? floatingActionButton;
+  final String? title;
 
   BaseWidget({
     Key? key,
     required this.child,
     this.floatingActionButton,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -33,17 +35,18 @@ class BaseWidget extends GetView {
                   const Header(),
                   Expanded(
                     child: ListView(
-                      shrinkWrap: true,
                       padding: const EdgeInsets.all(Constants.defaultPadding),
                       children: [
                         Text(
-                          Get.currentRoute.split('/').last.tr,
-                          style: Theme.of(context).textTheme.headline1,
+                          title ?? Get.currentRoute.split('/').last.tr,
+                          style: Get.textTheme.headline1,
                         ),
                         const SizedBox(
                           height: Constants.defaultPadding,
                         ),
-                        const BreadCrumbs(),
+                        BreadCrumbs(
+                          title: title,
+                        ),
                         const SizedBox(
                           height: Constants.defaultPadding,
                         ),

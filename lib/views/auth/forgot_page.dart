@@ -3,10 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:validators/validators.dart';
-
-import '../../config/constants.dart';
-import '../../controllers/auth_controller.dart';
-import '../widgets/custom_text_field.dart';
+import 'package:venda_sys/config/constants.dart';
+import 'package:venda_sys/controllers/auth_controller.dart';
 
 class ForgotPage extends GetView<AuthController> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -61,8 +59,10 @@ class ForgotPage extends GetView<AuthController> {
                           ),
                         ),
                         const SizedBox(height: Constants.defaultPadding),
-                        CustomTextField(
-                          label: 'email'.tr,
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'email'.tr,
+                          ),
                           controller: _emailController,
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.emailAddress,

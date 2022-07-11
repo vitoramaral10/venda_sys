@@ -62,7 +62,7 @@ class Constants {
 
   static String boxName = 'vendasys';
 
-  static String collection = (const String.fromEnvironment('flavor') == 'prod')
+  static String collection = (const String.fromEnvironment('flavor') != 'dev')
       ? 'empresas'
       : 'empresas_teste';
 
